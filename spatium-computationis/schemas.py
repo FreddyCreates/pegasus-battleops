@@ -8,7 +8,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 # ---------------------------------------------------------------------------
@@ -77,7 +77,7 @@ class RawInput(BaseModel):
     filename: str | None = None
     project_id: str | None = None
     submitted_by: str | None = None
-    submitted_at: datetime = Field(default_factory=datetime.utcnow)
+    submitted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -91,7 +91,7 @@ class ProjectInput(BaseModel):
     extracted_data: dict[str, Any] = Field(default_factory=dict)
     submitted_by: str | None
     submitted_at: datetime
-    normalized_at: datetime = Field(default_factory=datetime.utcnow)
+    normalized_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ---------------------------------------------------------------------------
@@ -109,7 +109,7 @@ class IntelligenceObject(BaseModel):
     missing_fields: list[str] = Field(default_factory=list)
     confidence: float = Field(ge=0.0, le=1.0, default=1.0)
     source_input_id: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ---------------------------------------------------------------------------
@@ -153,7 +153,7 @@ class FurnitureBudget(BaseModel):
     grand_total: float
     assumptions: list[str] = Field(default_factory=list)
     missing_info: list[str] = Field(default_factory=list)
-    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class LaborLineItem(BaseModel):
@@ -174,7 +174,7 @@ class LaborBid(BaseModel):
     schedule_days: float
     assumptions: list[str] = Field(default_factory=list)
     exclusions: list[str] = Field(default_factory=list)
-    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class PunchItem(BaseModel):
@@ -192,7 +192,7 @@ class PunchList(BaseModel):
     items: list[PunchItem]
     open_count: int
     complete_count: int
-    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class InstallerInstruction(BaseModel):
@@ -209,7 +209,7 @@ class InstallPacket(BaseModel):
     instructions: list[InstallerInstruction]
     site_notes: list[str] = Field(default_factory=list)
     access_notes: list[str] = Field(default_factory=list)
-    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class GeneratedDocument(BaseModel):
@@ -219,7 +219,7 @@ class GeneratedDocument(BaseModel):
     title: str
     content_text: str
     file_path: str | None = None
-    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ class MemoryRecord(BaseModel):
     record_type: str = Field(description="e.g. bid, assumption, client_rule, preference")
     content: str
     tags: list[str] = Field(default_factory=list)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ---------------------------------------------------------------------------
@@ -248,4 +248,4 @@ class ActionResult(BaseModel):
     result_summary: str
     payload: dict[str, Any] = Field(default_factory=dict)
     next_actions: list[ActionType] = Field(default_factory=list)
-    executed_at: datetime = Field(default_factory=datetime.utcnow)
+    executed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

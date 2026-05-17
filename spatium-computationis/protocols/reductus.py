@@ -14,7 +14,7 @@ the system through Reductus, which:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..schemas import ActionResult, RawInput
 from . import ingressus, compressio, ordinatio, actio
@@ -27,7 +27,7 @@ class ReductusReport:
     field_input_id: str
     actions_taken: list[ActionResult] = field(default_factory=list)
     summary: str = ""
-    processed_at: datetime = field(default_factory=datetime.utcnow)
+    processed_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 async def process_field_update(raw: RawInput) -> ReductusReport:

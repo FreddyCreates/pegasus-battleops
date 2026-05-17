@@ -12,7 +12,7 @@ import json
 import sqlite3
 import uuid
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from openai import AsyncOpenAI
@@ -107,7 +107,7 @@ async def remember(obj: IntelligenceObject) -> MemoryRecord:
     )
 
     data = json.loads(response.choices[0].message.content)
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     record_id = str(uuid.uuid4())
 
     with _db() as conn:

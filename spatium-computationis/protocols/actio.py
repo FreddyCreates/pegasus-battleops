@@ -9,7 +9,7 @@ sub-agent and returns an ActionResult.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..schemas import (
     ActionResult,
@@ -94,5 +94,5 @@ async def execute(
         result_summary=result_summary,
         payload=result_payload,
         next_actions=next_actions,
-        executed_at=datetime.utcnow(),
+        executed_at=datetime.now(timezone.utc),
     )
