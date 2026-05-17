@@ -102,6 +102,39 @@ GLYPH_MAP: dict[str, dict] = {
         "meaning": "designer intent converted into install instructions",
         "agent": "interpres_designii",
     },
+    # ---------------------------------------------------------------------------
+    # Defense Glyphs — AI Battleground Infrastructure
+    # ---------------------------------------------------------------------------
+    "⛨": {
+        "name": "Defensor",
+        "region": "defense",
+        "meaning": "active defense",
+        "agent": "defensor_campi",
+    },
+    "◎": {
+        "name": "Vigil",
+        "region": "defense",
+        "meaning": "constant monitoring",
+        "agent": "vigil_operis",
+    },
+    "⟲": {
+        "name": "Adaptio",
+        "region": "defense",
+        "meaning": "adaptive response",
+        "agent": "adaptio_mentis",
+    },
+    "⚠": {
+        "name": "Minacium",
+        "region": "defense",
+        "meaning": "threat detection",
+        "agent": "vigil_operis",
+    },
+    "🜏": {
+        "name": "Deceptio",
+        "region": "defense",
+        "meaning": "deceptive trap",
+        "agent": "defensor_campi",
+    },
 }
 
 # Region → primary glyph
@@ -114,6 +147,7 @@ REGION_GLYPHS: dict[str, str] = {
     "regio_contractus": "⇄",
     "memory": "◉",
     "core": "⌬",
+    "defense": "⛨",
 }
 
 # Agent → canonical glyph
@@ -125,6 +159,10 @@ AGENT_GLYPHS: dict[str, str] = {
     "scriptor_documentorum": "▣✎",
     "interpres_designii": "✦⇄⚒",
     "custos_memoriae": "◉",
+    # Defense agents
+    "defensor_campi": "⛨",
+    "vigil_operis": "◎",
+    "adaptio_mentis": "⟲",
 }
 
 
