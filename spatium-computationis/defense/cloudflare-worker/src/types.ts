@@ -133,6 +133,28 @@ export const HONEYPOT_PATHS = [
   '/graphql',
   '/phpinfo.php',
   '/server-status',
+  // WordPress deep probes
+  '/wp-includes/wlwmanifest.xml',
+  '/wp-includes/js/jquery/',
+  '/wp-content/plugins/',
+  '/wp-content/themes/',
+  '/wp-json/',
+  '/wp-admin/admin-ajax.php',
+  '/wp-config.php.bak',
+  '/wp-config.txt',
+  '/xmlrpc.php',
+  // Cloudflare probes
+  '/cdn-cgi/rum',
+  '/cdn-cgi/trace',
+  '/cdn-cgi/challenge-platform/',
+  // Cloud infrastructure
+  '/.aws/credentials',
+  '/.docker/config.json',
+  '/actuator/health',
+  '/actuator/env',
+  // Linux system paths
+  '/etc/passwd',
+  '/proc/self/environ',
 ] as const;
 
 // Known good bot user agents (partial matches)

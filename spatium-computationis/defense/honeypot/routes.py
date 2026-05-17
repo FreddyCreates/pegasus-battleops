@@ -376,3 +376,116 @@ async def htaccess(request: Request):
 async def backup_files(request: Request):
     """Fake backup files — attracts backup hunters."""
     return await process_honeypot_request(request, "/backup.sql")
+
+
+# ---------------------------------------------------------------------------
+# WordPress Deep Probes (from traffic analysis)
+# ---------------------------------------------------------------------------
+
+@honeypot_router.get("/wp-includes/wlwmanifest.xml")
+async def wp_wlwmanifest(request: Request):
+    """Fake WLW manifest — attracts WordPress scanners."""
+    return await process_honeypot_request(request, "/wp-includes/wlwmanifest.xml")
+
+
+@honeypot_router.get("/wp-includes/js/jquery/jquery.min.js")
+async def wp_jquery(request: Request):
+    """Fake jQuery — attracts WordPress scanners."""
+    return await process_honeypot_request(request, "/wp-includes/js/jquery/jquery.min.js")
+
+
+@honeypot_router.api_route("/wp-content/plugins/{path:path}", methods=["GET", "POST"])
+async def wp_plugins(request: Request, path: str = ""):
+    """Fake plugin paths — attracts plugin exploiters."""
+    return await process_honeypot_request(request, "/wp-content/plugins/")
+
+
+@honeypot_router.api_route("/wp-content/themes/{path:path}", methods=["GET", "POST"])
+async def wp_themes(request: Request, path: str = ""):
+    """Fake theme paths — attracts theme exploiters."""
+    return await process_honeypot_request(request, "/wp-content/themes/")
+
+
+@honeypot_router.api_route("/wp-json/{path:path}", methods=["GET", "POST"])
+async def wp_rest_api(request: Request, path: str = ""):
+    """Fake WP REST API — attracts API exploiters."""
+    return await process_honeypot_request(request, "/wp-json/")
+
+
+@honeypot_router.api_route("/wp-admin/admin-ajax.php", methods=["GET", "POST"])
+async def wp_admin_ajax(request: Request):
+    """Fake admin-ajax — attracts WordPress exploiters."""
+    return await process_honeypot_request(request, "/wp-admin/admin-ajax.php")
+
+
+@honeypot_router.get("/wp-config.php.bak")
+@honeypot_router.get("/wp-config.php.old")
+@honeypot_router.get("/wp-config.txt")
+@honeypot_router.get("/.wp-config.php.swp")
+async def wp_config_backups(request: Request):
+    """Fake config backups — attracts config hunters."""
+    return await process_honeypot_request(request, "/wp-config.php")
+
+
+# ---------------------------------------------------------------------------
+# Cloudflare Beacon Probes (from traffic analysis)
+# ---------------------------------------------------------------------------
+
+@honeypot_router.api_route("/cdn-cgi/rum", methods=["GET", "POST"])
+async def cdn_rum(request: Request):
+    """Fake Cloudflare RUM beacon — attracts CF probers."""
+    return await process_honeypot_request(request, "/cdn-cgi/rum")
+
+
+@honeypot_router.get("/cdn-cgi/trace")
+async def cdn_trace(request: Request):
+    """Fake Cloudflare trace — attracts CF probers."""
+    return await process_honeypot_request(request, "/cdn-cgi/trace")
+
+
+@honeypot_router.api_route("/cdn-cgi/challenge-platform/{path:path}", methods=["GET", "POST"])
+async def cdn_challenge(request: Request, path: str = ""):
+    """Fake Cloudflare challenge — attracts CF probers."""
+    return await process_honeypot_request(request, "/cdn-cgi/challenge-platform/")
+
+
+# ---------------------------------------------------------------------------
+# Cloud Infrastructure Probes
+# ---------------------------------------------------------------------------
+
+@honeypot_router.get("/.aws/credentials")
+async def aws_creds(request: Request):
+    """Fake AWS credentials — attracts cloud hunters."""
+    return await process_honeypot_request(request, "/.aws/credentials")
+
+
+@honeypot_router.get("/.docker/config.json")
+async def docker_config(request: Request):
+    """Fake Docker config — attracts container hunters."""
+    return await process_honeypot_request(request, "/.docker/config.json")
+
+
+@honeypot_router.get("/actuator/health")
+@honeypot_router.get("/actuator/env")
+@honeypot_router.get("/actuator/info")
+async def spring_actuator(request: Request):
+    """Fake Spring Actuator — attracts Java exploiters."""
+    path = request.url.path
+    return await process_honeypot_request(request, path)
+
+
+# ---------------------------------------------------------------------------
+# Linux System Paths
+# ---------------------------------------------------------------------------
+
+@honeypot_router.get("/etc/passwd")
+@honeypot_router.get("/etc/shadow")
+async def linux_passwd(request: Request):
+    """Fake passwd file — attracts LFI hunters."""
+    return await process_honeypot_request(request, "/etc/passwd")
+
+
+@honeypot_router.get("/proc/self/environ")
+async def proc_environ(request: Request):
+    """Fake proc environ — attracts LFI hunters."""
+    return await process_honeypot_request(request, "/proc/self/environ")

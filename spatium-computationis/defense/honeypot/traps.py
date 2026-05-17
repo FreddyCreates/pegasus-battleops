@@ -214,6 +214,94 @@ TRAP_REGISTRY: dict[str, dict[str, Any]] = {
         "description": "Fake MongoDB endpoint",
         "response_type": "application/json",
     },
+    
+    # WordPress deep probes (from traffic analysis)
+    "/wp-includes/wlwmanifest.xml": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake WLW manifest",
+        "response_type": "application/xml",
+    },
+    "/wp-includes/js/jquery/jquery.min.js": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake jQuery",
+        "response_type": "application/javascript",
+    },
+    "/wp-content/plugins/": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake plugin directory",
+        "response_type": "text/html",
+    },
+    "/wp-content/themes/": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake theme directory",
+        "response_type": "text/html",
+    },
+    "/wp-json/": {
+        "type": TrapType.API_ENDPOINT,
+        "description": "Fake WP REST API",
+        "response_type": "application/json",
+    },
+    "/wp-admin/admin-ajax.php": {
+        "type": TrapType.API_ENDPOINT,
+        "description": "Fake admin AJAX",
+        "response_type": "application/json",
+    },
+    "/xmlrpc.php": {
+        "type": TrapType.API_ENDPOINT,
+        "description": "Fake XML-RPC",
+        "response_type": "text/xml",
+    },
+    
+    # Cloudflare probes (from traffic analysis)
+    "/cdn-cgi/rum": {
+        "type": TrapType.DEBUG_INFO,
+        "description": "Fake CF RUM beacon",
+        "response_type": "application/json",
+    },
+    "/cdn-cgi/trace": {
+        "type": TrapType.DEBUG_INFO,
+        "description": "Fake CF trace",
+        "response_type": "text/plain",
+    },
+    "/cdn-cgi/challenge-platform/": {
+        "type": TrapType.DEBUG_INFO,
+        "description": "Fake CF challenge",
+        "response_type": "text/html",
+    },
+    
+    # Cloud infrastructure probes
+    "/.aws/credentials": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake AWS credentials",
+        "response_type": "text/plain",
+    },
+    "/.docker/config.json": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake Docker config",
+        "response_type": "application/json",
+    },
+    "/actuator/health": {
+        "type": TrapType.DEBUG_INFO,
+        "description": "Fake Spring health",
+        "response_type": "application/json",
+    },
+    "/actuator/env": {
+        "type": TrapType.DEBUG_INFO,
+        "description": "Fake Spring env",
+        "response_type": "application/json",
+    },
+    
+    # Linux system paths (LFI probes)
+    "/etc/passwd": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake passwd file",
+        "response_type": "text/plain",
+    },
+    "/proc/self/environ": {
+        "type": TrapType.CONFIG_FILE,
+        "description": "Fake proc environ",
+        "response_type": "text/plain",
+    },
 }
 
 
@@ -448,6 +536,177 @@ INSERT INTO `users` VALUES
 """
 
 
+def _fake_aws_credentials() -> str:
+    """Generate fake AWS credentials file."""
+    return f"""[default]
+aws_access_key_id = AKIA{_random_string(16).upper()}
+aws_secret_access_key = {_random_string(40)}
+region = us-east-1
+
+[production]
+aws_access_key_id = AKIA{_random_string(16).upper()}
+aws_secret_access_key = {_random_string(40)}
+region = us-west-2
+role_arn = arn:aws:iam::123456789012:role/ProductionAdmin
+"""
+
+
+def _fake_docker_config() -> dict:
+    """Generate fake Docker config."""
+    return {
+        "auths": {
+            "registry.spatium.local": {
+                "auth": _random_string(64),
+                "email": "deploy@spatium.local"
+            },
+            "docker.io": {
+                "auth": _random_string(64)
+            },
+            "ghcr.io": {
+                "auth": _random_string(64)
+            }
+        },
+        "credsStore": "desktop"
+    }
+
+
+def _fake_spring_actuator_health() -> dict:
+    """Generate fake Spring Boot health endpoint."""
+    return {
+        "status": "UP",
+        "components": {
+            "db": {
+                "status": "UP",
+                "details": {
+                    "database": "PostgreSQL",
+                    "validationQuery": "isValid()"
+                }
+            },
+            "redis": {
+                "status": "UP",
+                "details": {
+                    "version": "7.0.11"
+                }
+            },
+            "diskSpace": {
+                "status": "UP",
+                "details": {
+                    "total": 107374182400,
+                    "free": 85899345920,
+                    "threshold": 10485760
+                }
+            }
+        }
+    }
+
+
+def _fake_spring_actuator_env() -> dict:
+    """Generate fake Spring Boot env endpoint."""
+    return {
+        "activeProfiles": ["production"],
+        "propertySources": [
+            {
+                "name": "systemEnvironment",
+                "properties": {
+                    "DB_PASSWORD": {"value": f"******{_random_string(4)}"},
+                    "AWS_SECRET_KEY": {"value": "******"},
+                    "SPRING_PROFILES_ACTIVE": {"value": "production"},
+                }
+            },
+            {
+                "name": "application.properties",
+                "properties": {
+                    "server.port": {"value": "8080"},
+                    "spring.datasource.url": {"value": "jdbc:postgresql://db.internal:5432/spatium"},
+                }
+            }
+        ]
+    }
+
+
+def _fake_cloudflare_trace() -> str:
+    """Generate fake Cloudflare trace output."""
+    return f"""fl=fake123
+h=spatium-computationis.local
+ip=10.0.0.1
+ts={datetime.now(timezone.utc).timestamp()}
+visit_scheme=https
+uag=Mozilla/5.0 (compatible; Googlebot/2.1)
+colo=SJC
+sliver=none
+http=http/2
+loc=US
+tls=TLSv1.3
+sni=plaintext
+warp=off
+gateway=off
+rbi=off
+kex=X25519
+"""
+
+
+def _fake_wp_wlw_manifest() -> str:
+    """Generate fake Windows Live Writer manifest."""
+    return """<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://schemas.microsoft.com/wlw/manifest/weblog">
+  <options>
+    <clientType>WordPress</clientType>
+    <supportsKeywords>Yes</supportsKeywords>
+    <supportsGetTags>Yes</supportsGetTags>
+  </options>
+  <weblog>
+    <serviceName>WordPress</serviceName>
+    <imageUrl>images/wlw/wp-icon.png</imageUrl>
+    <watermarkImageUrl>images/wlw/wp-watermark.png</watermarkImageUrl>
+    <homepageLinkText>View site</homepageLinkText>
+    <adminLinkText>Dashboard</adminLinkText>
+    <adminUrl>
+      <![CDATA[{blog-postapi-url}/../wp-admin/]]>
+    </adminUrl>
+  </weblog>
+</manifest>
+"""
+
+
+def _fake_wp_rest_api() -> dict:
+    """Generate fake WordPress REST API response."""
+    return {
+        "name": "Spatium Computationis",
+        "description": "Research & Development",
+        "url": "https://spatium-computationis.local",
+        "home": "https://spatium-computationis.local",
+        "gmt_offset": 0,
+        "timezone_string": "UTC",
+        "namespaces": ["wp/v2", "wp-site-health/v1"],
+        "authentication": [],
+        "routes": {
+            "/wp/v2": {"namespace": "wp/v2", "methods": ["GET"]},
+            "/wp/v2/posts": {"namespace": "wp/v2", "methods": ["GET", "POST"]},
+            "/wp/v2/users": {"namespace": "wp/v2", "methods": ["GET"]},
+        }
+    }
+
+
+def _fake_passwd_file() -> str:
+    """Generate fake /etc/passwd file."""
+    return """root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+spatium:x:1000:1000:Spatium,,,:/home/spatium:/bin/bash
+postgres:x:999:999:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+deploy:x:1001:1001:Deploy User:/home/deploy:/bin/bash
+"""
+
+
+def _fake_proc_environ() -> str:
+    """Generate fake /proc/self/environ."""
+    return f"PATH=/usr/local/bin:/usr/bin:/bin\x00HOME=/home/spatium\x00USER=spatium\x00DB_PASSWORD={_random_string(16)}\x00SECRET_KEY={_random_string(32)}\x00AWS_ACCESS_KEY_ID=AKIA{_random_string(16).upper()}\x00"
+
+
 # ---------------------------------------------------------------------------
 # Response Generator
 # ---------------------------------------------------------------------------
@@ -459,6 +718,13 @@ def get_trap_response(path: str, method: str = "GET") -> tuple[str | dict, str, 
     Returns: (content, content_type, status_code)
     """
     trap_config = TRAP_REGISTRY.get(path)
+    if not trap_config:
+        # Check for partial path matches
+        for trap_path, config in TRAP_REGISTRY.items():
+            if path.startswith(trap_path) or trap_path in path:
+                trap_config = config
+                break
+    
     if not trap_config:
         # Unknown trap path - return generic response
         return {"error": "Not found", "path": path}, "application/json", 404
@@ -476,6 +742,20 @@ def get_trap_response(path: str, method: str = "GET") -> tuple[str | dict, str, 
             return _fake_wp_config(), "application/x-php", 200
         elif "settings.py" in path:
             return f"# Django settings\nSECRET_KEY = '{_random_string(50)}'", "text/x-python", 200
+        elif ".aws/credentials" in path:
+            return _fake_aws_credentials(), "text/plain", 200
+        elif ".docker/config.json" in path:
+            return _fake_docker_config(), "application/json", 200
+        elif "wlwmanifest.xml" in path:
+            return _fake_wp_wlw_manifest(), "application/xml", 200
+        elif "jquery" in path:
+            return "/* jQuery v3.6.0 - HONEYPOT */", "application/javascript", 200
+        elif "etc/passwd" in path:
+            return _fake_passwd_file(), "text/plain", 200
+        elif "proc/self/environ" in path:
+            return _fake_proc_environ(), "text/plain", 200
+        elif "wp-content/plugins" in path or "wp-content/themes" in path:
+            return "<html><body><h1>Index of /</h1><hr><pre>../</pre></body></html>", "text/html", 200
     
     # Admin panels
     elif trap_type == TrapType.ADMIN_PANEL:
@@ -500,6 +780,12 @@ def get_trap_response(path: str, method: str = "GET") -> tuple[str | dict, str, 
                 "errors": [{"message": "Unauthorized", "extensions": {"code": "UNAUTHENTICATED"}}],
                 "__schema_url": "/graphql/schema",
             }, "application/json", 401
+        elif "wp-json" in path:
+            return _fake_wp_rest_api(), "application/json", 200
+        elif "admin-ajax" in path:
+            return {"success": False, "data": "Unauthorized"}, "application/json", 403
+        elif "xmlrpc" in path:
+            return """<?xml version="1.0"?><methodResponse><fault><value><struct><member><name>faultCode</name><value><int>403</int></value></member><member><name>faultString</name><value><string>XML-RPC services are disabled</string></value></member></struct></value></fault></methodResponse>""", "text/xml", 200
         else:
             return {"status": "ok", "admin_token": f"admin_{_random_string(32)}"}, "application/json", 200
     
@@ -507,6 +793,16 @@ def get_trap_response(path: str, method: str = "GET") -> tuple[str | dict, str, 
     elif trap_type == TrapType.DEBUG_INFO:
         if "phpinfo" in path or "info.php" in path:
             return "<html><body><h1>PHP Version 8.2.0</h1><p>HONEYPOT</p></body></html>", "text/html", 200
+        elif "cdn-cgi/trace" in path:
+            return _fake_cloudflare_trace(), "text/plain", 200
+        elif "cdn-cgi/rum" in path:
+            return {"beacon": "ok", "timing": random.randint(100, 500)}, "application/json", 200
+        elif "cdn-cgi/challenge" in path:
+            return "<html><body>Challenge required</body></html>", "text/html", 403
+        elif "actuator/health" in path:
+            return _fake_spring_actuator_health(), "application/json", 200
+        elif "actuator/env" in path:
+            return _fake_spring_actuator_env(), "application/json", 200
         elif "status" in path:
             return _fake_debug_info(), "application/json", 200
         else:

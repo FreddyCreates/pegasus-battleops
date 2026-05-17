@@ -8,6 +8,7 @@ This module transforms the domain into a live-fire AI battleground with:
 - Cloudflare integration for threat intelligence
 - Real-time defense dashboard
 - Adaptive learning from attack patterns
+- Organism Charter classification and routing
 
 Glyphs:
   ⛨ Defensor  — active defense
@@ -26,9 +27,29 @@ from .schemas import (
     ThreatIntelligence,
     AdaptiveResponse,
     DefenseMetrics,
+    RequestEnvelope,
+    RouteDestination,
+    AISourceType,
+    DecryptionResult,
+    RepairResult,
+    GatekeeperDecision,
+    AdversaryDissection,
+)
+
+from .organism_charter import (
+    ClassificationTier,
+    EntityRole,
+    OrganismClassifier,
+    SpecimenProfile,
+    SpecimenProfiler,
+    get_organism_stats,
+    KNOWN_ATTACKER_IPS,
+    WORDPRESS_PROBE_PATHS,
+    EXPLOIT_PROBE_PATHS,
 )
 
 __all__ = [
+    # Schemas
     "ThreatLevel",
     "BotClassification",
     "ThreatRecord",
@@ -37,4 +58,21 @@ __all__ = [
     "ThreatIntelligence",
     "AdaptiveResponse",
     "DefenseMetrics",
+    "RequestEnvelope",
+    "RouteDestination",
+    "AISourceType",
+    "DecryptionResult",
+    "RepairResult",
+    "GatekeeperDecision",
+    "AdversaryDissection",
+    # Organism Charter
+    "ClassificationTier",
+    "EntityRole",
+    "OrganismClassifier",
+    "SpecimenProfile",
+    "SpecimenProfiler",
+    "get_organism_stats",
+    "KNOWN_ATTACKER_IPS",
+    "WORDPRESS_PROBE_PATHS",
+    "EXPLOIT_PROBE_PATHS",
 ]

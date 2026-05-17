@@ -4,6 +4,7 @@
   "description": "Cloudflare Worker for Spatium Computationis AI Defense System ⛨",
   "main": "src/index.ts",
   "scripts": {
+    "build": "wrangler deploy --dry-run --outdir dist",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "deploy:staging": "wrangler deploy --env staging",
