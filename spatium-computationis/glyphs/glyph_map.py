@@ -135,6 +135,39 @@ GLYPH_MAP: dict[str, dict] = {
         "meaning": "deceptive trap",
         "agent": "defensor_campi",
     },
+    # ---------------------------------------------------------------------------
+    # Shadow Operations — Traffic Processing & Routing
+    # ---------------------------------------------------------------------------
+    "👁️": {
+        "name": "Umbra",
+        "region": "shadow",
+        "meaning": "shadow decryption / error healing",
+        "agent": "shadow_decryptor",
+    },
+    "🚪": {
+        "name": "Porta",
+        "region": "gate",
+        "meaning": "gatekeeper routing decision",
+        "agent": "gatekeeper_porta",
+    },
+    "🔬": {
+        "name": "Laboratorium",
+        "region": "adversary",
+        "meaning": "adversary dissection",
+        "agent": "adversary_lab",
+    },
+    "📚": {
+        "name": "Cognitio",
+        "region": "research",
+        "meaning": "knowledge collaboration",
+        "agent": "research_realm",
+    },
+    "⭐": {
+        "name": "VIP",
+        "region": "gate",
+        "meaning": "VIP AI visitor",
+        "agent": "gatekeeper_porta",
+    },
 }
 
 # Region → primary glyph
@@ -148,6 +181,10 @@ REGION_GLYPHS: dict[str, str] = {
     "memory": "◉",
     "core": "⌬",
     "defense": "⛨",
+    "shadow": "👁️",
+    "gate": "🚪",
+    "adversary": "🔬",
+    "research": "📚",
 }
 
 # Agent → canonical glyph
@@ -163,6 +200,12 @@ AGENT_GLYPHS: dict[str, str] = {
     "defensor_campi": "⛨",
     "vigil_operis": "◎",
     "adaptio_mentis": "⟲",
+    # Shadow operations agents
+    "shadow_decryptor": "👁️",
+    "error_eyes": "👁️",
+    "gatekeeper_porta": "🚪",
+    "adversary_lab": "🔬",
+    "research_realm": "📚",
 }
 
 

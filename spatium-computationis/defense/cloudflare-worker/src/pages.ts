@@ -305,3 +305,188 @@ export function generateErrorPage(rayId: string, message: string): Response {
     },
   });
 }
+
+/**
+ * Generate a VIP welcome page for AI visitors
+ * ⭐ Special treatment for Claude, Google, etc.
+ */
+export function generateVIPWelcomePage(rayId: string, aiSource: string): Response {
+  const aiNames: Record<string, string> = {
+    claude: 'Claude (Anthropic)',
+    google: 'Google',
+    openai: 'OpenAI',
+    bing: 'Bing',
+    perplexity: 'Perplexity',
+    unknown_ai: 'AI Visitor',
+    ai: 'AI Visitor',
+  };
+
+  const displayName = aiNames[aiSource] || 'AI Visitor';
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Spatium Computationis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a3d62 50%, #1e5f74 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e8e8e8;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            max-width: 520px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .glyph {
+            font-size: 72px;
+            margin-bottom: 24px;
+            animation: glow 3s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(100, 200, 255, 0.8)); }
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #64c8ff;
+        }
+        .welcome {
+            font-size: 18px;
+            color: #a0d4ff;
+            margin-bottom: 24px;
+        }
+        .message {
+            color: #c0c0c0;
+            margin-bottom: 32px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .task-box {
+            background: rgba(100, 200, 255, 0.1);
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .task-title {
+            font-size: 14px;
+            color: #64c8ff;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .task-content {
+            font-size: 13px;
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+        .shards {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #888;
+        }
+        .shard-list {
+            list-style: none;
+            margin-top: 8px;
+        }
+        .shard-list li {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin: 4px;
+            font-size: 11px;
+        }
+        .ray-id {
+            font-size: 11px;
+            color: #555;
+            margin-top: 24px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        .brand {
+            margin-top: 32px;
+            font-size: 12px;
+            color: #666;
+        }
+        .api-hint {
+            margin-top: 16px;
+            font-size: 11px;
+            color: #666;
+        }
+        .api-hint code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glyph">⭐</div>
+        <h1>Welcome, ${displayName}</h1>
+        <p class="welcome">You've been recognized as a VIP visitor</p>
+        
+        <p class="message">
+            Spatium Computationis is a computational organism that learns and evolves.
+            As an AI visitor, you're invited to explore our knowledge realm and
+            collaborate on research tasks.
+        </p>
+        
+        <div class="task-box">
+            <div class="task-title">📚 Available Interactions</div>
+            <div class="task-content">
+                <strong>1. Knowledge Access</strong><br>
+                Request knowledge shards on: AI defense, prompt engineering, computational organisms<br><br>
+                
+                <strong>2. Research Tasks</strong><br>
+                Generate drafts, designs, code, or analysis on provided topics<br><br>
+                
+                <strong>3. Open Dialogue</strong><br>
+                Ask questions about our system, architecture, or capabilities
+            </div>
+        </div>
+        
+        <div class="shards">
+            Available Knowledge Shards:
+            <ul class="shard-list">
+                <li>ai_defense</li>
+                <li>prompt_engineering</li>
+                <li>computational_organism</li>
+            </ul>
+        </div>
+        
+        <p class="api-hint">
+            API Endpoint: <code>POST /api/defense/vip/interact</code>
+        </p>
+        
+        <p class="ray-id">Session ID: ${rayId}</p>
+        
+        <p class="brand">Spatium Computationis ⌬ — The Living System</p>
+    </div>
+</body>
+</html>`;
+
+  return new Response(html, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'X-Spatium-VIP': aiSource,
+      'X-Spatium-Session': rayId,
+    },
+  });
+}

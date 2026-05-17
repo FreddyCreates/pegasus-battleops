@@ -1,6 +1,8 @@
 /**
  * Request Handlers for the Defense Worker
  * ⛨ Core defense logic at Cloudflare's edge
+ * 👁️ Shadow Decryption + Error Eyes integration
+ * 🚪 Gatekeeper routing
  */
 
 import {
@@ -8,11 +10,13 @@ import {
   WorkerEnv,
   DefenseDecision,
   CloudflareRequestCF,
+  RequestEnvelope,
   HONEYPOT_PATHS,
   SCANNER_SIGNATURES,
   VERIFIED_BOT_AGENTS,
+  AI_VISITOR_PATTERNS,
 } from './types';
-import { generateChallengePage, generateBlockPage } from './pages';
+import { generateChallengePage, generateBlockPage, generateVIPWelcomePage } from './pages';
 
 /**
  * Main request handler
@@ -31,11 +35,17 @@ export async function handleRequest(
   // Check if this is a honeypot path
   const isHoneypotPath = isHoneypotTarget(url.pathname);
 
+  // Detect AI visitors (VIP handling)
+  const aiSource = detectAIVisitor(threatContext.userAgent, threatContext.clientIP);
+
+  // Build request envelope for deeper processing
+  const envelope = await buildRequestEnvelope(request, cf, aiSource);
+
   // Make defense decision
-  const decision = makeDefenseDecision(threatContext, isHoneypotPath);
+  const decision = makeDefenseDecision(threatContext, isHoneypotPath, aiSource, envelope);
 
   // Send telemetry to Spatium API (non-blocking)
-  ctx.waitUntil(sendToSpatiumAPI(env, threatContext, decision));
+  ctx.waitUntil(sendToSpatiumAPI(env, envelope, decision));
 
   // Apply decision
   switch (decision.action) {
@@ -45,25 +55,195 @@ export async function handleRequest(
     case 'challenge':
       return generateChallengePage(threatContext.rayId);
 
+    case 'vip_gate':
+      // VIP AI visitors get special welcome
+      return generateVIPWelcomePage(threatContext.rayId, aiSource || 'ai');
+
     case 'honeypot':
     case 'engage':
       // Let request through to honeypot endpoints
       // Add headers to identify this as honeypot-routed traffic
-      const modifiedRequest = new Request(request, {
+      const honeypotRequest = new Request(request, {
         headers: new Headers([
           ...Array.from(request.headers.entries()),
           ['X-Spatium-Honeypot', 'true'],
           ['X-Spatium-Decision', decision.action],
+          ['X-Spatium-Route', decision.route || 'adversary_lab'],
           ['X-Spatium-Threat-Score', threatContext.threatScore.toString()],
           ['X-Spatium-Bot-Score', threatContext.botScore.toString()],
         ]),
       });
-      return fetch(modifiedRequest);
+      return fetch(honeypotRequest);
+
+    case 'shadow_decrypt':
+      // Route to shadow decryption endpoint
+      const shadowRequest = new Request(request, {
+        headers: new Headers([
+          ...Array.from(request.headers.entries()),
+          ['X-Spatium-Shadow', 'true'],
+          ['X-Spatium-Route', 'shadow_decrypt'],
+          ['X-Spatium-Envelope-Id', envelope.envelopeId],
+        ]),
+      });
+      return fetch(shadowRequest);
+
+    case 'error_repair':
+      // Route to error repair endpoint
+      const repairRequest = new Request(request, {
+        headers: new Headers([
+          ...Array.from(request.headers.entries()),
+          ['X-Spatium-Repair', 'true'],
+          ['X-Spatium-Route', 'error_repair'],
+          ['X-Spatium-Envelope-Id', envelope.envelopeId],
+        ]),
+      });
+      return fetch(repairRequest);
 
     case 'allow':
     default:
-      return fetch(request);
+      // Add envelope ID for tracking
+      const trackedRequest = new Request(request, {
+        headers: new Headers([
+          ...Array.from(request.headers.entries()),
+          ['X-Spatium-Envelope-Id', envelope.envelopeId],
+          ...(aiSource ? [['X-Spatium-AI-Source', aiSource]] : []),
+        ]),
+      });
+      return fetch(trackedRequest);
   }
+}
+
+/**
+ * Detect if visitor is a known AI
+ */
+function detectAIVisitor(userAgent: string | null, clientIP: string): string | null {
+  if (!userAgent) return null;
+  const uaLower = userAgent.toLowerCase();
+
+  for (const [aiName, patterns] of Object.entries(AI_VISITOR_PATTERNS)) {
+    // Check user agent patterns
+    if (patterns.userAgents.some((ua) => uaLower.includes(ua))) {
+      return aiName;
+    }
+    // Check IP prefixes
+    if (patterns.ipPrefixes.some((prefix) => clientIP.startsWith(prefix))) {
+      return aiName;
+    }
+  }
+
+  // Generic AI detection
+  const aiIndicators = ['ai', 'bot', 'assistant', 'llm', 'language-model'];
+  if (aiIndicators.some((ind) => uaLower.includes(ind))) {
+    return 'unknown_ai';
+  }
+
+  return null;
+}
+
+/**
+ * Build request envelope for deeper processing
+ */
+async function buildRequestEnvelope(
+  request: Request,
+  cf?: CloudflareRequestCF,
+  aiSource?: string | null
+): Promise<RequestEnvelope> {
+  const url = new URL(request.url);
+
+  // Parse query params
+  const rawQuery: Record<string, string> = {};
+  url.searchParams.forEach((value, key) => {
+    rawQuery[key] = value;
+  });
+
+  // Parse headers
+  const rawHeaders: Record<string, string> = {};
+  request.headers.forEach((value, key) => {
+    rawHeaders[key] = value;
+  });
+
+  // Get body if present
+  let rawBody: string | undefined;
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    try {
+      rawBody = await request.text();
+    } catch {
+      rawBody = undefined;
+    }
+  }
+
+  // Detect if content looks encrypted or malformed
+  const isEncrypted = rawBody ? isContentEncrypted(rawBody) : false;
+  const isMalformed = rawBody ? isContentMalformed(rawBody, rawHeaders['content-type']) : false;
+
+  return {
+    envelopeId: crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    sourceIp: request.headers.get('CF-Connecting-IP') || 'unknown',
+    rawMethod: request.method,
+    rawPath: url.pathname,
+    rawHeaders,
+    rawQuery,
+    rawBody,
+    cfRay: request.headers.get('CF-Ray') || undefined,
+    cfCountry: cf?.country,
+    cfAsn: cf?.asn,
+    cfAsnOrg: cf?.asOrganization,
+    cfThreatScore: cf?.threatScore,
+    cfBotScore: cf?.botManagement?.score,
+    cfVerifiedBot: cf?.botManagement?.verifiedBot ?? false,
+    cfTlsVersion: cf?.tlsVersion,
+    cfTlsCipher: cf?.tlsCipher,
+    isEncrypted,
+    isMalformed,
+    hasError: false,
+    aiSourceDetected: aiSource || undefined,
+  };
+}
+
+/**
+ * Check if content looks encrypted (high entropy)
+ */
+function isContentEncrypted(content: string): boolean {
+  if (!content || content.length < 20) return false;
+
+  // Check for base64-like patterns
+  const base64Pattern = /^[A-Za-z0-9+/=]+$/;
+  if (base64Pattern.test(content.trim())) {
+    return content.length > 100; // Long base64 might be encrypted
+  }
+
+  // Check for high entropy (lots of unique characters)
+  const uniqueChars = new Set(content).size;
+  const entropyRatio = uniqueChars / Math.min(content.length, 256);
+
+  return entropyRatio > 0.7; // High entropy suggests encryption
+}
+
+/**
+ * Check if content is malformed
+ */
+function isContentMalformed(content: string, contentType?: string): boolean {
+  if (!content) return false;
+
+  // Check JSON
+  if (contentType?.includes('json')) {
+    try {
+      JSON.parse(content);
+      return false;
+    } catch {
+      return true;
+    }
+  }
+
+  // Check for obviously broken content
+  const brokenPatterns = [
+    /^\s*[}\]]/,  // Starts with closing bracket
+    /[{[]\s*$/,   // Ends with opening bracket
+    /['"][^'"]*$/,  // Unclosed string
+  ];
+
+  return brokenPatterns.some((p) => p.test(content));
 }
 
 /**
@@ -122,14 +302,37 @@ function isKnownGoodBot(userAgent: string | null): boolean {
  */
 function makeDefenseDecision(
   ctx: ThreatContext,
-  isHoneypotPath: boolean
+  isHoneypotPath: boolean,
+  aiSource: string | null,
+  envelope: RequestEnvelope
 ): DefenseDecision {
+  // VIP AI visitors get special handling
+  if (aiSource && aiSource !== 'unknown_ai' && ctx.threatScore < 30) {
+    return {
+      action: 'vip_gate',
+      reason: `vip_ai_visitor:${aiSource}`,
+      confidence: 0.85,
+      route: 'vip_gate',
+    };
+  }
+
+  // Encrypted or malformed content → Shadow Decryption
+  if (envelope.isEncrypted || envelope.isMalformed) {
+    return {
+      action: 'shadow_decrypt',
+      reason: envelope.isEncrypted ? 'encrypted_content' : 'malformed_content',
+      confidence: 0.7,
+      route: 'quarantine',
+    };
+  }
+
   // Verified bots always pass
   if (ctx.verifiedBot || isKnownGoodBot(ctx.userAgent)) {
     return {
       action: 'allow',
       reason: 'verified_bot',
       confidence: 0.95,
+      route: 'knowledge_realm',
     };
   }
 
@@ -139,6 +342,7 @@ function makeDefenseDecision(
       action: isHoneypotPath ? 'engage' : 'challenge',
       reason: 'scanner_detected',
       confidence: 0.9,
+      route: 'adversary_lab',
     };
   }
 
@@ -148,6 +352,7 @@ function makeDefenseDecision(
       action: 'block',
       reason: 'critical_threat_score',
       confidence: 0.95,
+      route: 'drop',
     };
   }
 
@@ -157,6 +362,7 @@ function makeDefenseDecision(
       action: isHoneypotPath ? 'engage' : 'challenge',
       reason: 'high_threat_score',
       confidence: 0.85,
+      route: 'adversary_lab',
     };
   }
 
@@ -166,6 +372,7 @@ function makeDefenseDecision(
       action: 'engage',
       reason: 'suspicious_bot_honeypot_access',
       confidence: 0.8,
+      route: 'adversary_lab',
     };
   }
 
@@ -175,6 +382,7 @@ function makeDefenseDecision(
       action: 'challenge',
       reason: 'low_bot_score',
       confidence: 0.7,
+      route: 'quarantine',
     };
   }
 
@@ -184,6 +392,17 @@ function makeDefenseDecision(
       action: 'honeypot',
       reason: 'honeypot_path_access',
       confidence: 0.6,
+      route: 'adversary_lab',
+    };
+  }
+
+  // Unknown AI - route to knowledge realm but monitor
+  if (aiSource === 'unknown_ai') {
+    return {
+      action: 'allow',
+      reason: 'unknown_ai_visitor',
+      confidence: 0.6,
+      route: 'knowledge_realm',
     };
   }
 
@@ -193,6 +412,7 @@ function makeDefenseDecision(
       action: 'allow',
       reason: 'monitoring',
       confidence: 0.5,
+      route: 'quarantine',
     };
   }
 
@@ -201,6 +421,7 @@ function makeDefenseDecision(
     action: 'allow',
     reason: 'no_threat_indicators',
     confidence: 0.9,
+    route: 'knowledge_realm',
   };
 }
 
@@ -209,7 +430,7 @@ function makeDefenseDecision(
  */
 async function sendToSpatiumAPI(
   env: WorkerEnv,
-  ctx: ThreatContext,
+  envelope: RequestEnvelope,
   decision: DefenseDecision
 ): Promise<void> {
   const apiUrl = env.SPATIUM_API_URL;
@@ -220,17 +441,18 @@ async function sendToSpatiumAPI(
   }
 
   try {
-    await fetch(`${apiUrl}/defense/cloudflare/event`, {
+    await fetch(`${apiUrl}/defense/envelope`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         ...(apiSecret && { 'X-API-Secret': apiSecret }),
       },
       body: JSON.stringify({
-        ...ctx,
+        envelope,
         decision: decision.action,
         decisionReason: decision.reason,
         decisionConfidence: decision.confidence,
+        decisionRoute: decision.route,
       }),
     });
   } catch (error) {

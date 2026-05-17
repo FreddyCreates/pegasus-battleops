@@ -34,9 +34,10 @@ export interface ThreatContext {
 }
 
 export interface DefenseDecision {
-  action: 'allow' | 'challenge' | 'block' | 'honeypot' | 'engage';
+  action: 'allow' | 'challenge' | 'block' | 'honeypot' | 'engage' | 'vip_gate' | 'shadow_decrypt' | 'error_repair';
   reason: string;
   confidence: number;
+  route?: 'adversary_lab' | 'knowledge_realm' | 'vip_gate' | 'drop' | 'quarantine' | 'replay';
 }
 
 export interface CloudflareRequestCF {
@@ -51,7 +52,63 @@ export interface CloudflareRequestCF {
   country?: string;
   asn?: number;
   asOrganization?: string;
+  tlsVersion?: string;
+  tlsCipher?: string;
 }
+
+/**
+ * Request Envelope - Universal container sent to Spatium backend
+ */
+export interface RequestEnvelope {
+  envelopeId: string;
+  timestamp: string;
+  sourceIp: string;
+  sourceFingerprint?: string;
+  rawMethod: string;
+  rawPath: string;
+  rawHeaders: Record<string, string>;
+  rawQuery: Record<string, string>;
+  rawBody?: string;
+  cfRay?: string;
+  cfCountry?: string;
+  cfAsn?: number;
+  cfAsnOrg?: string;
+  cfThreatScore?: number;
+  cfBotScore?: number;
+  cfVerifiedBot: boolean;
+  cfTlsVersion?: string;
+  cfTlsCipher?: string;
+  isEncrypted: boolean;
+  isMalformed: boolean;
+  hasError: boolean;
+  errorType?: string;
+  errorCode?: number;
+  aiSourceDetected?: string;
+}
+
+// Known AI visitor patterns
+export const AI_VISITOR_PATTERNS: Record<string, { userAgents: string[]; ipPrefixes: string[] }> = {
+  claude: {
+    userAgents: ['claude', 'anthropic'],
+    ipPrefixes: ['35.'],
+  },
+  google: {
+    userAgents: ['googlebot', 'google', 'apis-google'],
+    ipPrefixes: ['66.249.', '64.233.', '72.14.'],
+  },
+  openai: {
+    userAgents: ['openai', 'gpt', 'chatgpt'],
+    ipPrefixes: ['20.', '52.'],
+  },
+  bing: {
+    userAgents: ['bingbot', 'msnbot', 'bing'],
+    ipPrefixes: ['157.55.', '207.46.', '40.77.'],
+  },
+  perplexity: {
+    userAgents: ['perplexity', 'pplx'],
+    ipPrefixes: [],
+  },
+};
 
 // Honeypot paths that attract attackers
 export const HONEYPOT_PATHS = [

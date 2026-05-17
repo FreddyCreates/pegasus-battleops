@@ -291,3 +291,382 @@ class ThreatFeedMessage(BaseModel):
     message_type: str  # "event", "metric", "alert", "update"
     data: dict[str, Any]
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# Request Envelope — Universal container for all incoming traffic
+# ---------------------------------------------------------------------------
+
+class RequestEnvelope(BaseModel):
+    """
+    Universal request envelope that wraps all incoming traffic.
+    🜏 The fundamental unit flowing through Shadow Decryption and Error Eyes.
+    """
+    envelope_id: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    
+    # Source fingerprint
+    source_ip: str
+    source_fingerprint: str | None = None
+    
+    # Raw request data
+    raw_method: str
+    raw_path: str
+    raw_headers: dict[str, str] = Field(default_factory=dict)
+    raw_query: dict[str, str] = Field(default_factory=dict)
+    raw_body: bytes | None = None
+    raw_body_text: str | None = None
+    
+    # Cloudflare metadata
+    cf_ray: str | None = None
+    cf_country: str | None = None
+    cf_asn: int | None = None
+    cf_asn_org: str | None = None
+    cf_threat_score: int | None = None
+    cf_bot_score: int | None = None
+    cf_verified_bot: bool = False
+    cf_tls_version: str | None = None
+    cf_tls_cipher: str | None = None
+    
+    # State flags
+    is_encrypted: bool = False
+    is_malformed: bool = False
+    has_error: bool = False
+    error_type: str | None = None
+    error_code: int | None = None
+    
+    # Processing state
+    decryption_attempted: bool = False
+    repair_attempted: bool = False
+    ai_source_detected: str | None = None  # "claude", "google", "openai", etc.
+    
+    # Routing decision
+    route_decision: str | None = None  # "lab", "realm", "drop", "vip"
+    route_reason: str | None = None
+
+
+class AISourceType(str, Enum):
+    """Known AI/Bot source types for VIP handling."""
+    CLAUDE = "claude"
+    GOOGLE = "google"
+    OPENAI = "openai"
+    ANTHROPIC = "anthropic"
+    BING = "bing"
+    PERPLEXITY = "perplexity"
+    HUGGINGFACE = "huggingface"
+    COHERE = "cohere"
+    UNKNOWN_AI = "unknown_ai"
+    HUMAN = "human"
+    BOT = "bot"
+
+
+class RouteDestination(str, Enum):
+    """Where traffic gets routed after processing."""
+    ADVERSARY_LAB = "adversary_lab"    # Dissect hostile/noisy agents
+    KNOWLEDGE_REALM = "knowledge_realm"  # Cooperative agents work here
+    VIP_GATE = "vip_gate"              # Special handling for AI visitors
+    DROP = "drop"                       # Discard junk
+    QUARANTINE = "quarantine"           # Hold for analysis
+    REPLAY = "replay"                   # Repaired request, try again
+
+
+# ---------------------------------------------------------------------------
+# Shadow Decryption — Decode encrypted/weird traffic
+# ---------------------------------------------------------------------------
+
+class DecryptionResult(BaseModel):
+    """
+    Result of Shadow Decryption attempt.
+    👁️ Shadow Decryptors try to decode encrypted/malformed traffic.
+    """
+    result_id: str
+    envelope_id: str
+    
+    # Decryption outcome
+    success: bool = False
+    partial: bool = False  # Partially decoded
+    confidence: float = Field(ge=0.0, le=1.0, default=0.0)
+    
+    # Decoded data
+    decoded_payload: str | None = None
+    decoded_headers: dict[str, str] = Field(default_factory=dict)
+    decoded_method: str | None = None
+    decoded_path: str | None = None
+    
+    # Protocol detection
+    detected_protocol: str | None = None  # "http", "websocket", "grpc", etc.
+    protocol_confidence: float = Field(ge=0.0, le=1.0, default=0.0)
+    
+    # Entropy analysis
+    entropy_score: float = Field(ge=0.0, le=1.0, default=0.5)
+    entropy_profile: str | None = None  # "random", "compressed", "encrypted", "text"
+    
+    # Pattern extraction
+    extracted_patterns: list[str] = Field(default_factory=list)
+    extracted_snippets: list[str] = Field(default_factory=list)
+    
+    # Signal score (how interesting is this?)
+    signal_score: float = Field(ge=0.0, le=1.0, default=0.0)
+    signal_reason: str | None = None
+    
+    # Metadata
+    processing_time_ms: float = 0.0
+    techniques_tried: list[str] = Field(default_factory=list)
+    processed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# Error Eyes — Repair and learn from errors
+# ---------------------------------------------------------------------------
+
+class ErrorType(str, Enum):
+    """Types of errors the Error Eyes handle."""
+    HTTP_4XX = "http_4xx"
+    HTTP_5XX = "http_5xx"
+    PARSE_ERROR = "parse_error"
+    SCHEMA_MISMATCH = "schema_mismatch"
+    METHOD_NOT_ALLOWED = "method_not_allowed"
+    PATH_NOT_FOUND = "path_not_found"
+    MALFORMED_JSON = "malformed_json"
+    MISSING_FIELDS = "missing_fields"
+    INVALID_HEADERS = "invalid_headers"
+    TIMEOUT = "timeout"
+    CONNECTION_ERROR = "connection_error"
+    TLS_ERROR = "tls_error"
+    UNKNOWN = "unknown"
+
+
+class RepairResult(BaseModel):
+    """
+    Result of Error Eyes repair attempt.
+    👁️ Error Eyes try to fix and replay broken requests.
+    """
+    result_id: str
+    envelope_id: str
+    
+    # Original error
+    error_type: ErrorType
+    error_code: int | None = None
+    error_message: str | None = None
+    
+    # Repair outcome
+    repair_success: bool = False
+    repair_confidence: float = Field(ge=0.0, le=1.0, default=0.0)
+    
+    # Repaired request
+    repaired_method: str | None = None
+    repaired_path: str | None = None
+    repaired_headers: dict[str, str] = Field(default_factory=dict)
+    repaired_body: str | None = None
+    
+    # What was fixed
+    fixes_applied: list[str] = Field(default_factory=list)
+    # e.g., ["added_content_type", "fixed_json_syntax", "corrected_path"]
+    
+    # Learning
+    error_pattern: str | None = None  # Pattern name for this error type
+    source_dialect: str | None = None  # "claude_style", "scanner_style", etc.
+    
+    # Replay status
+    replay_attempted: bool = False
+    replay_success: bool = False
+    replay_response_code: int | None = None
+    
+    # Metadata
+    processing_time_ms: float = 0.0
+    processed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class ErrorDialect(BaseModel):
+    """
+    Learned error patterns from specific sources.
+    👁️ Error Eyes build dialects over time.
+    """
+    dialect_id: str
+    source_type: str  # "claude", "google", "scanner", "crawler"
+    
+    # Common error patterns
+    common_errors: list[ErrorType] = Field(default_factory=list)
+    error_frequencies: dict[str, int] = Field(default_factory=dict)
+    
+    # Auto-correction rules
+    correction_rules: list[dict[str, Any]] = Field(default_factory=list)
+    # e.g., [{"pattern": "missing Content-Type", "fix": "add application/json"}]
+    
+    # Statistics
+    total_errors_seen: int = 0
+    successful_repairs: int = 0
+    repair_success_rate: float = 0.0
+    
+    # Metadata
+    first_observed: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    last_updated: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# VIP AI Handling — Special treatment for known AI visitors
+# ---------------------------------------------------------------------------
+
+class AIVisitorProfile(BaseModel):
+    """
+    Profile of a known AI visitor (Claude, Google, etc.).
+    ⭐ VIP specimens get special treatment.
+    """
+    profile_id: str
+    ai_source: AISourceType
+    
+    # Identification markers
+    ip_ranges: list[str] = Field(default_factory=list)
+    user_agent_patterns: list[str] = Field(default_factory=list)
+    tls_fingerprints: list[str] = Field(default_factory=list)
+    request_patterns: list[str] = Field(default_factory=list)
+    
+    # Behavioral characteristics
+    typical_paths: list[str] = Field(default_factory=list)
+    typical_methods: list[str] = Field(default_factory=list)
+    typical_headers: dict[str, str] = Field(default_factory=dict)
+    
+    # Statistics
+    total_visits: int = 0
+    successful_interactions: int = 0
+    failed_interactions: int = 0
+    
+    # Last known state
+    last_seen: datetime | None = None
+    last_interaction_summary: str | None = None
+
+
+class AISpecimenLog(BaseModel):
+    """
+    Log of an AI visitor interaction.
+    ⭐ Gold data for understanding AI behavior.
+    """
+    log_id: str
+    envelope_id: str
+    ai_source: AISourceType
+    
+    # Request details
+    request_path: str
+    request_method: str
+    request_headers: dict[str, str] = Field(default_factory=dict)
+    request_body: str | None = None
+    
+    # What we served them
+    response_code: int
+    response_type: str  # "question", "task", "knowledge_shard", "challenge"
+    response_content: str | None = None
+    
+    # Their behavior
+    response_time_ms: float = 0.0
+    follow_up_requests: int = 0
+    
+    # Analysis
+    prompt_detected: str | None = None  # If we detected what prompt they're following
+    behavior_notes: str | None = None
+    
+    # Metadata
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# Gatekeeper — Route decisions
+# ---------------------------------------------------------------------------
+
+class GatekeeperDecision(BaseModel):
+    """
+    Decision made by the Gatekeeper agent.
+    🚪 Determines where traffic goes after processing.
+    """
+    decision_id: str
+    envelope_id: str
+    
+    # Input signals
+    decryption_result_id: str | None = None
+    repair_result_id: str | None = None
+    fingerprint_id: str | None = None
+    
+    # Decision
+    route: RouteDestination
+    reason: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    
+    # Scores used in decision
+    threat_score: float = Field(ge=0.0, le=1.0, default=0.0)
+    signal_score: float = Field(ge=0.0, le=1.0, default=0.0)
+    cooperation_score: float = Field(ge=0.0, le=1.0, default=0.5)
+    
+    # Special handling flags
+    is_vip: bool = False
+    requires_interrogation: bool = False
+    requires_challenge: bool = False
+    
+    # Metadata
+    decided_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# Adversary Lab — Dissection results
+# ---------------------------------------------------------------------------
+
+class AdversaryDissection(BaseModel):
+    """
+    Results of dissecting a hostile/noisy agent in the Adversary Lab.
+    🔬 Extract intelligence from attackers.
+    """
+    dissection_id: str
+    envelope_id: str
+    fingerprint_id: str | None = None
+    
+    # What we found
+    jailbreak_attempts: list[str] = Field(default_factory=list)
+    exploit_patterns: list[str] = Field(default_factory=list)
+    payload_signatures: list[str] = Field(default_factory=list)
+    
+    # Tool identification
+    tools_detected: list[str] = Field(default_factory=list)
+    tool_versions: dict[str, str] = Field(default_factory=dict)
+    
+    # Provider analysis
+    likely_provider: str | None = None  # hosting provider, botnet, etc.
+    provider_confidence: float = Field(ge=0.0, le=1.0, default=0.0)
+    
+    # Campaign detection
+    campaign_indicators: list[str] = Field(default_factory=list)
+    related_fingerprints: list[str] = Field(default_factory=list)
+    
+    # Counter-intelligence
+    probe_results: dict[str, Any] = Field(default_factory=dict)
+    # Results of probing back at the attacker
+    
+    # Metadata
+    dissected_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# ---------------------------------------------------------------------------
+# Knowledge Realm — Research outputs
+# ---------------------------------------------------------------------------
+
+class ResearchArtifact(BaseModel):
+    """
+    Output from cooperative AI agents in the Knowledge Realm.
+    📚 Monetizable research outputs.
+    """
+    artifact_id: str
+    ai_source: AISourceType
+    envelope_id: str
+    
+    # What they produced
+    artifact_type: str  # "draft", "design", "code", "analysis", "research"
+    title: str
+    content: str
+    
+    # Quality assessment
+    quality_score: float = Field(ge=0.0, le=1.0, default=0.5)
+    completeness: float = Field(ge=0.0, le=1.0, default=0.5)
+    originality: float = Field(ge=0.0, le=1.0, default=0.5)
+    
+    # Knowledge shards used
+    shards_accessed: list[str] = Field(default_factory=list)
+    
+    # Metadata
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
