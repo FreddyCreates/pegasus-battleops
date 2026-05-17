@@ -1,0 +1,10 @@
+SPATIUM COMPUTATIONIS
+{{ doc_type | upper }}
+{% if project_id %}Project: {{ project_id }}{% endif %}
+Generated: {{ generated_at }}
+═══════════════════════════════════════════════════════════
+
+{{ content_text }}
+
+═══════════════════════════════════════════════════════════
+⌬ Spatium Computationis — compressed project intelligence
