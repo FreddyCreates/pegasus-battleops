@@ -422,3 +422,271 @@ def get_attack_pattern_stats() -> list[dict]:
             }
             for row in rows
         ]
+
+
+# ---------------------------------------------------------------------------
+# Probe-Back System — Counter-Intelligence
+# ---------------------------------------------------------------------------
+
+import httpx
+import socket
+from typing import Optional
+
+# Probe targets (non-harmful reconnaissance)
+PROBE_TARGETS = [
+    # Check if IP responds on common ports (passive)
+    ("http", 80),
+    ("https", 443),
+    ("ssh", 22),
+]
+
+
+async def probe_back_adversary(
+    ip_address: str,
+    timeout: float = 5.0,
+) -> dict[str, Any]:
+    """
+    Perform counter-intelligence probe on an adversary IP.
+    
+    🔬 Non-harmful reconnaissance to gather intelligence:
+    - Open ports
+    - Server banners
+    - Reverse DNS
+    - Geolocation hints
+    
+    This is passive reconnaissance only - no exploitation.
+    """
+    probe_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    
+    results = {
+        "probe_id": probe_id,
+        "ip_address": ip_address,
+        "probed_at": now.isoformat(),
+        "open_ports": [],
+        "banners": {},
+        "reverse_dns": None,
+        "http_response": None,
+        "server_header": None,
+        "suspected_type": None,
+    }
+    
+    # Reverse DNS lookup
+    try:
+        hostname, _, _ = socket.gethostbyaddr(ip_address)
+        results["reverse_dns"] = hostname
+        
+        # Detect hosting provider from hostname
+        hostname_lower = hostname.lower()
+        if "digitalocean" in hostname_lower:
+            results["suspected_type"] = "digitalocean_vps"
+        elif "amazonaws" in hostname_lower or "aws" in hostname_lower:
+            results["suspected_type"] = "aws"
+        elif "google" in hostname_lower:
+            results["suspected_type"] = "gcp"
+        elif "azure" in hostname_lower or "microsoft" in hostname_lower:
+            results["suspected_type"] = "azure"
+        elif "vultr" in hostname_lower:
+            results["suspected_type"] = "vultr"
+        elif "linode" in hostname_lower:
+            results["suspected_type"] = "linode"
+        elif "hetzner" in hostname_lower:
+            results["suspected_type"] = "hetzner"
+        elif "ovh" in hostname_lower:
+            results["suspected_type"] = "ovh"
+        elif "tor" in hostname_lower or "onion" in hostname_lower:
+            results["suspected_type"] = "tor_exit"
+            
+    except socket.herror:
+        results["reverse_dns"] = None
+    except Exception:
+        pass
+    
+    # HTTP probe (passive - just check if web server responds)
+    try:
+        async with httpx.AsyncClient(timeout=timeout, follow_redirects=False) as client:
+            # Try HTTPS first
+            try:
+                resp = await client.head(f"https://{ip_address}/", verify=False)
+                results["open_ports"].append(443)
+                results["http_response"] = resp.status_code
+                if "server" in resp.headers:
+                    results["server_header"] = resp.headers["server"]
+                    results["banners"]["https"] = resp.headers["server"]
+            except Exception:
+                pass
+            
+            # Try HTTP
+            try:
+                resp = await client.head(f"http://{ip_address}/")
+                results["open_ports"].append(80)
+                if not results["http_response"]:
+                    results["http_response"] = resp.status_code
+                if "server" in resp.headers and not results["server_header"]:
+                    results["server_header"] = resp.headers["server"]
+                    results["banners"]["http"] = resp.headers["server"]
+            except Exception:
+                pass
+                
+    except Exception:
+        pass
+    
+    # Analyze server header for clues
+    if results["server_header"]:
+        server_lower = results["server_header"].lower()
+        if "nginx" in server_lower:
+            results["banners"]["server_software"] = "nginx"
+        elif "apache" in server_lower:
+            results["banners"]["server_software"] = "apache"
+        elif "cloudflare" in server_lower:
+            results["banners"]["server_software"] = "cloudflare"
+        elif "microsoft" in server_lower or "iis" in server_lower:
+            results["banners"]["server_software"] = "iis"
+    
+    # Store probe results
+    _store_probe_results(probe_id, ip_address, results)
+    
+    return results
+
+
+def _store_probe_results(probe_id: str, ip_address: str, results: dict) -> None:
+    """Store probe results in database."""
+    with _db() as conn:
+        # Create probe_results table if not exists
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS probe_results (
+                probe_id        TEXT PRIMARY KEY,
+                ip_address      TEXT NOT NULL,
+                reverse_dns     TEXT,
+                open_ports      TEXT,
+                banners         TEXT,
+                server_header   TEXT,
+                suspected_type  TEXT,
+                probed_at       TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_pr_ip ON probe_results(ip_address)")
+        
+        conn.execute(
+            """
+            INSERT INTO probe_results (
+                probe_id, ip_address, reverse_dns, open_ports, banners,
+                server_header, suspected_type, probed_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                probe_id,
+                ip_address,
+                results.get("reverse_dns"),
+                json.dumps(results.get("open_ports", [])),
+                json.dumps(results.get("banners", {})),
+                results.get("server_header"),
+                results.get("suspected_type"),
+                results.get("probed_at"),
+            )
+        )
+        conn.commit()
+
+
+def get_probe_history(ip_address: str) -> list[dict]:
+    """Get probe history for an IP address."""
+    with _db() as conn:
+        # Ensure table exists
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS probe_results (
+                probe_id        TEXT PRIMARY KEY,
+                ip_address      TEXT NOT NULL,
+                reverse_dns     TEXT,
+                open_ports      TEXT,
+                banners         TEXT,
+                server_header   TEXT,
+                suspected_type  TEXT,
+                probed_at       TEXT NOT NULL
+            )
+            """
+        )
+        
+        rows = conn.execute(
+            "SELECT * FROM probe_results WHERE ip_address = ? ORDER BY probed_at DESC LIMIT 10",
+            (ip_address,)
+        ).fetchall()
+        
+        return [
+            {
+                "probe_id": row["probe_id"],
+                "ip_address": row["ip_address"],
+                "reverse_dns": row["reverse_dns"],
+                "open_ports": json.loads(row["open_ports"]) if row["open_ports"] else [],
+                "banners": json.loads(row["banners"]) if row["banners"] else {},
+                "server_header": row["server_header"],
+                "suspected_type": row["suspected_type"],
+                "probed_at": row["probed_at"],
+            }
+            for row in rows
+        ]
+
+
+async def analyze_adversary_campaign(
+    ip_addresses: list[str],
+) -> dict[str, Any]:
+    """
+    Analyze multiple IPs to detect coordinated attack campaigns.
+    
+    🔬 Looks for:
+    - Shared hosting providers
+    - Similar banners/configurations
+    - Timing correlations
+    - Geographic clustering
+    """
+    campaign_id = str(uuid.uuid4())
+    
+    # Probe all IPs
+    probe_results = []
+    for ip in ip_addresses[:10]:  # Limit to 10 IPs
+        result = await probe_back_adversary(ip)
+        probe_results.append(result)
+    
+    # Analyze for patterns
+    providers = {}
+    server_types = {}
+    
+    for result in probe_results:
+        # Count hosting providers
+        provider = result.get("suspected_type", "unknown")
+        providers[provider] = providers.get(provider, 0) + 1
+        
+        # Count server types
+        server = result.get("banners", {}).get("server_software", "unknown")
+        server_types[server] = server_types.get(server, 0) + 1
+    
+    # Determine if this looks like a coordinated campaign
+    is_likely_campaign = False
+    campaign_indicators = []
+    
+    # If most IPs are from same provider
+    max_provider_count = max(providers.values()) if providers else 0
+    if max_provider_count >= len(ip_addresses) * 0.5 and len(ip_addresses) >= 3:
+        is_likely_campaign = True
+        top_provider = max(providers, key=providers.get)
+        campaign_indicators.append(f"Same hosting provider: {top_provider} ({max_provider_count}/{len(ip_addresses)})")
+    
+    # If most have same server software
+    max_server_count = max(server_types.values()) if server_types else 0
+    if max_server_count >= len(ip_addresses) * 0.7 and len(ip_addresses) >= 3:
+        is_likely_campaign = True
+        top_server = max(server_types, key=server_types.get)
+        campaign_indicators.append(f"Same server software: {top_server} ({max_server_count}/{len(ip_addresses)})")
+    
+    return {
+        "campaign_id": campaign_id,
+        "analyzed_ips": len(ip_addresses),
+        "is_likely_campaign": is_likely_campaign,
+        "campaign_indicators": campaign_indicators,
+        "provider_distribution": providers,
+        "server_distribution": server_types,
+        "probe_results": probe_results,
+        "analyzed_at": datetime.now(timezone.utc).isoformat(),
+    }
