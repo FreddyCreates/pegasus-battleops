@@ -102,6 +102,72 @@ GLYPH_MAP: dict[str, dict] = {
         "meaning": "designer intent converted into install instructions",
         "agent": "interpres_designii",
     },
+    # ---------------------------------------------------------------------------
+    # Defense Glyphs — AI Battleground Infrastructure
+    # ---------------------------------------------------------------------------
+    "⛨": {
+        "name": "Defensor",
+        "region": "defense",
+        "meaning": "active defense",
+        "agent": "defensor_campi",
+    },
+    "◎": {
+        "name": "Vigil",
+        "region": "defense",
+        "meaning": "constant monitoring",
+        "agent": "vigil_operis",
+    },
+    "⟲": {
+        "name": "Adaptio",
+        "region": "defense",
+        "meaning": "adaptive response",
+        "agent": "adaptio_mentis",
+    },
+    "⚠": {
+        "name": "Minacium",
+        "region": "defense",
+        "meaning": "threat detection",
+        "agent": "vigil_operis",
+    },
+    "🜏": {
+        "name": "Deceptio",
+        "region": "defense",
+        "meaning": "deceptive trap",
+        "agent": "defensor_campi",
+    },
+    # ---------------------------------------------------------------------------
+    # Shadow Operations — Traffic Processing & Routing
+    # ---------------------------------------------------------------------------
+    "👁️": {
+        "name": "Umbra",
+        "region": "shadow",
+        "meaning": "shadow decryption / error healing",
+        "agent": "shadow_decryptor",
+    },
+    "🚪": {
+        "name": "Porta",
+        "region": "gate",
+        "meaning": "gatekeeper routing decision",
+        "agent": "gatekeeper_porta",
+    },
+    "🔬": {
+        "name": "Laboratorium",
+        "region": "adversary",
+        "meaning": "adversary dissection",
+        "agent": "adversary_lab",
+    },
+    "📚": {
+        "name": "Cognitio",
+        "region": "research",
+        "meaning": "knowledge collaboration",
+        "agent": "research_realm",
+    },
+    "⭐": {
+        "name": "VIP",
+        "region": "gate",
+        "meaning": "VIP AI visitor",
+        "agent": "gatekeeper_porta",
+    },
 }
 
 # Region → primary glyph
@@ -114,6 +180,11 @@ REGION_GLYPHS: dict[str, str] = {
     "regio_contractus": "⇄",
     "memory": "◉",
     "core": "⌬",
+    "defense": "⛨",
+    "shadow": "👁️",
+    "gate": "🚪",
+    "adversary": "🔬",
+    "research": "📚",
 }
 
 # Agent → canonical glyph
@@ -125,6 +196,16 @@ AGENT_GLYPHS: dict[str, str] = {
     "scriptor_documentorum": "▣✎",
     "interpres_designii": "✦⇄⚒",
     "custos_memoriae": "◉",
+    # Defense agents
+    "defensor_campi": "⛨",
+    "vigil_operis": "◎",
+    "adaptio_mentis": "⟲",
+    # Shadow operations agents
+    "shadow_decryptor": "👁️",
+    "error_eyes": "👁️",
+    "gatekeeper_porta": "🚪",
+    "adversary_lab": "🔬",
+    "research_realm": "📚",
 }
 
 

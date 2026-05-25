@@ -1,0 +1,42 @@
+# Spatium Computationis Defense Worker
+# ⛨ Cloudflare Worker for AI Defense System
+
+name = "spatium-defense-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Development settings
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Environment variables (set via wrangler secret or dashboard)
+[vars]
+ENVIRONMENT = "production"
+
+# Routes - adjust to your domain
+# [[routes]]
+# pattern = "your-domain.com/*"
+# zone_name = "your-domain.com"
+
+# Triggers for scheduled tasks (optional)
+# [triggers]
+# crons = ["*/5 * * * *"]  # Every 5 minutes
+
+# Durable Objects for state (optional, requires paid plan)
+# [[durable_objects.bindings]]
+# name = "THREAT_STATE"
+# class_name = "ThreatState"
+
+# KV Namespaces for caching threat data
+# [[kv_namespaces]]
+# binding = "THREAT_CACHE"
+# id = "your-kv-namespace-id"
+
+# Analytics Engine (for threat metrics)
+# [[analytics_engine_datasets]]
+# binding = "THREAT_ANALYTICS"
+
+# Secrets (configure via `wrangler secret put`)
+# - SPATIUM_API_SECRET: Secret for authenticating with Spatium API
+# - WEBHOOK_SECRET: Secret for webhook verification

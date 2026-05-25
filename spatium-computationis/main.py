@@ -1,14 +1,15 @@
 """
 Spatium Computationis — FastAPI entrypoint
 ⌬ The activated computing space.
+⛨ With integrated AI defense system.
 
 Start with:
-  uvicorn spatium-computationis.main:app --reload
+  uvicorn spatium_computationis.main:app --reload
 """
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, WebSocket
 from pydantic import BaseModel
 
 from .schemas import (
@@ -17,14 +18,29 @@ from .schemas import (
     RawInput,
 )
 
+# Import defense components
+from .defense.honeypot.routes import honeypot_router
+from .defense.dashboard.api import dashboard_router
+from .defense.dashboard.websocket import defense_websocket_endpoint
+
 app = FastAPI(
     title="Spatium Computationis ⌬",
     description=(
         "The activated computing ecosystem for furniture, interiors, "
-        "and field installation projects. ⌬ = compressed project intelligence."
+        "and field installation projects. ⌬ = compressed project intelligence.\n\n"
+        "**Defense System (⛨)**\n"
+        "Integrated AI battleground with honeypots, bot fingerprinting, "
+        "Cloudflare integration, and adaptive threat response."
     ),
-    version="0.1.0",
+    version="0.2.0",
 )
+
+# ---------------------------------------------------------------------------
+# Include Defense Routers
+# ---------------------------------------------------------------------------
+
+app.include_router(honeypot_router)
+app.include_router(dashboard_router, prefix="/api")
 
 
 # ---------------------------------------------------------------------------
@@ -160,3 +176,80 @@ async def install_packet(raw: RawInput):
     intel_obj = await compressio.compress(project_input)
     packet = await run(intel_obj)
     return packet
+
+
+# ---------------------------------------------------------------------------
+# Defense System Endpoints
+# ---------------------------------------------------------------------------
+
+@app.websocket("/ws/defense")
+async def defense_feed(websocket: WebSocket):
+    """
+    WebSocket endpoint for real-time defense feed.
+    
+    ◎ Stream live threat events, honeypot triggers, and metrics.
+    
+    Commands:
+    - {"type": "get_metrics", "window_minutes": 5}
+    - {"type": "get_threats", "min_level": "low"}
+    - {"type": "get_events", "limit": 50}
+    - {"type": "get_genome", "limit": 20}
+    """
+    await defense_websocket_endpoint(websocket)
+
+
+@app.post("/api/defense/cloudflare/event", tags=["defense"])
+async def cloudflare_event(event: dict):
+    """
+    Webhook endpoint for Cloudflare Worker events.
+    
+    ⛨ Receives threat intelligence from the edge.
+    """
+    from .defense.threat_intel.cloudflare import CloudflareWebhook, process_cloudflare_event
+    from .defense.honeypot.collector import FingerprintCollector
+    
+    try:
+        # Parse Cloudflare event
+        cf_event = CloudflareWebhook(**event)
+        intel = process_cloudflare_event(cf_event)
+        
+        # Collect fingerprint
+        FingerprintCollector.collect(
+            ip_address=intel.ip_address,
+            path=event.get("path", "/"),
+            method=event.get("method", "GET"),
+            status_code=200,
+            user_agent=event.get("userAgent"),
+        )
+        
+        return {
+            "status": "received",
+            "intel_id": intel.intel_id,
+            "threat_level": intel.threat_level.value,
+            "recommended_action": intel.recommended_action.value,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/api/defense/cloudflare/rules", tags=["defense"])
+async def get_cloudflare_rules():
+    """
+    Get Cloudflare rules template for integration.
+    
+    ⛨ Returns configuration for Cloudflare firewall rules.
+    """
+    from .defense.threat_intel.cloudflare import create_cloudflare_rules_template
+    return create_cloudflare_rules_template()
+
+
+@app.get("/api/defense/cloudflare/worker", tags=["defense"])
+async def get_cloudflare_worker():
+    """
+    Get Cloudflare Worker template.
+    
+    ⛨ Returns JavaScript code for deploying to Cloudflare Workers.
+    """
+    from .defense.threat_intel.cloudflare import create_cloudflare_worker_template
+    return {"worker_code": create_cloudflare_worker_template()}
+
