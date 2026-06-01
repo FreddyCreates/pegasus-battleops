@@ -74,13 +74,12 @@ class GoDaddyClient:
 
     async def _request(self, method: str, path: str, **kwargs: Any) -> dict | list:
         """Make an authenticated request to the GoDaddy API."""
-        async with httpx.AsyncClient() as client:
-            resp = await client.request(
-                method,
-                f"{self.base_url}{path}",
-                headers=self._headers,
-                **kwargs,
-            )
+        async with httpx.AsyncClient(
+            base_url=self.base_url,
+            headers=self._headers,
+            timeout=30.0,
+        ) as client:
+            resp = await client.request(method, path, **kwargs)
             resp.raise_for_status()
             return resp.json()
 
