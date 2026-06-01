@@ -23,6 +23,9 @@ from .defense.honeypot.routes import honeypot_router
 from .defense.dashboard.api import dashboard_router
 from .defense.dashboard.websocket import defense_websocket_endpoint
 
+# Import marketing components
+from .marketing_router import marketing_router
+
 app = FastAPI(
     title="Spatium Computationis ⌬",
     description=(
@@ -30,9 +33,12 @@ app = FastAPI(
         "and field installation projects. ⌬ = compressed project intelligence.\n\n"
         "**Defense System (⛨)**\n"
         "Integrated AI battleground with honeypots, bot fingerprinting, "
-        "Cloudflare integration, and adaptive threat response."
+        "Cloudflare integration, and adaptive threat response.\n\n"
+        "**Marketing Platform (🌐)**\n"
+        "GoDaddy-focused marketing agents for website management, content creation, "
+        "SEO optimization, social media, and analytics."
     ),
-    version="0.2.0",
+    version="0.3.0",
 )
 
 # ---------------------------------------------------------------------------
@@ -41,6 +47,7 @@ app = FastAPI(
 
 app.include_router(honeypot_router)
 app.include_router(dashboard_router, prefix="/api")
+app.include_router(marketing_router)
 
 
 # ---------------------------------------------------------------------------
