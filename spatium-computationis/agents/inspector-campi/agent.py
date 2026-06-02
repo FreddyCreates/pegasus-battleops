@@ -11,16 +11,16 @@ from __future__ import annotations
 import json
 import uuid
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...schemas import IntelligenceObject, PunchItem, PunchList
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 _SYSTEM_PROMPT = """\
@@ -67,7 +67,7 @@ async def run(obj: IntelligenceObject) -> PunchList:
     }
 
     response = await _get_client().chat.completions.create(
-        model="gpt-4o",
+        model="sovereign",
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": json.dumps(payload)},

@@ -17,16 +17,16 @@ from datetime import datetime
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...schemas import ActionType, DocumentType, GeneratedDocument, IntelligenceObject
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 _TEMPLATES_DIR = Path(__file__).parent.parent.parent / "documents" / "templates"
 
@@ -101,7 +101,7 @@ async def run(obj: IntelligenceObject, action: ActionType) -> GeneratedDocument:
     }
 
     response = await _get_client().chat.completions.create(
-        model="gpt-4o",
+        model="sovereign",
         messages=[
             {"role": "system", "content": _DOC_SYSTEM_PROMPT},
             {"role": "user", "content": json.dumps(payload)},

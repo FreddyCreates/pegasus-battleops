@@ -17,16 +17,16 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from openai import AsyncOpenAI
+from ..integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ..schemas import InputType, ProjectInput, RawInput
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -74,7 +74,7 @@ Return only valid JSON. Do not include markdown fences.
 async def _extract_from_text(raw_text: str, input_type: InputType) -> dict[str, Any]:
     """Use the LLM to extract structured data from text content."""
     response = await _get_client().chat.completions.create(
-        model="gpt-4o",
+        model="sovereign",
         messages=[
             {"role": "system", "content": _EXTRACTION_SYSTEM_PROMPT},
             {
@@ -95,7 +95,7 @@ async def _extract_from_image(base64_image: str, input_type: InputType) -> dict[
     import json
 
     response = await _get_client().chat.completions.create(
-        model="gpt-4o",
+        model="sovereign",
         messages=[
             {"role": "system", "content": _EXTRACTION_SYSTEM_PROMPT},
             {

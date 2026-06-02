@@ -2,6 +2,7 @@
 Spatium Computationis — FastAPI entrypoint
 ⌬ The activated computing space.
 ⛨ With integrated AI defense system.
+🌐 Customer-facing static site & interactive app.
 
 Start with:
   uvicorn spatium_computationis.main:app --reload
@@ -9,7 +10,10 @@ Start with:
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, WebSocket
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from .schemas import (
@@ -23,6 +27,15 @@ from .defense.honeypot.routes import honeypot_router
 from .defense.dashboard.api import dashboard_router
 from .defense.dashboard.websocket import defense_websocket_endpoint
 
+# Import marketing components
+from .marketing_router import marketing_router
+
+# Import platform components
+from .platform_router import platform_router
+
+# Import frontend components
+from .frontend.routes import frontend_router
+
 app = FastAPI(
     title="Spatium Computationis ⌬",
     description=(
@@ -30,17 +43,32 @@ app = FastAPI(
         "and field installation projects. ⌬ = compressed project intelligence.\n\n"
         "**Defense System (⛨)**\n"
         "Integrated AI battleground with honeypots, bot fingerprinting, "
-        "Cloudflare integration, and adaptive threat response."
+        "Cloudflare integration, and adaptive threat response.\n\n"
+        "**Marketing Platform (🌐)**\n"
+        "GoDaddy-focused marketing agents for website management, content creation, "
+        "SEO optimization, social media, and analytics.\n\n"
+        "**Agent Platform (⎈)**\n"
+        "Task queue, agent discovery, inter-agent delegation, and task bots (Nuntii).\n\n"
+        "**Interactive App (🖥️)**\n"
+        "Customer-facing dashboard, real-time console, SSE streaming, "
+        "and WebSocket-powered interactive application."
     ),
-    version="0.2.0",
+    version="0.5.0",
 )
 
 # ---------------------------------------------------------------------------
 # Include Defense Routers
 # ---------------------------------------------------------------------------
 
+# Mount static files
+_static_dir = Path(__file__).parent / "frontend" / "static"
+app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
+
 app.include_router(honeypot_router)
 app.include_router(dashboard_router, prefix="/api")
+app.include_router(marketing_router)
+app.include_router(platform_router, prefix="/api")
+app.include_router(frontend_router)
 
 
 # ---------------------------------------------------------------------------

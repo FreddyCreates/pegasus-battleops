@@ -290,6 +290,50 @@ job-specific exceptions
 
 Latin meaning: keeper of memory.
 
+Extended Agents (Defense, Intelligence & Operations):
+
+Sub-Agent: Adaptio Mentis
+Role: Adaptive learning — adjusts system behavior based on feedback and patterns.
+
+Sub-Agent: Adversary Lab
+Role: Adversarial testing — stress-tests system defenses and logic.
+
+Sub-Agent: Analytics Inspector
+Role: Analytics and reporting — tracks system performance and project metrics.
+
+Sub-Agent: Content Creator
+Role: Content generation — creates marketing and project content.
+
+Sub-Agent: Defensor Campi
+Role: Field defense — protects field operations from interference.
+
+Sub-Agent: Error Eyes
+Role: Error detection — monitors for system anomalies and failures.
+
+Sub-Agent: Gatekeeper Porta
+Role: Access control — manages permissions and entry validation.
+
+Sub-Agent: Marketing Strategist
+Role: Marketing strategy — plans and optimizes outreach campaigns.
+
+Sub-Agent: Research Realm
+Role: Research — investigates new methods, tools, and market data.
+
+Sub-Agent: SEO Optimizer
+Role: SEO optimization — improves search visibility for web content.
+
+Sub-Agent: Shadow Decryptor
+Role: Shadow traffic analysis — decodes and classifies unknown traffic.
+
+Sub-Agent: Social Media Pilot
+Role: Social media — manages social presence and engagement.
+
+Sub-Agent: Vigil Operis
+Role: Operations watchdog — continuous health monitoring.
+
+Sub-Agent: Webmaster GoDaddy
+Role: Web hosting — manages domains, DNS, and hosting via GoDaddy.
+
 4. Protocols
 Protocol I: Ingressus
 
@@ -420,24 +464,86 @@ Spatium Computationis is an activated computing ecosystem that sits between inte
 
 This should be treated as a module inside a larger repo, not the entire repo.
 
-Suggested repo regions:
+Current repo structure:
 
 /spatium-computationis
   /agents
-    auctor-operis
-    estimator-mobilia
-    estimator-laboris
-    inspector-campi
-    scriptor-documentorum
-    interpres-designii
-    custos-memoriae
+    auctor-operis          — Master orchestration agent
+    estimator-mobilia      — Furniture pricing and budget agent
+    estimator-laboris      — Labor estimating agent
+    inspector-campi        — Field condition and punch-list agent
+    scriptor-documentorum  — Document generation agent
+    interpres-designii     — Designer-to-field translation agent
+    custos-memoriae        — Project memory and continuity agent
+    adaptio-mentis         — Adaptive learning agent
+    adversary-lab          — Adversarial testing agent
+    analytics-inspector    — Analytics and reporting agent
+    content-creator        — Content creation agent
+    defensor-campi         — Field defense agent
+    error-eyes             — Error detection and monitoring agent
+    gatekeeper-porta       — Access control and gating agent
+    marketing-strategist   — Marketing strategy agent
+    research-realm         — Research and discovery agent
+    seo-optimizer          — SEO optimization agent
+    shadow-decryptor       — Shadow traffic analysis agent
+    social-media-pilot     — Social media management agent
+    vigil-operis           — Operations monitoring agent
+    webmaster-godaddy      — Web hosting and domain management agent
 
   /protocols
-    ingressus
-    compressio
-    ordinatio
-    actio
-    reductus
+    ingressus.py           — Information intake
+    compressio.py          — Raw info → compressed intelligence
+    ordinatio.py           — Sorting into correct region
+    actio.py               — Action generation
+    reductus.py            — Field feedback loop
+    feedback.py            — Outcome recording and learning signals
+    /audit                 — Audit trail protocols
+    /collaboration         — Multi-agent collaboration
+    /communication         — Inter-system messaging
+    /data                  — Data handling protocols
+    /discovery             — Service and agent discovery
+    /monitoring            — Health and performance monitoring
+    /resilience            — Fault tolerance and recovery
+    /security              — Security protocols
+    /sync                  — Synchronization protocols
+    /workflow              — Workflow orchestration
+
+  /defense
+    organism_charter.py    — Traffic classification (Cooperative/Hostile/Shadow)
+    organism_stats.py      — Defense statistics
+    /cloudflare-worker     — Edge defense layer
+    /dashboard             — Defense monitoring UI
+    /fingerprinting        — Request fingerprinting
+    /honeypot              — Threat attraction and analysis
+    /threat_intel          — Threat intelligence feeds
+
+  /governance
+    hierarchy.py           — 7-level authority hierarchy
+    code_of_conduct.py     — Behavioral rules
+    rules_of_procedure.py  — Procedural governance
+    open_data_policy.py    — Transparency rules
+    safety_rules.py        — Safety constraints
+
+  /integrations
+    /nova_sovereign        — Nova Sovereign intelligence backend
+    godaddy_client.py      — GoDaddy hosting integration
+    marketing_store.py     — Marketing data store
+
+  /platform
+    registry.py            — Agent and service registry
+    delegation.py          — Task delegation engine
+    task_queue.py          — Async task processing
+    nuntii.py              — Messaging bots
+
+  /scaffolds
+    base.py                — Agent lifecycle and capability declarations
+    event_bus.py           — Event-driven communication
+    orchestrator.py        — Multi-agent orchestration
+
+  /frontend
+    routes.py              — Web application routes
+    /static                — Static assets
+    /templates             — HTML templates
 
   /glyphs
     glyph-map
@@ -461,10 +567,36 @@ Suggested repo regions:
     field-notes
     issue-tracking
     completion-verification
-9. Final North Star
+9. Intelligence Backend
 
-The system’s job is not to “make estimates.”
+The system uses Nova Sovereign (FreddyCreates/Decentralized-Production-NOVA-Protocol) as its intelligence backend.
 
-The system’s job is to understand the entire flow of furniture and interiors work, then turn every piece of information moving between designer, contractor, vendor, installer, and client into the correct action, document, price, instruction, or decision.
+Required environment variables:
+- NOVA_SOVEREIGN_URL — endpoint for the Nova Sovereign service
+- NOVA_SOVEREIGN_TOKEN — authentication token
+
+10. Defense System
+
+The Organism Charter classifies all incoming traffic into three tiers:
+- Cooperative — routed to Knowledge Realm for processing
+- Hostile — routed to Adversary Lab for analysis
+- Shadow — routed to Quarantine for isolation and decryption
+
+11. Governance
+
+Authority is enforced through a 7-level hierarchy:
+1. Constitutional (highest)
+2. Procedural
+3. Committee
+4. Personnel
+5. Ethics
+6. Openness
+7. Safety (override power)
+
+12. Final North Star
+
+The system's job is not to "make estimates."
+
+The system's job is to understand the entire flow of furniture and interiors work, then turn every piece of information moving between designer, contractor, vendor, installer, and client into the correct action, document, price, instruction, or decision.
 
 ⌬ = compressed project intelligence.

@@ -111,7 +111,7 @@ class AgentConfig(BaseModel):
     features: dict[str, bool] = Field(default_factory=dict)
     
     # External dependencies
-    requires_openai: bool = False
+    requires_nova_sovereign: bool = False
     requires_database: bool = False
     requires_external_api: bool = False
     

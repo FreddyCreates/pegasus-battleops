@@ -1,7 +1,7 @@
 """
 Protocols Package — Spatium Computationis
 
-A comprehensive suite of 50 production-ready protocols organized into categories:
+A comprehensive suite of 53 production-ready protocols organized into categories:
 
 Core Pipeline (6 protocols):
   I.   Ingressus  — raw input normalization
@@ -58,7 +58,16 @@ Workflow (4 protocols):
   📋 Ordo         — orchestration
   🔄 Cursus       — flow control
 
-Total: 50 protocols ready for production use.
+Collaboration (1 protocol):
+  🤝 Collaboratio — real-time multi-user collaboration
+
+Discovery (1 protocol):
+  🔭 Discoveritas — service and agent discovery
+
+Synchronization (1 protocol):
+  🔄 Synchronizatio — state synchronization with conflict resolution
+
+Total: 53 protocols ready for production use.
 
 Glyphs (Core):
   ⊕ Ingressus  — input gate
@@ -293,6 +302,67 @@ from .workflow import (
     PipelineResult,
 )
 
+# Collaboration Protocol
+from . import collaboration
+from .collaboration import (
+    create_session as create_collab_session,
+    join_session,
+    leave_session,
+    apply_change,
+    get_session as get_collab_session,
+    get_active_sessions,
+    lock_session,
+    unlock_session,
+    update_cursor,
+    CollaborationSession,
+    CollaborationRole,
+    Participant,
+    ChangeOperation,
+    CollaborationEvent,
+)
+
+# Discovery Protocol
+from . import discovery
+from .discovery import (
+    register_service,
+    deregister_service,
+    heartbeat as service_heartbeat,
+    discover as discover_services,
+    discover_by_capability as discover_service_by_capability,
+    discover_by_tag,
+    get_service,
+    get_service_by_name,
+    resolve_dependencies,
+    get_registry_stats,
+    ServiceEntry,
+    ServiceType,
+    ServiceStatus,
+    DiscoveryQuery,
+    DiscoveryResult,
+)
+
+# Sync Protocol
+from . import sync
+from .sync import (
+    create_sync_state,
+    apply_delta,
+    receive_delta,
+    create_snapshot,
+    restore_snapshot,
+    get_sync_state,
+    get_pending_deltas,
+    get_conflicts,
+    resolve_conflict,
+    get_snapshots,
+    SyncState,
+    StateDelta,
+    StateSnapshot,
+    SyncConflict,
+    SyncStatus,
+    VectorClock,
+    ConflictStrategy,
+)
+
 __all__ = [
     # Core pipeline modules
     "ingressus",
@@ -310,6 +380,9 @@ __all__ = [
     "communication",
     "audit",
     "workflow",
+    "collaboration",
+    "discovery",
+    "sync",
     
     # Security exports
     "authenticate_request",
@@ -476,4 +549,56 @@ __all__ = [
     "run_pipeline",
     "PipelineConfig",
     "PipelineResult",
+    
+    # Collaboration exports
+    "create_collab_session",
+    "join_session",
+    "leave_session",
+    "apply_change",
+    "get_collab_session",
+    "get_active_sessions",
+    "lock_session",
+    "unlock_session",
+    "update_cursor",
+    "CollaborationSession",
+    "CollaborationRole",
+    "Participant",
+    "ChangeOperation",
+    "CollaborationEvent",
+    
+    # Discovery exports
+    "register_service",
+    "deregister_service",
+    "service_heartbeat",
+    "discover_services",
+    "discover_service_by_capability",
+    "discover_by_tag",
+    "get_service",
+    "get_service_by_name",
+    "resolve_dependencies",
+    "get_registry_stats",
+    "ServiceEntry",
+    "ServiceType",
+    "ServiceStatus",
+    "DiscoveryQuery",
+    "DiscoveryResult",
+    
+    # Sync exports
+    "create_sync_state",
+    "apply_delta",
+    "receive_delta",
+    "create_snapshot",
+    "restore_snapshot",
+    "get_sync_state",
+    "get_pending_deltas",
+    "get_conflicts",
+    "resolve_conflict",
+    "get_snapshots",
+    "SyncState",
+    "StateDelta",
+    "StateSnapshot",
+    "SyncConflict",
+    "SyncStatus",
+    "VectorClock",
+    "ConflictStrategy",
 ]

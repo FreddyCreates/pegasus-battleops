@@ -13,7 +13,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...defense.schemas import (
     AdaptiveAction,
@@ -26,13 +26,13 @@ from ...defense.schemas import (
     ThreatRecord,
 )
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -128,7 +128,7 @@ async def analyze_threat(
         }
     
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": json.dumps(context)},
@@ -174,7 +174,7 @@ async def process_honeypot_trigger(event: HoneypotEvent) -> AdaptiveResponse:
     }
     
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": f"Immediate honeypot trigger: {json.dumps(context)}"},
@@ -227,7 +227,7 @@ Return JSON with the fake data appropriate for the trap type.
 """
     
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": "You generate realistic but fake honeypot data."},
             {"role": "user", "content": prompt},

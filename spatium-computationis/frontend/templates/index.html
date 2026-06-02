@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-brand">
+            <span class="glyph">⌬</span>
+            <span class="brand-text">Spatium Computationis</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">Dashboard</a>
+            <a href="/app" class="nav-link">Interactive Console</a>
+            <a href="/projects" class="nav-link">Projects</a>
+            <a href="/agents/dashboard" class="nav-link">Agents</a>
+        </div>
+        <div class="nav-status">
+            <span id="connection-status" class="status-dot offline"></span>
+            <span class="version">v{{ version }}</span>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="hero">
+            <h1><span class="glyph-large">⌬</span> Spatium Computationis</h1>
+            <p class="subtitle">The activated computing ecosystem for furniture, interiors, and field installation projects.</p>
+            <p class="tagline">Compressed project intelligence — from design intent to field execution.</p>
+        </header>
+
+        <section class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <span class="glyph">⎈</span>
+                    <h3>Platform Status</h3>
+                </div>
+                <div class="card-body" id="platform-status">
+                    <div class="metric">
+                        <span class="metric-label">System</span>
+                        <span class="metric-value" id="system-status">Connecting...</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Active Agents</span>
+                        <span class="metric-value" id="agent-count">—</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Tasks Queued</span>
+                        <span class="metric-value" id="task-count">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="glyph">📡</span>
+                    <h3>Live Feed</h3>
+                </div>
+                <div class="card-body">
+                    <div id="live-feed" class="feed-container">
+                        <p class="feed-placeholder">Waiting for events...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="glyph">⚡</span>
+                    <h3>Recent Actions</h3>
+                </div>
+                <div class="card-body">
+                    <div id="recent-actions" class="actions-list">
+                        <p class="feed-placeholder">No recent actions</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="glyph">🌐</span>
+                    <h3>Regions</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="region-list">
+                        <li><span class="glyph-sm">✦</span> Regio Designii — Designer Space</li>
+                        <li><span class="glyph-sm">◈</span> Regio Mobilia — Furniture Intelligence</li>
+                        <li><span class="glyph-sm">⚒</span> Regio Laboris — Labor Space</li>
+                        <li><span class="glyph-sm">⟁</span> Regio Campi — Field Space</li>
+                        <li><span class="glyph-sm">▣</span> Regio Documentorum — Paperwork</li>
+                        <li><span class="glyph-sm">⇄</span> Regio Contractus — Contractor Comms</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card wide">
+                <div class="card-header">
+                    <span class="glyph">≡</span>
+                    <h3>Protocol Pipeline</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pipeline-visual">
+                        <div class="pipeline-stage">
+                            <span class="stage-glyph">→⌬</span>
+                            <span class="stage-name">Ingressus</span>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <span class="stage-glyph">⌬</span>
+                            <span class="stage-name">Compressio</span>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <span class="stage-glyph">≡</span>
+                            <span class="stage-name">Ordinatio</span>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <span class="stage-glyph">⚡</span>
+                            <span class="stage-name">Actio</span>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <span class="stage-glyph">↺</span>
+                            <span class="stage-name">Reductus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>⌬ Spatium Computationis — Compressed Project Intelligence</p>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/sse-client.js"></script>
+</body>
+</html>
