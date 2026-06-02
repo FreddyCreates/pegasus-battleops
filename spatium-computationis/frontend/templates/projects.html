@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-brand">
+            <span class="glyph">⌬</span>
+            <span class="brand-text">Spatium Computationis</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/app" class="nav-link">Interactive Console</a>
+            <a href="/projects" class="nav-link active">Projects</a>
+            <a href="/agents/dashboard" class="nav-link">Agents</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>📁 Projects</h1>
+            <p>Active furniture, interiors, and field installation projects.</p>
+        </header>
+
+        <section class="projects-toolbar">
+            <input type="text" id="project-search" class="search-input" placeholder="Search projects...">
+            <button id="btn-new-project" class="primary-btn">+ New Project</button>
+        </section>
+
+        <section id="projects-grid" class="projects-grid">
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>Sample Project</h3>
+                    <span class="project-status active">Active</span>
+                </div>
+                <div class="project-body">
+                    <p class="project-desc">Furniture installation — 3rd floor office renovation</p>
+                    <div class="project-meta">
+                        <span>📋 12 items</span>
+                        <span>⚒ 3 labor tasks</span>
+                        <span>⟁ 2 field reports</span>
+                    </div>
+                </div>
+                <div class="project-footer">
+                    <span class="project-date">Created: 2026-06-01</span>
+                    <button class="secondary-btn">View →</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>⌬ Spatium Computationis — Compressed Project Intelligence</p>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

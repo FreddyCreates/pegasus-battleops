@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="app-body">
+    <nav class="nav-bar">
+        <div class="nav-brand">
+            <span class="glyph">⌬</span>
+            <span class="brand-text">Interactive Console</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/app" class="nav-link active">Interactive Console</a>
+            <a href="/projects" class="nav-link">Projects</a>
+            <a href="/agents/dashboard" class="nav-link">Agents</a>
+        </div>
+        <div class="nav-status">
+            <span id="ws-status" class="status-dot offline"></span>
+            <span id="ws-status-text">Disconnected</span>
+        </div>
+    </nav>
+
+    <main class="app-container">
+        <aside class="app-sidebar">
+            <h3>⚙ Quick Actions</h3>
+            <button class="action-btn" data-action="submit_task" data-type="generate_bid">
+                <span class="glyph-sm">◈$</span> Generate Bid
+            </button>
+            <button class="action-btn" data-action="submit_task" data-type="create_estimate">
+                <span class="glyph-sm">⚒$</span> Labor Estimate
+            </button>
+            <button class="action-btn" data-action="submit_task" data-type="update_punch_list">
+                <span class="glyph-sm">⟁✓</span> Punch List
+            </button>
+            <button class="action-btn" data-action="submit_task" data-type="prepare_install_packet">
+                <span class="glyph-sm">✦⇄⚒</span> Install Packet
+            </button>
+            <button class="action-btn" data-action="submit_task" data-type="create_client_document">
+                <span class="glyph-sm">▣✎</span> Document
+            </button>
+
+            <h3>📡 Channels</h3>
+            <label class="channel-toggle">
+                <input type="checkbox" checked data-channel="tasks"> Tasks
+            </label>
+            <label class="channel-toggle">
+                <input type="checkbox" checked data-channel="agents"> Agents
+            </label>
+            <label class="channel-toggle">
+                <input type="checkbox" checked data-channel="pipeline"> Pipeline
+            </label>
+            <label class="channel-toggle">
+                <input type="checkbox" data-channel="field"> Field Updates
+            </label>
+
+            <h3>📊 Stats</h3>
+            <div class="sidebar-stats">
+                <div class="stat-item">
+                    <span>Connections</span>
+                    <span id="stat-connections">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>SSE Subscribers</span>
+                    <span id="stat-sse">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>System</span>
+                    <span id="stat-system">—</span>
+                </div>
+            </div>
+        </aside>
+
+        <section class="app-main">
+            <div class="console-header">
+                <h2>⌬ Live Console</h2>
+                <div class="console-controls">
+                    <button id="btn-clear" class="ctrl-btn">Clear</button>
+                    <button id="btn-reconnect" class="ctrl-btn">Reconnect</button>
+                    <button id="btn-ping" class="ctrl-btn">Ping</button>
+                </div>
+            </div>
+
+            <div id="console-output" class="console-output">
+                <div class="console-line system">
+                    <span class="line-time">--:--:--</span>
+                    <span class="line-type">SYS</span>
+                    <span class="line-msg">Initializing interactive console...</span>
+                </div>
+            </div>
+
+            <div class="console-input-area">
+                <div class="input-row">
+                    <select id="input-action" class="input-select">
+                        <option value="submit_task">Submit Task</option>
+                        <option value="get_status">Get Status</option>
+                        <option value="ping">Ping</option>
+                    </select>
+                    <input type="text" id="input-payload" class="input-text" 
+                           placeholder='{"task_type": "generate_bid", "payload": {}}'>
+                    <button id="btn-send" class="send-btn">Send ⚡</button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="app-panel">
+            <h3>↺ Event Log</h3>
+            <div id="event-log" class="event-log">
+                <p class="feed-placeholder">No events yet</p>
+            </div>
+        </aside>
+    </main>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/interactive-app.js"></script>
+</body>
+</html>
