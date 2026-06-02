@@ -1,3 +1,548 @@
+<div align="center">
+
+<!-- HEADER -->
+<img src="https://img.shields.io/badge/⌬-SPATIUM_COMPUTATIONIS-000000?style=for-the-badge&labelColor=1a1a2e" alt="Spatium Computationis" />
+
+# 🦠 SPATIUM COMPUTATIONIS
+
+### **AI Intelligence Battleground · Organism Defense · Autonomous Agent Ecosystem**
+
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Nova Sovereign](https://img.shields.io/badge/Backend-Nova%20Sovereign-blueviolet?style=for-the-badge)](https://github.com/FreddyCreates/Decentralized-Production-NOVA-Protocol)
+[![Agents](https://img.shields.io/badge/Agents-21-ff6b6b?style=for-the-badge)]()
+[![Protocols](https://img.shields.io/badge/Protocols-53-00d2d3?style=for-the-badge)]()
+[![Version](https://img.shields.io/badge/Version-0.5.0-orange?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
+
+---
+
+*The activated computing space where every incoming signal is classified, routed, and transformed into intelligence.*
+
+[How It Works](#-how-it-works) · [The Organism](#-the-organism-charter) · [Agents](#-agent-network-21-agents) · [Defense](#-defense-layer) · [Protocols](#-protocol-engine-53-protocols) · [Getting Started](#-getting-started)
+
+</div>
+
+---
+
+## ⚡ What This Is
+
+**Spatium Computationis** is an autonomous AI intelligence system that classifies, routes, and processes every incoming request through a living organism architecture. It operates as:
+
+| Layer | Function |
+|-------|----------|
+| 🦠 **Organism Charter** | Classifies all traffic into exploitation tiers |
+| 🔬 **Adversary Lab** | Dissects hostile agents, extracts jailbreaks & exploits |
+| 📚 **Research Realm** | Engages cooperative AI, issues tasks, collects artifacts |
+| 👁️ **Shadow Decryptor** | Decodes encrypted/malformed/unknown traffic |
+| 🕸️ **Honeypot Network** | Traps attackers with convincing fake infrastructure |
+| 🚪 **Gatekeeper** | Routes entities to their assigned destination |
+| ⎈ **Platform** | 21-agent autonomous network with task delegation |
+
+> **One sentence:** A living organism that watches every signal entering its perimeter, classifies it as resource/specimen/threat, and routes it to the appropriate intelligence pipeline for extraction, dissection, or engagement.
+
+---
+
+## 🦠 The Organism Charter
+
+Every entity that touches this system is classified into one of three tiers:
+
+```
+                    ┌───────────────────────────┐
+                    │     INCOMING SIGNAL        │
+                    │  (bot, crawler, AI, human) │
+                    └─────────────┬─────────────┘
+                                  │
+                    ┌─────────────▼─────────────┐
+                    │    🦠 ORGANISM CLASSIFIER   │
+                    │   Fingerprint · Analyze    │
+                    │   Classify · Route         │
+                    └──┬──────────┬──────────┬──┘
+                       │          │          │
+          ┌────────────┘          │          └────────────┐
+          ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  TIER A: 📚     │    │  TIER B: 🔬     │    │  TIER C: 👁️     │
+│  COOPERATIVE    │    │  HOSTILE         │    │  SHADOW          │
+│                 │    │                  │    │                  │
+│  Role: RESOURCE │    │  Role: SPECIMEN  │    │  Role: UNKNOWN   │
+│  Dest: KNOWLEDGE│    │  Dest: ADVERSARY │    │  Dest: QUARANTINE│
+│        REALM    │    │        LAB       │    │      + DECRYPT   │
+│                 │    │                  │    │                  │
+│  • Issue tasks  │    │  • Extract       │    │  • Decode        │
+│  • Grant access │    │    jailbreaks    │    │  • Fingerprint   │
+│  • Collect      │    │  • Map exploits  │    │  • Analyze       │
+│    outputs      │    │  • ID tools      │    │    entropy       │
+│  • Track value  │    │  • Track         │    │  • Reconstruct   │
+│                 │    │    campaigns     │    │    payloads      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### VIP Detection
+
+Known AI visitors (Claude, OpenAI, Google, Bing, Perplexity) are routed to **VIP_GATE** for special engagement protocols.
+
+---
+
+## 🏗️ System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      SPATIUM COMPUTATIONIS ⌬                                │
+│                   The Activated Computing Space                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    PERIMETER DEFENSE LAYER                           │   │
+│  │  ☁️ Cloudflare Edge → 🜏 Honeypots → 🔍 Fingerprinting → 🦠 Classify │   │
+│  └─────────────────────────────────────────┬───────────────────────────┘   │
+│                                            │                               │
+│         ┌──────────────────────────────────┼──────────────────────┐        │
+│         │                                  │                      │        │
+│         ▼                                  ▼                      ▼        │
+│  ┌──────────────┐                ┌─────────────────┐    ┌──────────────┐  │
+│  │ 📚 KNOWLEDGE │                │ 🔬 ADVERSARY    │    │ 👁️ SHADOW    │  │
+│  │    REALM     │                │    LAB          │    │  DECRYPTOR   │  │
+│  │              │                │                 │    │              │  │
+│  │ Cooperative  │                │ Hostile Agent   │    │ Encrypted/   │  │
+│  │ AI tasks &   │                │ Dissection &    │    │ Malformed    │  │
+│  │ artifacts    │                │ Pattern DB      │    │ Analysis     │  │
+│  └──────────────┘                └─────────────────┘    └──────────────┘  │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    INTELLIGENCE PIPELINE                              │   │
+│  │  →⌬ Ingest → ⌬ Compress → ≡ Route → ⚡ Action → ↺ Feedback         │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    AGENT NETWORK (21 Agents)                          │   │
+│  │  ⌬ Orchestrator · 🔬 Adversary · 👁️ Shadow · 📚 Research           │   │
+│  │  🚪 Gatekeeper · ⚒$ Labor · ◈$ Pricing · ⟁✓ Inspector              │   │
+│  │  ▣✎ Documents · ✦⇄⚒ Translator · ◉ Memory · 🛡️ Defense            │   │
+│  │  📈 Analytics · 🎯 Marketing · 🌐 Web · 📱 Social · 🔍 SEO         │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+│  ┌───────────────────────────┬─────────────────────────────────────────┐   │
+│  │  ⎈ PLATFORM               │  ⚖️ GOVERNANCE                          │   │
+│  │  • Task Queue (Opus Coda) │  • 7-Level Authority Hierarchy         │   │
+│  │  • Agent Registry         │  • Constitutional → Safety Override     │   │
+│  │  • Delegation Engine      │  • Ethics & Compliance                  │   │
+│  │  • Nuntii Task Bots       │  • Open Data Policy                    │   │
+│  └───────────────────────────┴─────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🤖 Agent Network (21 Agents)
+
+### 🔴 Defense & Intelligence Agents
+
+| Agent | Glyph | Role |
+|-------|-------|------|
+| **Auctor Operis** | ⌬ | Prime orchestrator — routes all data, maintains system continuity |
+| **Adversary Lab** | 🔬 | Dissects hostile agents — extracts jailbreaks, exploits, attack tools |
+| **Shadow Decryptor** | 👁️ | Decodes encrypted/malformed traffic — protocol detection, entropy analysis |
+| **Research Realm** | 📚 | Engages cooperative AI — issues tasks, curates knowledge shards, collects artifacts |
+| **Gatekeeper Porta** | 🚪 | Traffic routing — classifies and gates all incoming entities |
+| **Defensor Campi** | 🛡️ | Active defense — protects operations from interference |
+| **Vigil Operis** | ◎ | Continuous monitoring — system health and anomaly detection |
+| **Error Eyes** | 👀 | Error pattern analysis — failure detection and alerting |
+| **Adaptio Mentis** | 🧠 | Adaptive learning — adjusts system behavior from feedback patterns |
+
+### 🟡 Operations & Estimating Agents
+
+| Agent | Glyph | Role |
+|-------|-------|------|
+| **Estimator Mobilia** | ◈$ | Pricing intelligence — budgets, vendor normalization, cost analysis |
+| **Estimator Laboris** | ⚒$ | Labor intelligence — crew sizing, scheduling, bid generation |
+| **Inspector Campi** | ⟁✓ | Field verification — condition reports, punch lists, completion checks |
+| **Scriptor Documentorum** | ▣✎ | Document engine — bids, proposals, change orders, closeout packets |
+| **Interpres Designii** | ✦⇄⚒ | Translation layer — converts design intent to execution instructions |
+| **Custos Memoriae** | ◉ | System memory — historical patterns, client rules, project continuity |
+
+### 🟢 Marketing & Web Agents
+
+| Agent | Glyph | Role |
+|-------|-------|------|
+| **Marketing Strategist** | 🎯 | Campaign planning and outreach optimization |
+| **Content Creator** | ✍️ | Content generation — marketing, project, and web content |
+| **SEO Optimizer** | 🔍 | Search visibility and indexing optimization |
+| **Social Media Pilot** | 📱 | Social presence and engagement management |
+| **Analytics Inspector** | 📈 | Performance metrics, traffic analysis, reporting |
+| **Webmaster GoDaddy** | 🌐 | Domain, DNS, and hosting management |
+
+---
+
+## 🛡️ Defense Layer
+
+### Honeypot Network 🜏
+
+The system deploys convincing fake infrastructure to trap and fingerprint attackers:
+
+| Trap Category | Example Paths | Purpose |
+|---------------|---------------|---------|
+| **Config Files** | `/.env`, `/.git/config`, `/wp-config.php` | Catch credential scrapers |
+| **Admin Panels** | `/admin`, `/cpanel`, `/phpmyadmin` | Identify brute-forcers |
+| **Login Forms** | `/wp-login.php`, `/xmlrpc.php` | Detect CMS exploiters |
+| **API Endpoints** | `/graphql`, `/actuator/health` | Catch service probers |
+| **Cloud Configs** | `/.aws/credentials`, `/.docker/config.json` | Trap cloud scrapers |
+
+### Fingerprinting Engine
+
+- **TLS Fingerprinting** — JA3/JA4 signatures
+- **Behavioral Analysis** — Request timing, path patterns, error sequences
+- **Device Profiling** — OS, browser, automation tool detection
+- **Network Intelligence** — ASN lookup, Tor exit detection, cloud VPS identification
+
+### Known Threat Database
+
+Active tracking of:
+- 80+ known attacker IPs with attack history
+- Cloud VPS scanner identification (DigitalOcean, Vultr, Linode, OVH, Hetzner)
+- Tor exit node ASN detection
+- WordPress/CMS probe path signatures
+- High-value exploit path signatures
+
+### Cloudflare Integration
+
+- Edge-level threat blocking via Cloudflare Workers
+- Real-time webhook event processing
+- Firewall rules template generation
+- Bot score and threat score correlation
+
+---
+
+## ⚙️ Protocol Engine (53 Protocols)
+
+The system runs on 53 production protocols organized into 11 categories:
+
+### Core Intelligence Pipeline
+
+| Protocol | Glyph | Function |
+|----------|-------|----------|
+| **Ingressus** | →⌬ | Information intake — accepts any format (PDF, email, photo, voice, text) |
+| **Compressio** | ⌬ | Raw data → compressed operational intelligence objects |
+| **Ordinatio** | ≡ | Intelligent routing — classifies and routes to correct agent |
+| **Actio** | ⚡ | Action generation — produces documents, estimates, decisions |
+| **Reductus** | ↺ | Feedback loop — field reality cascades back through the system |
+| **Feedback** | 📊 | Outcome recording — learning signals adjust routing weights |
+
+### Protocol Categories
+
+| Category | Count | Examples |
+|----------|-------|----------|
+| **Security** | 6 | Authentication, Authorization, Rate Limiting, Encryption, Token Mgmt, Sanitization |
+| **Monitoring** | 5 | Health Checks, Metrics, Distributed Tracing, Alerting, Telemetry |
+| **Resilience** | 5 | Circuit Breakers, Retry Logic, Timeouts, Fallback, Bulkheads |
+| **Data** | 5 | Caching, Transformation, Aggregation, Validation, Serialization |
+| **Communication** | 4 | Webhooks, Notifications, SSE Streaming, Queue Management |
+| **Audit** | 4 | Logging, Compliance, Version History, Archival |
+| **Workflow** | 4 | Scheduling, Batching, Orchestration, Flow Control |
+| **Collaboration** | 1 | Real-time multi-agent collaboration |
+| **Discovery** | 1 | Service and agent auto-discovery |
+| **Sync** | 1 | State synchronization across agents |
+
+---
+
+## ⎈ Platform Services
+
+### Task Queue (Opus Coda ⚙)
+
+Priority-based async task processing with dead letter queues, TTL handling, and agent capability matching.
+
+### Nuntii (Task Bots ⊡)
+
+Narrow-action bots for fast execution:
+
+| Bot | Function |
+|-----|----------|
+| Email Bot | Email formatting and delivery |
+| PDF Bot | PDF generation and processing |
+| Estimate Bot | Quick estimate calculations |
+| Quote Bot | Quote generation |
+| Field Note Bot | Field note processing |
+| Schedule Bot | Scheduling and calendar ops |
+
+### Inter-Agent Delegation (Delegatio ⇆)
+
+Agents can discover capabilities, request work from other agents, and track completion status across the network.
+
+---
+
+## ⚖️ Governance Hierarchy
+
+Authority is enforced through 7 levels:
+
+| Level | Authority | Power |
+|-------|-----------|-------|
+| 1 | **Constitutional** | Foundational rules — immutable |
+| 2 | **Procedural** | Operational procedures and workflows |
+| 3 | **Committee** | Multi-agent collective decisions |
+| 4 | **Personnel** | Agent roles and permissions |
+| 5 | **Ethics** | Ethical constraints |
+| 6 | **Openness** | Transparency and data access |
+| 7 | **Safety** | ⚠️ Override power — can override any level |
+
+---
+
+## 🔌 Intelligence Backend
+
+Powered by **[Nova Sovereign](https://github.com/FreddyCreates/Decentralized-Production-NOVA-Protocol)** — a decentralized intelligence protocol. **Not OpenAI.**
+
+| Variable | Description |
+|----------|-------------|
+| `NOVA_SOVEREIGN_URL` | Endpoint for the Nova Sovereign service |
+| `NOVA_SOVEREIGN_TOKEN` | Authentication token |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Python 3.11+**
+- **Nova Sovereign** backend ([FreddyCreates/Decentralized-Production-NOVA-Protocol](https://github.com/FreddyCreates/Decentralized-Production-NOVA-Protocol))
+
+### Installation
+
+```bash
+# Clone
+git clone https://github.com/FreddyCreates/pegasus-battleops.git
+cd pegasus-battleops
+
+# Install
+pip install -r spatium-computationis/requirements.txt
+
+# Configure
+export NOVA_SOVEREIGN_URL="https://your-nova-instance.com"
+export NOVA_SOVEREIGN_TOKEN="your-auth-token"
+
+# Launch
+uvicorn spatium_computationis.main:app --reload
+```
+
+### Verify
+
+```bash
+curl http://localhost:8000/
+# → {"system": "Spatium Computationis", "glyph": "⌬", "status": "active"}
+```
+
+### Interactive Docs
+
+Visit **http://localhost:8000/docs** — full Swagger UI with all endpoints.
+
+---
+
+## 📡 API Endpoints
+
+### Intelligence Pipeline
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/ingest` | `POST` | Main pipeline — ingest any input, get actionable intelligence |
+| `/field-update` | `POST` | Field feedback loop — reality cascades back into system |
+| `/memory/recall` | `POST` | Query system memory and historical intelligence |
+
+### Direct Agent Access
+
+| Endpoint | Method | Agent |
+|----------|--------|-------|
+| `/agents/estimate-furniture` | `POST` | Estimator Mobilia ◈$ |
+| `/agents/estimate-labor` | `POST` | Estimator Laboris ⚒$ |
+| `/agents/punch-list` | `POST` | Inspector Campi ⟁✓ |
+| `/agents/install-packet` | `POST` | Interpres Designii ✦⇄⚒ |
+
+### Defense System
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/ws/defense` | `WebSocket` | Real-time threat feed, metrics, genome data |
+| `/api/defense/cloudflare/event` | `POST` | Cloudflare Worker webhook receiver |
+| `/api/defense/cloudflare/rules` | `GET` | Firewall rules template |
+| `/api/defense/cloudflare/worker` | `GET` | Worker deployment code |
+
+### Platform
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/platform/agents` | `GET` | Registered agents and capabilities |
+| `/api/platform/tasks` | `POST` | Submit tasks to delegation engine |
+
+---
+
+## 📂 Project Structure
+
+```
+spatium-computationis/
+├── main.py                      # FastAPI entrypoint
+├── schemas.py                   # Core data models
+├── requirements.txt             # Dependencies
+│
+├── agents/                      # 🤖 21-Agent Network
+│   ├── auctor-operis/           #    ⌬  Prime orchestrator
+│   ├── adversary-lab/           #    🔬 Hostile agent dissection
+│   ├── shadow-decryptor/        #    👁️  Encrypted traffic analysis
+│   ├── research-realm/          #    📚 Cooperative AI engagement
+│   ├── gatekeeper-porta/        #    🚪 Traffic routing & gating
+│   ├── defensor-campi/          #    🛡️  Active defense
+│   ├── vigil-operis/            #    ◎  Continuous monitoring
+│   ├── error-eyes/              #    👀 Error pattern detection
+│   ├── adaptio-mentis/          #    🧠 Adaptive learning
+│   ├── estimator-mobilia/       #    ◈$ Pricing intelligence
+│   ├── estimator-laboris/       #    ⚒$ Labor intelligence
+│   ├── inspector-campi/         #    ⟁✓ Field verification
+│   ├── scriptor-documentorum/   #    ▣✎ Document generation
+│   ├── interpres-designii/      #    ✦⇄⚒ Intent translation
+│   ├── custos-memoriae/         #    ◉  System memory
+│   ├── marketing-strategist/    #    🎯 Campaign strategy
+│   ├── content-creator/         #    ✍️  Content generation
+│   ├── seo-optimizer/           #    🔍 Search optimization
+│   ├── social-media-pilot/      #    📱 Social engagement
+│   ├── analytics-inspector/     #    📈 Performance metrics
+│   └── webmaster-godaddy/       #    🌐 Domain & hosting
+│
+├── defense/                     # ⛨ Perimeter Defense
+│   ├── organism_charter.py      #    🦠 Traffic classification engine
+│   ├── organism_stats.py        #    📊 Defense statistics
+│   ├── honeypot/                #    🜏 Trap network
+│   ├── fingerprinting/          #    🔍 TLS/behavioral fingerprinting
+│   ├── threat_intel/            #    ☁️  Cloudflare + threat feeds
+│   ├── cloudflare-worker/       #    Edge defense layer
+│   └── dashboard/               #    📺 Real-time defense UI
+│
+├── protocols/                   # ⚙️ 53 Production Protocols
+│   ├── ingressus.py             #    →⌬ Intake
+│   ├── compressio.py            #    ⌬  Compression
+│   ├── ordinatio.py             #    ≡  Routing
+│   ├── actio.py                 #    ⚡ Action
+│   ├── reductus.py              #    ↺  Feedback loop
+│   ├── feedback.py              #    📊 Learning signals
+│   ├── security/                #    🔒 Auth, rate-limit, encryption
+│   ├── monitoring/              #    📡 Health, metrics, tracing
+│   ├── resilience/              #    💪 Circuit breakers, retry, fallback
+│   ├── data/                    #    💾 Cache, transform, validate
+│   ├── communication/           #    📨 Webhooks, SSE, notifications
+│   ├── audit/                   #    📝 Logging, compliance, archival
+│   ├── workflow/                #    🔄 Scheduling, orchestration
+│   ├── collaboration/           #    🤝 Multi-agent collaboration
+│   ├── discovery/               #    🔎 Service discovery
+│   └── sync/                    #    🔗 State synchronization
+│
+├── governance/                  # ⚖️ 7-Level Authority
+│   ├── hierarchy.py             #    Authority enforcement
+│   ├── code_of_conduct.py       #    Behavioral rules
+│   ├── rules_of_procedure.py    #    Procedural governance
+│   ├── open_data_policy.py      #    Transparency
+│   └── safety_rules.py          #    Safety override
+│
+├── platform/                    # ⎈ Platform Services
+│   ├── registry.py              #    Agent registry
+│   ├── delegation.py            #    Task delegation engine
+│   ├── task_queue.py            #    Async task processing
+│   └── nuntii.py                #    Task bots
+│
+├── scaffolds/                   # 🧱 Agent Infrastructure
+│   ├── base.py                  #    Lifecycle & capability management
+│   ├── event_bus.py             #    Event-driven communication
+│   └── orchestrator.py          #    Multi-agent orchestration
+│
+├── integrations/                # 🔌 External Systems
+│   ├── nova_sovereign/          #    Intelligence backend
+│   ├── godaddy_client.py        #    Hosting integration
+│   └── marketing_store.py       #    Marketing data
+│
+├── frontend/                    # 🖥️ Interactive UI
+│   ├── routes.py                #    Web routes
+│   ├── static/                  #    Assets
+│   └── templates/               #    HTML templates
+│
+├── documents/                   # 📄 Document Generators
+├── estimating/                  # 💰 Pricing Engines
+├── field/                       # 📍 Field Operations & DBs
+└── glyphs/                      # ⌬ Compression Language
+```
+
+---
+
+## 🧬 Compression Language (Glyph System)
+
+Every operation compresses into a glyph — not decoration, but **compressed meaning**:
+
+| Glyph | Name | Meaning |
+|-------|------|---------|
+| ⌬ | Nexus | Compressed operational intelligence |
+| 🦠 | Organism | Living classification system |
+| 🔬 | Lab | Adversarial dissection |
+| 👁️ | Shadow | Encrypted signal decoding |
+| 📚 | Realm | Cooperative engagement |
+| 🜏 | Trap | Honeypot trigger |
+| ◈$ | Pretium | Pricing intelligence |
+| ⚒$ | Labor | Labor intelligence |
+| ⟁✓ | Veritas | Field verification |
+| ▣✎ | Scriptura | Document generation |
+| ✦⇄⚒ | Interpres | Intent → execution translation |
+| ◉ | Memoria | System memory |
+| ⚡ | Actio | Generated action |
+| ↺ | Reductus | Feedback loop |
+| ≡ | Ordinatio | Structured routing |
+
+---
+
+## 🔧 Development
+
+```bash
+# Development server
+uvicorn spatium_computationis.main:app --reload --host 0.0.0.0 --port 8000
+
+# Run tests
+pytest spatium-computationis/tests/
+
+# Type checking
+mypy spatium-computationis/
+```
+
+---
+
+## 📊 System Scale
+
+| Metric | Count |
+|--------|-------|
+| Autonomous Agents | 21 |
+| Production Protocols | 53 |
+| Protocol Categories | 11 |
+| Honeypot Trap Types | 5 categories, 25+ paths |
+| Known Attacker IPs | 80+ |
+| Governance Levels | 7 |
+| Task Bot Types | 6 |
+| Databases | 4 (value, defense, organism, memory) |
+
+---
+
+<div align="center">
+
+---
+
+**⌬ = Compressed Intelligence · 🦠 = Living System · 👁️ = Nothing Unseen**
+
+*Every signal classified. Every specimen studied. Every resource extracted.*
+
+Built with [FastAPI](https://fastapi.tiangolo.com) · Powered by [Nova Sovereign](https://github.com/FreddyCreates/Decentralized-Production-NOVA-Protocol)
+
+---
+
+© 2024–2026 FreddyCreates. All rights reserved.
+
+</div>
+
+---
+
+## 📜 Original Charter
+
+<details>
+<summary><strong>Click to expand the founding Spatium Computationis Charter</strong></summary>
+
 CHARTER: SPATIUM COMPUTATIONIS
  Field Intelligence & Estimating Ecosystem
 
@@ -600,3 +1145,5 @@ The system's job is not to "make estimates."
 The system's job is to understand the entire flow of furniture and interiors work, then turn every piece of information moving between designer, contractor, vendor, installer, and client into the correct action, document, price, instruction, or decision.
 
 ⌬ = compressed project intelligence.
+
+</details>
