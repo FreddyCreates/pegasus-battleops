@@ -1,5 +1,5 @@
 CHARTER: SPATIUM COMPUTATIONIS
-Furniture, Interiors, Field Intelligence & Estimating Ecosystem
+ Field Intelligence & Estimating Ecosystem
 
 Latin Core Name: Spatium Computationis
 Meaning: The activated computing space where project information becomes action.
