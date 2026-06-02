@@ -6,7 +6,8 @@
 class InteractiveApp {
     constructor() {
         this.ws = null;
-        this.url = `ws://${window.location.host}/ws/app`;
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        this.url = `${protocol}//${window.location.host}/ws/app`;
         this.consoleEl = document.getElementById('console-output');
         this.eventLogEl = document.getElementById('event-log');
         this.reconnectAttempts = 0;
@@ -79,14 +80,27 @@ class InteractiveApp {
         }
     }
 
+    _escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     _log(type, message) {
         const line = document.createElement('div');
         line.className = `console-line ${type}`;
-        line.innerHTML = `
-            <span class="line-time">${SC.shortTime()}</span>
-            <span class="line-type">${type.slice(0, 4)}</span>
-            <span class="line-msg">${message}</span>
-        `;
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'line-time';
+        timeSpan.textContent = SC.shortTime();
+        const typeSpan = document.createElement('span');
+        typeSpan.className = 'line-type';
+        typeSpan.textContent = type.slice(0, 4);
+        const msgSpan = document.createElement('span');
+        msgSpan.className = 'line-msg';
+        msgSpan.textContent = message;
+        line.appendChild(timeSpan);
+        line.appendChild(typeSpan);
+        line.appendChild(msgSpan);
         this.consoleEl.appendChild(line);
         this.consoleEl.scrollTop = this.consoleEl.scrollHeight;
     }
@@ -100,11 +114,18 @@ class InteractiveApp {
 
         const entry = document.createElement('div');
         entry.className = 'event-entry';
-        entry.innerHTML = `
-            <div class="event-type">${msg.type}</div>
-            <div class="event-data">${JSON.stringify(msg.data || {}).slice(0, 100)}</div>
-            <div class="event-time">${SC.shortTime()}</div>
-        `;
+        const typeDiv = document.createElement('div');
+        typeDiv.className = 'event-type';
+        typeDiv.textContent = msg.type;
+        const dataDiv = document.createElement('div');
+        dataDiv.className = 'event-data';
+        dataDiv.textContent = JSON.stringify(msg.data || {}).slice(0, 100);
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'event-time';
+        timeDiv.textContent = SC.shortTime();
+        entry.appendChild(typeDiv);
+        entry.appendChild(dataDiv);
+        entry.appendChild(timeDiv);
         this.eventLogEl.insertBefore(entry, this.eventLogEl.firstChild);
 
         while (this.eventLogEl.children.length > 30) {
