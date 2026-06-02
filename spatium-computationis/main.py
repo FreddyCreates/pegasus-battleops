@@ -26,6 +26,9 @@ from .defense.dashboard.websocket import defense_websocket_endpoint
 # Import marketing components
 from .marketing_router import marketing_router
 
+# Import platform components
+from .platform_router import platform_router
+
 app = FastAPI(
     title="Spatium Computationis ⌬",
     description=(
@@ -36,9 +39,11 @@ app = FastAPI(
         "Cloudflare integration, and adaptive threat response.\n\n"
         "**Marketing Platform (🌐)**\n"
         "GoDaddy-focused marketing agents for website management, content creation, "
-        "SEO optimization, social media, and analytics."
+        "SEO optimization, social media, and analytics.\n\n"
+        "**Agent Platform (⎈)**\n"
+        "Task queue, agent discovery, inter-agent delegation, and task bots (Nuntii)."
     ),
-    version="0.3.0",
+    version="0.4.0",
 )
 
 # ---------------------------------------------------------------------------
@@ -48,6 +53,7 @@ app = FastAPI(
 app.include_router(honeypot_router)
 app.include_router(dashboard_router, prefix="/api")
 app.include_router(marketing_router)
+app.include_router(platform_router, prefix="/api")
 
 
 # ---------------------------------------------------------------------------
