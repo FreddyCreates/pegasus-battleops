@@ -16,7 +16,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...defense.schemas import (
     AdaptiveAction,
@@ -27,13 +27,13 @@ from ...defense.schemas import (
     ThreatLevel,
 )
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -219,7 +219,7 @@ async def learn_from_events(events: list[HoneypotEvent]) -> ThreatGenome | None:
     ]
     
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": _PATTERN_EXTRACTION_PROMPT},
             {"role": "user", "content": json.dumps(event_data)},
@@ -497,7 +497,7 @@ async def evolve_strategies() -> dict[str, Any]:
     
     # Ask AI to suggest improvements
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {
                 "role": "system",

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...integrations.marketing_store import MarketingStore
 from ...scaffolds.base import (
@@ -73,7 +73,7 @@ AGENT_CONFIG = AgentConfig(
             output_types=["budget_plan"],
         ),
     ],
-    requires_openai=True,
+    requires_nova_sovereign=True,
     features={"ai_planning": True, "competitive_analysis": True},
 )
 
@@ -86,14 +86,14 @@ def _register() -> None:
 # Core Agent Logic
 # ---------------------------------------------------------------------------
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 _store: MarketingStore | None = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -133,7 +133,7 @@ Return a JSON object with:
 - quick_wins: 3-5 immediate actions"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": STRATEGY_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -176,7 +176,7 @@ Return a JSON object with:
 - review_points: dates for performance review"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": STRATEGY_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -208,7 +208,7 @@ Return a JSON object with:
 - channels_by_segment: best channels to reach each segment"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": STRATEGY_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -241,7 +241,7 @@ Return a JSON object with:
 - scaling_plan: how to scale if budget increases"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": STRATEGY_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},

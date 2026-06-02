@@ -17,7 +17,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...defense.schemas import (
     BotClassification,
@@ -28,13 +28,13 @@ from ...defense.schemas import (
     ThreatLevel,
 )
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -107,7 +107,7 @@ async def classify_visitor(fingerprint: BotFingerprint) -> dict[str, Any]:
     }
     
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": _CLASSIFICATION_PROMPT},
             {"role": "user", "content": json.dumps(context)},

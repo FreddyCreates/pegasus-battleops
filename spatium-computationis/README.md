@@ -93,11 +93,14 @@ cd spatium-computationis
 pip install -r requirements.txt
 ```
 
-### 2. Set your OpenAI API key
+### 2. Configure Nova Sovereign runtime
 
 ```bash
-export OPENAI_API_KEY=sk-...
+export NOVA_SOVEREIGN_URL=http://localhost:8787
+export NOVA_SOVEREIGN_TOKEN=your-token-here
 ```
+
+> Intelligence backend: [Decentralized-Production-NOVA-Protocol](https://github.com/FreddyCreates/Decentralized-Production-NOVA-Protocol)
 
 ### 3. Start the server
 

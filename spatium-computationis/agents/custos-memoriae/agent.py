@@ -15,16 +15,16 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...schemas import IntelligenceObject, MemoryRecord
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 DB_PATH = Path(__file__).parent.parent.parent / "field" / "memory.db"
@@ -97,7 +97,7 @@ async def remember(obj: IntelligenceObject) -> MemoryRecord:
     }
 
     response = await _get_client().chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": _MEMORY_SYSTEM_PROMPT},
             {"role": "user", "content": json.dumps(payload)},

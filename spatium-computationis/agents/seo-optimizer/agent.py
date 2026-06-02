@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...integrations.marketing_store import MarketingStore
 from ...scaffolds.base import (
@@ -73,7 +73,7 @@ AGENT_CONFIG = AgentConfig(
             output_types=["schema_json_ld"],
         ),
     ],
-    requires_openai=True,
+    requires_nova_sovereign=True,
     features={"technical_seo": True, "local_seo": True, "schema_generation": True},
 )
 
@@ -86,14 +86,14 @@ def _register() -> None:
 # Core Agent Logic
 # ---------------------------------------------------------------------------
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 _store: MarketingStore | None = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -132,7 +132,7 @@ Return a JSON object with:
 - priority_order: recommended implementation order"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SEO_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -169,7 +169,7 @@ Return a JSON object with:
 - action_items: prioritized list of fixes (high/medium/low priority)"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SEO_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -232,7 +232,7 @@ Return a JSON object with:
 - additional_schemas: other relevant schemas to consider"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SEO_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},

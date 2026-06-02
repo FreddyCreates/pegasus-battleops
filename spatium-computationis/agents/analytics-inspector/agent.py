@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...integrations.marketing_store import MarketingStore
 from ...scaffolds.base import (
@@ -73,7 +73,7 @@ AGENT_CONFIG = AgentConfig(
             output_types=["stored_metrics"],
         ),
     ],
-    requires_openai=True,
+    requires_nova_sovereign=True,
     requires_database=True,
     features={"trend_detection": True, "forecasting": True, "roi_calculation": True},
 )
@@ -87,14 +87,14 @@ def _register() -> None:
 # Core Agent Logic
 # ---------------------------------------------------------------------------
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 _store: MarketingStore | None = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -135,7 +135,7 @@ Return a JSON object with:
 - recommendations: 3-5 actionable recommendations to improve traffic"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": ANALYTICS_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -193,7 +193,7 @@ Return a JSON object with:
 - forecast: projected metrics for next period"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": ANALYTICS_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -230,7 +230,7 @@ Return a JSON object with:
 - estimated_impact: potential revenue/conversion lift from recommendations"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": ANALYTICS_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from openai import AsyncOpenAI
+from ...integrations.nova_sovereign import NovaSovereignClient, get_nova_client
 
 from ...integrations.marketing_store import MarketingStore
 from ...scaffolds.base import (
@@ -73,7 +73,7 @@ AGENT_CONFIG = AgentConfig(
             output_types=["engagement_recommendations"],
         ),
     ],
-    requires_openai=True,
+    requires_nova_sovereign=True,
     features={"multi_platform": True, "visual_suggestions": True, "scheduling": True},
 )
 
@@ -86,16 +86,16 @@ def _register() -> None:
 # Core Agent Logic
 # ---------------------------------------------------------------------------
 
-_client: AsyncOpenAI | None = None
+_client: NovaSovereignClient | None = None
 _store: MarketingStore | None = None
 
 SUPPORTED_PLATFORMS = ["instagram", "facebook", "twitter", "linkedin", "tiktok", "pinterest"]
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client() -> NovaSovereignClient:
     global _client
     if _client is None:
-        _client = AsyncOpenAI()
+        _client = get_nova_client()
     return _client
 
 
@@ -136,7 +136,7 @@ Return a JSON object with:
   - engagement_hook: element designed to drive engagement"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SOCIAL_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -179,7 +179,7 @@ Return a JSON object with:
 - posting_schedule: optimal posting times per platform"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SOCIAL_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -216,7 +216,7 @@ Return a JSON object with:
 - strategy_tips: platform-specific hashtag best practices"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SOCIAL_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -253,7 +253,7 @@ Return a JSON object with:
 - competitor_benchmarks: typical engagement rates for the industry"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="sovereign-lite",
         messages=[
             {"role": "system", "content": SOCIAL_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
