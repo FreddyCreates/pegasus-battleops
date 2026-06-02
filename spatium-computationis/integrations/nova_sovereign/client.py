@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import math
 import os
 import time
@@ -26,6 +27,8 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Golden Ratio Constants (from NOVA Protocol)
@@ -181,7 +184,7 @@ class NovaSovereignClient:
         if self._http is None or self._http.is_closed:
             headers = {"Content-Type": "application/json"}
             if self.token:
-                headers["Authorization"] = f"******"
+                headers["Authorization"] = "Bearer " + self.token
             self._http = httpx.AsyncClient(
                 base_url=self.base_url,
                 headers=headers,
@@ -221,8 +224,11 @@ class NovaSovereignClient:
             resp = await http.post("/v1/sovereign/complete", json=payload)
             resp.raise_for_status()
             data = resp.json()
-        except (httpx.HTTPError, httpx.ConnectError):
-            # Fallback: process locally if Nova runtime is unavailable
+        except (httpx.HTTPError, httpx.ConnectError) as exc:
+            logger.warning(
+                "Nova Sovereign runtime unreachable (%s). Entering degraded mode.",
+                exc,
+            )
             data = self._local_fallback(messages, response_format)
 
         execution_time = time.time() * 1000.0 - start_ms

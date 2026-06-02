@@ -196,7 +196,7 @@ def _default_safety_rules() -> list[SafetyRule]:
             rule_id="SAF-F02",
             title="Estimate Variance Alert",
             description=(
-                "When estimates deviate more than 20%% from historical norms, "
+                "When estimates deviate more than 20% from historical norms, "
                 "a variance alert must be issued for human review."
             ),
             severity=SafetySeverity.MEDIUM,
