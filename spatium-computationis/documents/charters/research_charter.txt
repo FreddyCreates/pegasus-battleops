@@ -1,0 +1,434 @@
+═══════════════════════════════════════════════════════════════════════════════
+ SPATIUM COMPUTATIONIS — RESEARCH CHARTER
+ Protocol VII: Formalized Research Governance  ⊛
+═══════════════════════════════════════════════════════════════════════════════
+
+ Charter ID:       RC-MASTER-001
+ Version:          1.0.0
+ Domain:           ALL (Cross-Domain Governance Framework)
+ Authority Level:  COMMITTEE (Level 5)
+ Status:           CONSTITUTIONAL INSTRUMENT
+ Effective Date:   Upon integration into governance hierarchy
+ Source Authority:  Casa de Medina — Architectos de Architectura Inteligente
+
+═══════════════════════════════════════════════════════════════════════════════
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                           I. PREAMBLE                                     ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+WHEREAS the Spatium Computationis ecosystem is a living computational
+organism operating under the Nova Sovereign Protocol, designed to grow,
+adapt, and evolve through disciplined inquiry;
+
+WHEREAS the ecosystem governs intelligent automation for the Casa de Medina
+operational environment including furniture installation estimating, field
+operations, project documentation, and design interpretation;
+
+WHEREAS research activities carry inherent risks to data integrity,
+operational stability, computational sovereignty, and system safety;
+
+WHEREAS the advancement of the ecosystem requires a formalized framework
+that balances innovation with governance, creativity with accountability,
+and exploration with protection;
+
+WHEREAS the φ-derived mathematical primitives form the computational
+foundation and all research must respect this mathematical sovereignty;
+
+NOW THEREFORE, this Research Charter is enacted as the master governance
+document for all research activities within Spatium Computationis.
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    II. GOVERNANCE EMBEDDING                                ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+This charter is embedded within the governance hierarchy as follows:
+
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  AUTHORITY LEVEL 7 — CONSTITUTIONAL                                  │
+  │  ► Constrains: Research scope, sovereignty, foundational principles  │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  AUTHORITY LEVEL 6 — PROCEDURAL                                      │
+  │  ► Requires: Pipeline compliance, audit trails, cycle timing         │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  AUTHORITY LEVEL 5 — COMMITTEE  ← THIS CHARTER                      │
+  │  ► Governs: Research lifecycle, approval, coordination               │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  AUTHORITY LEVEL 4 — PERSONNEL                                       │
+  │  ► Applies: Agent registration, capability verification              │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  AUTHORITY LEVEL 3 — ETHICS                                          │
+  │  ► Applies: Ethical standards, honesty, traceability                 │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  AUTHORITY LEVEL 2 — OPENNESS                                        │
+  │  ► Requires: Transparency, audit access, open-source default         │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  AUTHORITY LEVEL 1 — SAFETY (OVERRIDE)                               │
+  │  ► Override: Can halt ANY research activity immediately               │
+  └─────────────────────────────────────────────────────────────────────┘
+
+BINDING GOVERNANCE LAWS:
+
+  1. CONSTITUTIONAL.1 — Research must serve the Casa de Medina ecosystem
+  2. CONSTITUTIONAL.3 — No external LLM bypass of Nova Sovereign
+  3. CONSTITUTIONAL.4 — φ-derived primitives are computational foundation
+  4. PROC-001 — Pipeline integrity for data inputs
+  5. PROC-002 — Decision audit trail mandatory
+  6. PROC-006 — Nova Sovereign routing mandatory
+  7. ETHICS.4 — No fabrication of information as fact
+  8. OPENNESS.1 — Decision logs accessible for audit
+  9. OPENNESS.3 — Protocols and charters are open-source
+  10. SAF-D01 — Halt on data integrity compromise (OVERRIDE)
+  11. SAF-X01 — Hostile traffic quarantine (OVERRIDE)
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                   III. RESEARCH DOMAINS                                    ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+Research within the ecosystem is organized into seven formal domains:
+
+  ⊛ COMPUTATIONAL
+    φ-derived mathematics, algorithms, compression theory,
+    signal processing, mathematical primitives research.
+
+  ⊛ INTELLIGENCE
+    Nova Sovereign organism behavior, intelligence routing,
+    learning loop optimization, agent cognition patterns.
+
+  ⊛ OPERATIONAL
+    Field operations optimization, installation process improvement,
+    scheduling algorithms, resource allocation.
+
+  ⊛ DEFENSE
+    Threat analysis, adversary study, traffic classification,
+    organism defense evolution, quarantine optimization.
+
+  ⊛ ARCHITECTURAL
+    System design, protocol development, inter-agent communication,
+    governance framework evolution, platform engineering.
+
+  ⊛ ECONOMIC
+    Cost modeling, estimating accuracy improvement, pricing algorithms,
+    financial forecasting, market analysis.
+
+  ⊛ ECOLOGICAL
+    System health monitoring, agent evolution tracking, ecosystem
+    balance, emergent behavior study, resilience analysis.
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    IV. RESEARCH LIFECYCLE                                  ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+All research follows a governed lifecycle:
+
+  ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
+  │ PROPOSED │ ──► │ APPROVED │ ──► │  ACTIVE  │ ──► │ REVIEW   │
+  └──────────┘     └──────────┘     └──────────┘     └──────────┘
+       │                                  │                │
+       │                                  │                │
+       ▼                                  ▼                ▼
+  ┌──────────┐                    ┌────────────┐    ┌───────────┐
+  │ REJECTED │                    │ SUSPENDED  │    │ COMPLETED │
+  └──────────┘                    └────────────┘    └───────────┘
+                                        │
+                                        ▼
+                                  ┌────────────┐
+                                  │ TERMINATED │
+                                  └────────────┘
+
+Phase Transitions and Authority:
+
+  PROPOSED → APPROVED      Committee authority required
+  PROPOSED → REJECTED      Committee authority (insufficient scope/ethics)
+  APPROVED → ACTIVE        Principal investigator authority
+  ACTIVE → REVIEW          Automatic at milestones, or on-demand
+  ACTIVE → SUSPENDED       Safety override (immediate, no approval needed)
+  REVIEW → COMPLETED       Committee authority + deliverables verified
+  REVIEW → ACTIVE          Continue with revisions (Principal authority)
+  SUSPENDED → ACTIVE       Safety review cleared + Committee approval
+  SUSPENDED → TERMINATED   Constitutional authority (irrecoverable)
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                V. ETHICAL FRAMEWORK                                        ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+Every research charter must carry an ethical classification:
+
+  ┌─────────────┬──────────────────────────────────────────────────────────┐
+  │ MINIMAL     │ No ethical concerns. Standard logging. Principal auth.   │
+  ├─────────────┼──────────────────────────────────────────────────────────┤
+  │ LOW         │ Standard oversight. Principal authority sufficient.       │
+  │             │ Regular audit trail maintained.                           │
+  ├─────────────┼──────────────────────────────────────────────────────────┤
+  │ MODERATE    │ Ethics committee review required before activation.       │
+  │             │ Monthly compliance checks during active phase.            │
+  ├─────────────┼──────────────────────────────────────────────────────────┤
+  │ HIGH        │ Full governance review. Human approval required.          │
+  │             │ Continuous monitoring. Quarterly re-authorization.        │
+  ├─────────────┼──────────────────────────────────────────────────────────┤
+  │ RESTRICTED  │ Constitutional-level authorization required.              │
+  │             │ Defense domain only. Maximum oversight.                   │
+  └─────────────┴──────────────────────────────────────────────────────────┘
+
+ETHICAL BOUNDARIES (Universal):
+
+  ⊘ BOUNDARY-01: Research must not compromise client data privacy
+  ⊘ BOUNDARY-02: Research must not degrade production service quality
+  ⊘ BOUNDARY-03: Research must not fabricate results as factual findings
+  ⊘ BOUNDARY-04: Research must not bypass sovereignty protections
+  ⊘ BOUNDARY-05: Research must not endanger physical safety of personnel
+  ⊘ BOUNDARY-06: Research must not exceed authorized financial thresholds
+  ⊘ BOUNDARY-07: Research must not introduce unauditable decision paths
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║               VI. PROTOCOL SPECIFICATION                                  ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+The Research Charter Protocol (Protocol VII) implements:
+
+  Module: spatium-computationis/protocols/research_charter.py
+  Glyph:  ⊛ (Research — formalized inquiry under protocol)
+
+  OPERATIONS:
+
+  1. create_charter(...)
+     Creates a new charter in PROPOSED phase with default governance
+     bindings automatically applied.
+
+  2. approve_charter(charter_id, approver, notes)
+     Transitions PROPOSED → APPROVED. Requires Committee authority.
+
+  3. activate_charter(charter_id)
+     Transitions APPROVED → ACTIVE. Sets start date.
+
+  4. complete_charter(charter_id, summary)
+     Transitions ACTIVE → COMPLETED. Records end date.
+
+  5. suspend_charter(charter_id, reason)
+     Transitions any phase → SUSPENDED. Safety override authority.
+
+  6. get_charter(charter_id)
+     Retrieve charter by ID.
+
+  7. list_charters(domain, phase, principal_investigator)
+     Query charters with optional filters.
+
+  8. get_active_charters()
+     List all currently active research.
+
+  9. add_milestone(charter_id, title, description, target_date)
+     Register a milestone within a charter.
+
+  10. add_deliverable(charter_id, title, description, type, milestone_id)
+      Register a deliverable.
+
+  11. validate_charter_compliance(charter)
+      Validate against all governance bindings.
+
+  DATA MODELS:
+
+  • ResearchCharter      — Complete charter document
+  • ResearchObjective    — Individual research objective
+  • EthicalBoundary      — Ethical constraint definition
+  • ResearchMilestone    — Timeline milestone
+  • ResearchDeliverable  — Output artifact
+  • GovernanceLawBinding — Link to governance law
+
+  DELIVERABLE TYPES:
+
+  • PROTOCOL             — New or revised protocol
+  • ALGORITHM            — Mathematical or computational method
+  • DATASET              — Curated data for system use
+  • MODEL                — Trained model or decision framework
+  • REPORT               — Written analysis or findings
+  • TOOL                 — Software tool or utility
+  • GOVERNANCE_AMENDMENT — Proposed governance change
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                   VII. LAW ARTICLES                                        ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+The Research Charter Law (governance/research_charter_law.py) contains
+12 binding articles:
+
+  Module: spatium-computationis/governance/research_charter_law.py
+  Instrument Level: COMMITTEE (5)
+
+  ┌────────┬────────────────────────────────────────────┬────────────┐
+  │ ID     │ Title                                      │ Enforce    │
+  ├────────┼────────────────────────────────────────────┼────────────┤
+  │ RCL-01 │ Mandatory Scope Definition                 │ Mandatory  │
+  │ RCL-02 │ Ethical Classification Requirement         │ Mandatory  │
+  │ RCL-03 │ Authority Chain for Research Approval      │ Mandatory  │
+  │ RCL-04 │ Measurable Objectives and Deliverables     │ Mandatory  │
+  │ RCL-05 │ Ethical Boundaries and Safety Constraints  │ Mandatory  │
+  │ RCL-06 │ Sovereignty Protection in Research         │ Mandatory  │
+  │ RCL-07 │ Methodology Declaration and Transparency   │ Mandatory  │
+  │ RCL-08 │ Safety Override Authority                  │ Mandatory  │
+  │ RCL-09 │ Feedback and Learning Integration          │ Mandatory  │
+  │ RCL-10 │ Cross-Domain Research Coordination         │ Conditional│
+  │ RCL-11 │ Research Data Governance                   │ Mandatory  │
+  │ RCL-12 │ Charter Lifecycle Governance               │ Mandatory  │
+  └────────┴────────────────────────────────────────────┴────────────┘
+
+  PENALTIES FOR VIOLATIONS:
+
+  • charter_rejection          — Charter cannot proceed
+  • charter_suspension         — Active charter suspended
+  • charter_termination        — Charter permanently ended
+  • activity_suspension        — Research activity halted
+  • immediate_halt             — Safety override halt
+  • immediate_suspension       — Safety override suspension
+  • escalation_to_ethics_board — Ethics review triggered
+  • safety_review              — Safety investigation opened
+  • safety_investigation       — Formal safety inquiry
+  • potential_termination      — May result in charter end
+  • methodology_review_required — Methodology must be revised
+  • charter_revision_required  — Charter returned for revision
+  • coordination_review_required — Multi-domain coordination needed
+  • completion_blocked_until_feedback_registered — Cannot complete
+  • sovereignty_violation_report — Constitutional violation flagged
+  • data_access_revoked        — Data permissions removed
+  • audit_flag                 — Audit trail flagged for review
+  • authority_review           — Authority chain re-evaluated
+  • lifecycle_violation        — Phase transition blocked
+  • phase_reversion            — Charter reverted to prior phase
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║               VIII. COMPLIANCE VALIDATION                                 ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+The system provides runtime compliance validation:
+
+  1. STRUCTURAL VALIDATION (at charter creation):
+     - Objectives have measurable criteria
+     - Ethical classification is present
+     - Principal investigator is designated
+     - Abstract is substantive (≥10 characters)
+     - Methodology references no forbidden external LLMs
+
+  2. GOVERNANCE REVIEW (at approval):
+     - All mandatory bindings satisfied
+     - Ethical boundaries defined for classification level
+     - Authority chain appropriate for scope
+     - No Constitutional violations detected
+
+  3. RUNTIME ENFORCEMENT (during active phase):
+     - Safety rules retain override authority
+     - Pipeline compliance enforced by Procedural rules
+     - Audit trail maintained per PROC-002
+     - Feedback integration per RCL-09
+
+  4. COMPLETION VALIDATION (at charter close):
+     - Deliverables produced and registered
+     - Outcomes fed back to learning loop
+     - Data archived per RCL-11
+     - Final compliance report generated
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║               IX. INTEGRATION POINTS                                      ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+The Research Charter Protocol integrates with:
+
+  PROTOCOL INTEGRATIONS:
+  ├── Protocol I (Ingressus)     — Research data normalization
+  ├── Protocol II (Compressio)   — Research findings compression
+  ├── Protocol III (Ordinatio)   — Research task routing
+  ├── Protocol IV (Actio)        — Research action execution
+  ├── Protocol V (Reductus)      — Field feedback on research outcomes
+  ├── Protocol VI (Feedback)     — Learning loop integration (RCL-09)
+  ├── Security Protocols         — Research data protection
+  ├── Audit Protocols            — Compliance logging (Chronicon)
+  ├── Workflow Protocols          — Research scheduling (Calendarium)
+  └── Discovery Protocol         — Research agent discovery
+
+  GOVERNANCE INTEGRATIONS:
+  ├── Constitutional Charter     — Scope constraints, sovereignty
+  ├── Rules of Procedure         — Pipeline and audit requirements
+  ├── Committee Instruments      — Approval authority, coordination
+  ├── Personnel Instruments      — Researcher registration
+  ├── Code of Conduct            — Ethical standards
+  ├── Open Data Policy           — Transparency requirements
+  └── Safety Rules               — Override authority
+
+  SYSTEM INTEGRATIONS:
+  ├── Nova Sovereign             — Intelligence backend for research
+  ├── Organism Charter (Defense) — Defense research classification
+  ├── Agent Scaffolds            — Research agent lifecycle
+  └── Feedback Database          — Outcome persistence
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    X. APPENDICES                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+APPENDIX A: Research Charter Template
+
+  To create a new research charter:
+
+    from spatium_computationis.protocols.research_charter import (
+        create_charter, ResearchDomain, EthicalClassification
+    )
+
+    charter = create_charter(
+        title="[Research Title]",
+        domain=ResearchDomain.[DOMAIN],
+        abstract="[Description of the research inquiry]",
+        principal_investigator="[agent_name or human_name]",
+        objectives=[
+            {
+                "title": "[Objective Title]",
+                "description": "[What will be investigated]",
+                "measurable_criteria": ["[How success is measured]"],
+                "priority": 1,
+            },
+        ],
+        hypothesis="[What we expect to find]",
+        methodology="[How the research will be conducted]",
+        ethical_classification=EthicalClassification.[LEVEL],
+    )
+
+
+APPENDIX B: Governance Review Workflow
+
+    from spatium_computationis.governance import ResearchCharterLaw
+
+    law = ResearchCharterLaw()
+    review = law.review_charter_proposal(charter.model_dump())
+
+    if review["outcome"] == "approved":
+        approved = approve_charter(charter.charter_id, "committee_authority")
+    elif review["outcome"] == "approved_with_conditions":
+        # Address conditions, then approve
+        ...
+    elif review["outcome"] == "requires_escalation":
+        # Escalate to Constitutional authority
+        ...
+
+
+APPENDIX C: Glyph Reference
+
+    ⊛  Research Charter — formalized inquiry under protocol
+    ⊕  Discovery — new knowledge entering the system
+    ⊘  Boundary — ethical/scope constraint applied
+    ⟲  Feedback — outcome returns to improve future decisions
+    ⇡  Amplify — successful research patterns reinforced
+    ⇣  Dampen — failed approaches reduced in weight
+    ⌬  Compression — research findings compressed to intelligence
+    ⚖  Governance — law and compliance authority
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ END OF RESEARCH CHARTER
+ ⊛ Spatium Computationis — formalized research under sovereign governance
+═══════════════════════════════════════════════════════════════════════════════
