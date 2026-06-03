@@ -57,7 +57,7 @@ class FusionWeights(BaseModel):
     pilot: float = Field(ge=0.0)
     ai_intelligence: float = Field(ge=0.0)
     alert_level: float = Field(ge=0.0, le=1.0)
-    urgency: float = Field(ge=0.0)
+    urgency: float = Field(ge=0.0, le=1.0)
 
     def as_dict(self) -> dict[MindType, float]:
         return {
