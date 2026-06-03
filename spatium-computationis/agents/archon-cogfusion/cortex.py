@@ -282,7 +282,10 @@ def recall_memories(
             created = datetime.fromisoformat(row["created_at"])
             # Temporal decay: signal strength reduces over time
             age_hours = (now - created).total_seconds() / 3600
-            decay = math.exp(-0.02 * age_hours)  # Exponential decay, ~50% at 35hr
+            # Exponential decay: λ=0.02/hr gives half-life ≈ 34.7hr (ln2/0.02)
+            # This means a signal loses ~50% strength after ~35 hours,
+            # aligning with the 72hr working memory window (signal < 24% at expiry)
+            decay = math.exp(-0.02 * age_hours)
 
             memories.append(WorkingMemory(
                 memory_id=row["memory_id"],
