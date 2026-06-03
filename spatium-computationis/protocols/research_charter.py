@@ -38,6 +38,14 @@ from pydantic import BaseModel, Field
 
 
 # ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+# External LLM references that violate sovereignty (CONSTITUTIONAL.3)
+FORBIDDEN_EXTERNAL_LLMS = ["openai", "anthropic api", "gpt-4", "claude api"]
+
+
+# ---------------------------------------------------------------------------
 # Research Charter Enums
 # ---------------------------------------------------------------------------
 
@@ -831,8 +839,7 @@ def _charter_violates_constraint(
     if binding.law_reference == "CONSTITUTIONAL.3":
         # Check methodology doesn't reference external LLMs
         if charter.methodology:
-            forbidden = ["openai", "anthropic api", "gpt-4", "claude api"]
-            return any(f in charter.methodology.lower() for f in forbidden)
+            return any(f in charter.methodology.lower() for f in FORBIDDEN_EXTERNAL_LLMS)
         return False
 
     # ETHICS.4: no fabrication

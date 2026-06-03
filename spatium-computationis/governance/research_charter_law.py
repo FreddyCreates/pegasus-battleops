@@ -262,8 +262,10 @@ def _violates_article(
                 "committee_authority",
                 "constitutional_authority",
             ]
+            if authority not in authority_order:
+                return True  # Unrecognized authority cannot satisfy requirement
             required_idx = authority_order.index(article.authority_required.value)
-            provided_idx = authority_order.index(authority) if authority in authority_order else -1
+            provided_idx = authority_order.index(authority)
             if provided_idx < required_idx:
                 return True
 
