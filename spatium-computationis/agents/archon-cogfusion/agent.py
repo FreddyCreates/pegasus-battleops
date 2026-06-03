@@ -48,6 +48,7 @@ from .fusion import (
     PostureTransition,
     compute_dynamic_weights,
     fuse_signals,
+    fuse_signals_with_embedding_brain,
 )
 from .minds import (
     MIND_PROFILES,
@@ -254,10 +255,12 @@ class ArchonEngine:
         self,
         host_id: str | None = None,
         doctrine: DoctrineEngine | None = None,
+        embedding_brain: bool = True,
     ):
         self.host_id = host_id
         self.doctrine = doctrine or DoctrineEngine()
         self._current_posture = PostureMode.PATROL
+        self._embedding_brain_enabled = embedding_brain
 
         # Load host posture if available
         if host_id:
@@ -304,8 +307,33 @@ class ArchonEngine:
         # Step 2: Five-mind reasoning
         signals = await run_full_cognition(input_data, awareness)
 
-        # Step 3: Cognitive fusion
-        decision = fuse_signals(signals, alert_level, self._current_posture)
+        # Step 3: Cognitive fusion (embedding brain or traditional)
+        if self._embedding_brain_enabled:
+            # Compute embedding brain context from awareness
+            threat_vectors = [t.vector for t in awareness.active_threats]
+            threat_count = len(awareness.active_threats)
+            threat_severity_max = max(
+                (t.severity for t in awareness.active_threats), default=0.0
+            )
+            threat_severity_avg = (
+                sum(t.severity for t in awareness.active_threats) / threat_count
+                if threat_count > 0 else 0.0
+            )
+
+            decision = fuse_signals_with_embedding_brain(
+                signals=signals,
+                alert_level=alert_level,
+                current_posture=self._current_posture,
+                threat_vectors=threat_vectors,
+                threat_count=threat_count,
+                threat_severity_max=threat_severity_max,
+                threat_severity_avg=threat_severity_avg,
+                posture_stability_hours=awareness.posture_stability_hours,
+                signal_frequency=sum(awareness.signal_frequency.values()),
+                drift_magnitude=max(awareness.baseline_drift.values(), default=0.0),
+            )
+        else:
+            decision = fuse_signals(signals, alert_level, self._current_posture)
 
         # Step 4: Doctrine gate
         mind_signal_map = {s.mind_type: s.confidence for s in signals}
@@ -485,17 +513,19 @@ class ArchonEngine:
 def create_engine(
     host_id: str | None = None,
     doctrine: DoctrineEngine | None = None,
+    embedding_brain: bool = True,
 ) -> ArchonEngine:
     """Create an ARCHON engine instance.
 
     Args:
         host_id: Optional host to bind to
         doctrine: Optional custom doctrine engine
+        embedding_brain: Enable embedding brain fusion (V1 prototype, default True)
 
     Returns:
         ArchonEngine ready for cognition
     """
-    return ArchonEngine(host_id=host_id, doctrine=doctrine)
+    return ArchonEngine(host_id=host_id, doctrine=doctrine, embedding_brain=embedding_brain)
 
 
 def evaluate(

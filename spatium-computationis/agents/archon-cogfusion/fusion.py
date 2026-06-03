@@ -181,6 +181,7 @@ class FusedDecision(BaseModel):
     - Contention resolution records
     - Posture recommendation
     - Governance compliance status
+    - Embedding brain state (when embedding fusion is active)
     """
     decision_value: float = Field(description="Weighted sum of all mind signals")
     weights_used: FusionWeights
@@ -205,6 +206,13 @@ class FusedDecision(BaseModel):
     governance_compliant: bool = True
     governance_notes: list[str] = Field(default_factory=list)
     requires_human_review: bool = False
+
+    # Embedding Brain (V1 prototype — context-driven leadership shifts)
+    embedding_brain_active: bool = False
+    embedding_leadership_mode: str = ""
+    embedding_dominant_coalition: list[str] = Field(default_factory=list)
+    embedding_decision_direction: str = ""
+    embedding_attention_weights: dict[str, float] = Field(default_factory=dict)
 
     # Audit
     metadata: dict[str, Any] = Field(default_factory=dict)
@@ -516,3 +524,79 @@ def fuse_signals(
         posture_transition=transition,
         requires_human_review=requires_human,
     )
+
+
+def fuse_signals_with_embedding_brain(
+    signals: list[MindSignal],
+    alert_level: float,
+    current_posture: PostureMode = PostureMode.PATROL,
+    threat_vectors: list | None = None,
+    threat_count: int = 0,
+    threat_severity_max: float = 0.0,
+    threat_severity_avg: float = 0.0,
+    posture_stability_hours: float = 0.0,
+    signal_frequency: float = 0.0,
+    drift_magnitude: float = 0.0,
+    time_pressure: float = 0.0,
+) -> FusedDecision:
+    """Perform cognitive fusion using the ARCHON Embedding Brain.
+
+    This is the V1 prototype embedding-enhanced fusion path. It runs the
+    standard fusion pipeline but augments it with embedding brain intelligence:
+
+    1. Standard fusion (weighted signals, contention, posture)
+    2. Embedding brain parallel analysis (context-driven leadership shifts)
+    3. Blended output with embedding state attached
+
+    The embedding brain provides:
+    - Context-driven leadership shifts via vector-space attention
+    - Seamless posture transitions without model reloading
+    - Reinforcement-ready weight updates via feedback protocol
+
+    @ItsnotAILabs | Alpha Mind Concept | ARCHON V1 Prototype
+    """
+    from .embedding_brain import embedding_fuse, EmbeddingBrainOutput
+
+    # Step 1: Standard fusion
+    decision = fuse_signals(signals, alert_level, current_posture)
+
+    # Step 2: Compute contention level for embedding context
+    contention_level = 0.0
+    if decision.has_contention:
+        contention_level = min(1.0, len(decision.contentions) * 0.3)
+
+    # Step 3: Embedding brain analysis
+    embedding_output: EmbeddingBrainOutput = embedding_fuse(
+        signals=signals,
+        alert_level=alert_level,
+        posture=current_posture,
+        threat_vectors=threat_vectors,
+        threat_count=threat_count,
+        threat_severity_max=threat_severity_max,
+        threat_severity_avg=threat_severity_avg,
+        posture_stability_hours=posture_stability_hours,
+        signal_frequency=signal_frequency,
+        drift_magnitude=drift_magnitude,
+        contention_level=contention_level,
+        time_pressure=time_pressure,
+    )
+
+    # Step 4: Attach embedding brain state to decision
+    decision.embedding_brain_active = True
+    decision.embedding_leadership_mode = embedding_output.leadership_mode
+    decision.embedding_dominant_coalition = embedding_output.dominant_coalition
+    decision.embedding_decision_direction = embedding_output.decision_direction
+    decision.embedding_attention_weights = embedding_output.attention_weights
+
+    # Enrich metadata
+    decision.metadata["embedding_brain"] = {
+        "version": embedding_output.version,
+        "alert_regime": embedding_output.alert_regime,
+        "regime_confidence": embedding_output.regime_confidence,
+        "context_stability": embedding_output.context_stability,
+        "decision_magnitude": embedding_output.decision_magnitude,
+        "dominant_mind_embedding": embedding_output.dominant_mind,
+        "timestamp": embedding_output.timestamp,
+    }
+
+    return decision

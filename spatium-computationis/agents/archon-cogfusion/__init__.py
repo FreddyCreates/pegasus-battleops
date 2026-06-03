@@ -62,6 +62,7 @@ from .fusion import (
     compute_urgency,
     compute_dynamic_weights,
     fuse_signals,
+    fuse_signals_with_embedding_brain,
     resolve_contention,
 )
 
@@ -79,6 +80,20 @@ from .doctrine import (
     HumanReviewGate,
     DoctrineEngine,
     ARCHON_DOCTRINE,
+)
+
+from .embedding_brain import (
+    EmbeddingBrainOutput,
+    EmbeddingFusionState,
+    EMBEDDING_DIM,
+    MIND_EMBEDDINGS,
+    encode_context,
+    compute_attention_weights,
+    cosine_similarity,
+    embedding_fuse,
+    embedding_enhanced_weights,
+    update_mind_embedding,
+    get_embedding_diagnostic,
 )
 
 from .agent import (
@@ -122,7 +137,20 @@ __all__ = [
     "compute_urgency",
     "compute_dynamic_weights",
     "fuse_signals",
+    "fuse_signals_with_embedding_brain",
     "resolve_contention",
+    # Embedding Brain (V1 Prototype)
+    "EmbeddingBrainOutput",
+    "EmbeddingFusionState",
+    "EMBEDDING_DIM",
+    "MIND_EMBEDDINGS",
+    "encode_context",
+    "compute_attention_weights",
+    "cosine_similarity",
+    "embedding_fuse",
+    "embedding_enhanced_weights",
+    "update_mind_embedding",
+    "get_embedding_diagnostic",
     # Cortex
     "CortexState",
     "SituationalAwareness",
