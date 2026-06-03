@@ -1,0 +1,12 @@
+title: "ARCHON — Alpha Mind Warfare SDK"
+description: "Five Minds. One Brain. Infinite Hosts."
+url: "https://freddycreates.github.io"
+baseurl: "/pegasus-battleops"
+theme: null
+plugins: []
+exclude:
+  - spatium-computationis/
+  - tests/
+  - .github/
+  - "*.py"
+  - __pycache__/
