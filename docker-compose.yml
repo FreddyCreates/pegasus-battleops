@@ -1,0 +1,15 @@
+services:
+  spatium-computationis:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - NOVA_SOVEREIGN_URL=${NOVA_SOVEREIGN_URL}
+      - NOVA_SOVEREIGN_TOKEN=${NOVA_SOVEREIGN_TOKEN}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; r = httpx.get('http://localhost:8000/'); assert r.status_code == 200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
