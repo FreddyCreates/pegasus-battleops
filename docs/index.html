@@ -1,0 +1,364 @@
+---
+layout: default
+title: "ARCHON — Alpha Mind Warfare SDK"
+description: "Five Minds. One Brain. Infinite Hosts."
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠⚡ ARCHON — Alpha Mind Warfare SDK</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent: #7c3aed;
+            --accent-glow: #a855f7;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #1e1e2e;
+            --green: #10b981;
+            --red: #ef4444;
+            --orange: #f59e0b;
+            --blue: #3b82f6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--accent-glow), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            color: var(--accent-glow);
+            font-style: italic;
+        }
+
+        /* Badges */
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-purple { background: var(--accent); }
+        .badge-green { background: var(--green); }
+        .badge-blue { background: var(--blue); }
+        .badge-orange { background: var(--orange); }
+        .badge-red { background: var(--red); }
+
+        /* Minds Grid */
+        .minds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .mind-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .mind-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .mind-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .mind-card h3 { color: var(--accent-glow); margin-bottom: 0.5rem; }
+        .mind-card .codename { color: var(--text-muted); font-size: 0.85rem; }
+        .mind-card .quote { font-style: italic; color: var(--text-muted); margin-top: 0.5rem; border-left: 2px solid var(--accent); padding-left: 0.75rem; }
+
+        /* Sections */
+        .section {
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-glow);
+        }
+
+        /* Integration Cards */
+        .integrations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .integration-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .integration-card h4 { color: var(--green); margin-bottom: 0.5rem; }
+        .integration-card p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Download */
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .download-btn {
+            display: block;
+            background: var(--bg-card);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: background 0.2s;
+        }
+
+        .download-btn:hover {
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        .download-btn .label { font-size: 0.85rem; color: var(--text-muted); }
+        .download-btn .format { font-size: 1.1rem; font-weight: bold; color: var(--accent-glow); }
+
+        /* Code Block */
+        .code-block {
+            background: #1a1a2e;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-muted);
+        }
+
+        .footer .brand {
+            font-size: 1.2rem;
+            color: var(--accent-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        a { color: var(--accent-glow); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>🧠⚡ ARCHON</h1>
+        <div class="subtitle">Alpha Mind Warfare SDK</div>
+        <div class="tagline">Five Minds. One Brain. Infinite Hosts.</div>
+
+        <div class="badges">
+            <span class="badge badge-purple">v1.0.0</span>
+            <span class="badge badge-green">200 Tests Passing</span>
+            <span class="badge badge-blue">Python 3.11+</span>
+            <span class="badge badge-orange">Nova Sovereign Backend</span>
+            <span class="badge badge-red">Proprietary</span>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- THE FIVE MINDS -->
+        <div class="section">
+            <h2>🧠 The Five Minds</h2>
+            <div class="minds-grid">
+                <div class="mind-card">
+                    <div class="icon">🔓</div>
+                    <h3>SPECTER</h3>
+                    <div class="codename">Hacker Mind · Weight: 0.236</div>
+                    <p>Exploits · Pressure Points · Asymmetric Movement</p>
+                    <div class="quote">"I see the crack before the wall knows it exists."</div>
+                </div>
+                <div class="mind-card">
+                    <div class="icon">🎖️</div>
+                    <h3>IMPERATOR</h3>
+                    <div class="codename">General Mind · Weight: 0.236</div>
+                    <p>Discipline · Escalation · Doctrine · Restraint</p>
+                    <div class="quote">"Discipline is the weapon that never runs out of ammunition."</div>
+                </div>
+                <div class="mind-card">
+                    <div class="icon">🗺️</div>
+                    <h3>ORACLE</h3>
+                    <div class="codename">Strategist Mind · Weight: 0.191</div>
+                    <p>Second-Order Consequences · Long-Range Positioning</p>
+                    <div class="quote">"The move after the move after the move. That's where I live."</div>
+                </div>
+                <div class="mind-card">
+                    <div class="icon">🛩️</div>
+                    <h3>VECTOR</h3>
+                    <div class="codename">Pilot Mind · Weight: 0.146</div>
+                    <p>Motion · Orientation · Terrain · Real-Time Maneuver</p>
+                    <div class="quote">"Velocity is a decision. Angle is doctrine. Arrival is inevitable."</div>
+                </div>
+                <div class="mind-card">
+                    <div class="icon">👁️</div>
+                    <h3>PANOPTES</h3>
+                    <div class="codename">AI Intelligence · Weight: 0.191 (CONSTANT)</div>
+                    <p>Continuous Observation · Pattern Tracking · Context</p>
+                    <div class="quote">"I remember everything. I forget nothing. I see what you missed."</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTEGRATIONS -->
+        <div class="section">
+            <h2>🔗 3rd Party Integrations</h2>
+            <div class="integrations-grid">
+                <div class="integration-card">
+                    <h4>🌟 Nova Sovereign</h4>
+                    <p>Decentralized intelligence backend for all mind reasoning. Sovereign AI — no OpenAI dependency.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>🦠 Organism Charter</h4>
+                    <p>Traffic classification pipeline. Feeds Tier A/B/C signals into ARCHON's cognitive stack.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>⚖️ Governance Hierarchy</h4>
+                    <p>7-level authority enforcement. Constitutional through Safety with override power.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>🔄 Feedback Protocol</h4>
+                    <p>Closed-loop learning. Records outcomes, propagates signals, adjusts weights.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>🛡️ Defense System</h4>
+                    <p>7-posture adaptive response. ARCHON drives posture transitions in real-time.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>🏗️ Agent Scaffolds</h4>
+                    <p>Lifecycle management, capability declarations, and registry for the 21-agent network.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>🌐 GoDaddy</h4>
+                    <p>Domain management, DNS configuration, and infrastructure provisioning.</p>
+                </div>
+                <div class="integration-card">
+                    <h4>📊 Marketing Store</h4>
+                    <p>Analytics pipeline for engagement tracking and performance metrics.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOWNLOAD -->
+        <div class="section">
+            <h2>📥 Download ARCHON</h2>
+            <div class="download-grid">
+                <a href="https://github.com/FreddyCreates/pegasus-battleops/archive/refs/heads/main.zip" class="download-btn">
+                    <div class="format">📦 ZIP Archive</div>
+                    <div class="label">Full SDK — All Modules</div>
+                </a>
+                <a href="https://github.com/FreddyCreates/pegasus-battleops/archive/refs/heads/main.tar.gz" class="download-btn">
+                    <div class="format">📦 TAR.GZ Archive</div>
+                    <div class="label">Full SDK — All Modules</div>
+                </a>
+                <a href="https://github.com/FreddyCreates/pegasus-battleops" class="download-btn">
+                    <div class="format">🔗 Git Clone</div>
+                    <div class="label">git clone &amp; sparse checkout</div>
+                </a>
+            </div>
+
+            <div class="code-block">
+<pre># Full clone
+git clone https://github.com/FreddyCreates/pegasus-battleops.git
+
+# ARCHON module only (sparse checkout)
+git clone --filter=blob:none --sparse https://github.com/FreddyCreates/pegasus-battleops.git
+cd pegasus-battleops
+git sparse-checkout set spatium-computationis/agents/archon-cogfusion</pre>
+            </div>
+        </div>
+
+        <!-- QUICK START -->
+        <div class="section">
+            <h2>🚀 Quick Start</h2>
+            <div class="code-block">
+<pre># Install dependencies
+pip install -r spatium-computationis/requirements.txt
+
+# Set Nova Sovereign credentials
+export NOVA_SOVEREIGN_URL="https://your-nova-instance.com"
+export NOVA_SOVEREIGN_TOKEN="your-token"
+
+# Run tests (200 tests)
+python -m pytest tests/test_archon.py tests/test_archon_pressure.py -v</pre>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="brand">ITSNOTAILABS | Alpha Mind Concept | ARCHON V1</div>
+        <p>Five Minds. One Brain. Infinite Hosts. 🧠⚡</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://github.com/FreddyCreates/pegasus-battleops">GitHub</a> ·
+            <a href="https://github.com/FreddyCreates/Decentralized-Production-NOVA-Protocol">Nova Sovereign</a>
+        </p>
+    </div>
+
+</body>
+</html>

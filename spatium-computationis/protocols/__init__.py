@@ -1,15 +1,16 @@
 """
 Protocols Package — Spatium Computationis
 
-A comprehensive suite of 53 production-ready protocols organized into categories:
+A comprehensive suite of 54 production-ready protocols organized into categories:
 
-Core Pipeline (6 protocols):
+Core Pipeline (7 protocols):
   I.   Ingressus  — raw input normalization
   II.  Compressio — compression into intelligence objects
   III. Ordinatio  — routing decisions
   IV.  Actio      — action execution
   V.   Reductus   — field feedback loop
   VI.  Feedback   — learning and weight adjustment
+  VII. Research Charter — formalized research governance
 
 Security (6 protocols):
   🔐 Authenticatio — identity verification
@@ -67,7 +68,7 @@ Discovery (1 protocol):
 Synchronization (1 protocol):
   🔄 Synchronizatio — state synchronization with conflict resolution
 
-Total: 53 protocols ready for production use.
+Total: 54 protocols ready for production use.
 
 Glyphs (Core):
   ⊕ Ingressus  — input gate
@@ -76,6 +77,7 @@ Glyphs (Core):
   ⚡ Actio      — execution
   ↺ Reductus   — field return
   ⟲ Feedback   — learning loop
+  ⊛ Research   — formalized inquiry
 """
 
 # Core Pipeline Protocols
@@ -363,6 +365,33 @@ from .sync import (
     ConflictStrategy,
 )
 
+# Research Charter Protocol
+from . import research_charter
+from .research_charter import (
+    create_charter,
+    approve_charter,
+    activate_charter,
+    complete_charter,
+    suspend_charter,
+    get_charter,
+    list_charters,
+    get_active_charters,
+    add_milestone,
+    add_deliverable,
+    validate_charter_compliance,
+    ResearchCharter,
+    ResearchDomain,
+    ResearchPhase,
+    EthicalClassification,
+    DeliverableType,
+    ComplianceStatus,
+    ResearchObjective,
+    EthicalBoundary,
+    ResearchMilestone,
+    ResearchDeliverable,
+    GovernanceLawBinding,
+)
+
 __all__ = [
     # Core pipeline modules
     "ingressus",
@@ -601,4 +630,29 @@ __all__ = [
     "SyncStatus",
     "VectorClock",
     "ConflictStrategy",
+
+    # Research Charter exports
+    "research_charter",
+    "create_charter",
+    "approve_charter",
+    "activate_charter",
+    "complete_charter",
+    "suspend_charter",
+    "get_charter",
+    "list_charters",
+    "get_active_charters",
+    "add_milestone",
+    "add_deliverable",
+    "validate_charter_compliance",
+    "ResearchCharter",
+    "ResearchDomain",
+    "ResearchPhase",
+    "EthicalClassification",
+    "DeliverableType",
+    "ComplianceStatus",
+    "ResearchObjective",
+    "EthicalBoundary",
+    "ResearchMilestone",
+    "ResearchDeliverable",
+    "GovernanceLawBinding",
 ]

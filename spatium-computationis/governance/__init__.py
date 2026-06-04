@@ -22,6 +22,7 @@ from .code_of_conduct import CodeOfConduct
 from .open_data_policy import OpenDataPolicy
 from .safety_rules import SafetyRules, SafetyObjectives
 from .hierarchy import GovernanceHierarchy
+from .research_charter_law import ResearchCharterLaw, ResearchAuthority, ResearchReviewOutcome
 
 __all__ = [
     "RulesOfProcedure",
@@ -30,4 +31,7 @@ __all__ = [
     "SafetyRules",
     "SafetyObjectives",
     "GovernanceHierarchy",
+    "ResearchCharterLaw",
+    "ResearchAuthority",
+    "ResearchReviewOutcome",
 ]
