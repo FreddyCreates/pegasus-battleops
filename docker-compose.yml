@@ -8,7 +8,7 @@ services:
       - NOVA_SOVEREIGN_TOKEN=${NOVA_SOVEREIGN_TOKEN}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import httpx; r = httpx.get('http://localhost:8000/'); assert r.status_code == 200"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
       interval: 30s
       timeout: 10s
       retries: 3
