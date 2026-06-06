@@ -69,6 +69,30 @@ from .value_extraction import (
 
 from .organism_stats import organism_router
 
+from .adaptive_response import (
+    AdaptiveResponseEngine,
+    ResponseDecision,
+    ResponseConfig,
+    get_engine,
+    ResponseStrategy,
+    StrategyType,
+    RateLimitStrategy,
+    ChallengeStrategy,
+    BlockStrategy,
+    EngageStrategy,
+    TarPitStrategy,
+    ObserveStrategy,
+    get_strategy,
+    EscalationRule,
+    EscalationEngine,
+    EscalationEvent,
+    get_escalation_engine,
+    EffectivenessTracker,
+    EffectivenessReport,
+    get_tracker,
+    adaptive_response_router,
+)
+
 __all__ = [
     # Schemas
     "ThreatLevel",
@@ -113,4 +137,26 @@ __all__ = [
     "complete_task",
     # Organism Stats Router
     "organism_router",
+    # Adaptive Response Engine
+    "AdaptiveResponseEngine",
+    "ResponseDecision",
+    "ResponseConfig",
+    "get_engine",
+    "ResponseStrategy",
+    "StrategyType",
+    "RateLimitStrategy",
+    "ChallengeStrategy",
+    "BlockStrategy",
+    "EngageStrategy",
+    "TarPitStrategy",
+    "ObserveStrategy",
+    "get_strategy",
+    "EscalationRule",
+    "EscalationEngine",
+    "EscalationEvent",
+    "get_escalation_engine",
+    "EffectivenessTracker",
+    "EffectivenessReport",
+    "get_tracker",
+    "adaptive_response_router",
 ]

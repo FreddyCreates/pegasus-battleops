@@ -26,6 +26,7 @@ from .schemas import (
 from .defense.honeypot.routes import honeypot_router
 from .defense.dashboard.api import dashboard_router
 from .defense.dashboard.websocket import defense_websocket_endpoint
+from .defense.adaptive_response.routes import adaptive_response_router
 
 # Import marketing components
 from .marketing_router import marketing_router
@@ -66,6 +67,7 @@ app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
 
 app.include_router(honeypot_router)
 app.include_router(dashboard_router, prefix="/api")
+app.include_router(adaptive_response_router, prefix="/api")
 app.include_router(marketing_router)
 app.include_router(platform_router, prefix="/api")
 app.include_router(frontend_router)
