@@ -34,6 +34,9 @@ from .marketing_router import marketing_router
 # Import platform components
 from .platform_router import platform_router
 
+# Import simulation components
+from .simulation.routes import simulation_router
+
 # Import frontend components
 from .frontend.routes import frontend_router
 
@@ -70,6 +73,7 @@ app.include_router(dashboard_router, prefix="/api")
 app.include_router(adaptive_response_router, prefix="/api")
 app.include_router(marketing_router)
 app.include_router(platform_router, prefix="/api")
+app.include_router(simulation_router, prefix="/api")
 app.include_router(frontend_router)
 
 
