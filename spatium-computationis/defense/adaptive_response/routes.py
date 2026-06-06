@@ -52,6 +52,10 @@ class ManualResponseRequest(BaseModel):
     entity_ip: str
     strategy_type: StrategyType
     fingerprint_id: str | None = None
+    classification_tier: ClassificationTier = ClassificationTier.TIER_B_HOSTILE
+    entity_role: EntityRole = EntityRole.THREAT
+    threat_level: ThreatLevel = ThreatLevel.HIGH
+    classification_confidence: float = 1.0
     reason: str = "manual_override"
 
 
@@ -187,10 +191,10 @@ async def manual_response(request: ManualResponseRequest) -> dict[str, Any]:
 
     decision = engine.decide_and_execute(
         entity_ip=request.entity_ip,
-        classification_tier=ClassificationTier.TIER_B_HOSTILE,
-        entity_role=EntityRole.THREAT,
-        threat_level=ThreatLevel.HIGH,
-        classification_confidence=1.0,
+        classification_tier=request.classification_tier,
+        entity_role=request.entity_role,
+        threat_level=request.threat_level,
+        classification_confidence=request.classification_confidence,
         fingerprint_id=request.fingerprint_id,
         context={"manual": True, "reason": request.reason},
     )

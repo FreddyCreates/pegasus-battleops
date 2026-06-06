@@ -11,6 +11,7 @@ the optimal response strategy based on:
 
 from __future__ import annotations
 
+import random
 import sqlite3
 import uuid
 from contextlib import contextmanager
@@ -214,7 +215,6 @@ class AdaptiveResponseEngine:
         3. Confidence gating (low confidence → observe)
         4. A/B exploration (small % try alternative strategies)
         """
-        import random
 
         # Low confidence → fall back to observation
         if classification_confidence < self.config.escalate_confidence:
