@@ -265,7 +265,10 @@ class SimulationEngine:
             Vector3(0, 5, 35),
         ]
         start = random.choice(zone_centers)
-        end = random.choice([z for z in zone_centers if z != start])
+        others = [z for z in zone_centers if z != start]
+        if not others:
+            return
+        end = random.choice(others)
 
         spawn_pos = Vector3(
             start.x + random.uniform(-3, 3),
