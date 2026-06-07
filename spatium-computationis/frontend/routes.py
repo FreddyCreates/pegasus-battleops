@@ -83,6 +83,17 @@ async def agents_dashboard(request: Request):
     })
 
 
+@frontend_router.get("/simulation", response_class=HTMLResponse, tags=["frontend"])
+async def simulation_page(request: Request):
+    """
+    🌐 3D Simulation Environment — Real-time 3D battlespace visualization.
+    """
+    return templates.TemplateResponse("simulation.html", {
+        "request": request,
+        "title": "3D Simulation — Spatium Computationis",
+    })
+
+
 # ---------------------------------------------------------------------------
 # Server-Sent Events (SSE) Streaming
 # ---------------------------------------------------------------------------

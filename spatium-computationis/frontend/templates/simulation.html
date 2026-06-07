@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⌬ Spatium Computationis — 3D Simulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #0a0a1a;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            color: #e0e0e0;
+        }
+
+        #simulation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* HUD Overlay */
+        .hud {
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .hud-top-left {
+            top: 20px;
+            left: 20px;
+        }
+
+        .hud-top-right {
+            top: 20px;
+            right: 20px;
+        }
+
+        .hud-bottom-left {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .hud-bottom-right {
+            bottom: 20px;
+            right: 20px;
+            pointer-events: auto;
+        }
+
+        .hud-panel {
+            background: rgba(10, 10, 26, 0.85);
+            border: 1px solid rgba(108, 92, 231, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hud-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #6c5ce7;
+            margin-bottom: 10px;
+        }
+
+        .hud-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 13px;
+        }
+
+        .hud-stat-label {
+            color: #888;
+        }
+
+        .hud-stat-value {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .status-connected { color: #00ff88; }
+        .status-disconnected { color: #ff4757; }
+        .status-error { color: #fdcb6e; }
+
+        /* Controls */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sim-btn {
+            background: rgba(108, 92, 231, 0.2);
+            border: 1px solid rgba(108, 92, 231, 0.4);
+            color: #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sim-btn:hover {
+            background: rgba(108, 92, 231, 0.4);
+            border-color: #6c5ce7;
+        }
+
+        .sim-btn.threat {
+            border-color: rgba(255, 71, 87, 0.4);
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        .sim-btn.threat:hover {
+            background: rgba(255, 71, 87, 0.3);
+        }
+
+        .sim-btn.signal {
+            border-color: rgba(0, 255, 136, 0.4);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .sim-btn.signal:hover {
+            background: rgba(0, 255, 136, 0.3);
+        }
+
+        /* System title */
+        .system-title {
+            font-size: 14px;
+            color: #6c5ce7;
+            margin-bottom: 4px;
+        }
+
+        .system-subtitle {
+            font-size: 10px;
+            color: #636e72;
+            letter-spacing: 1px;
+        }
+
+        /* Zone legend */
+        .zone-legend {
+            margin-top: 12px;
+        }
+
+        .zone-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 3px 0;
+            font-size: 11px;
+        }
+
+        .zone-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Instructions */
+        .instructions {
+            font-size: 10px;
+            color: #636e72;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <canvas id="simulation-canvas"></canvas>
+
+    <!-- HUD: Top Left — System Info -->
+    <div class="hud hud-top-left">
+        <div class="hud-panel">
+            <div class="system-title">⌬ SPATIUM COMPUTATIONIS</div>
+            <div class="system-subtitle">3D SIMULATION ENVIRONMENT</div>
+            <div style="margin-top: 12px;">
+                <div class="hud-stat">
+                    <span class="hud-stat-label">Status</span>
+                    <span class="hud-stat-value" id="hud-status">connecting...</span>
+                </div>
+                <div class="hud-stat">
+                    <span class="hud-stat-label">Tick</span>
+                    <span class="hud-stat-value" id="hud-tick">0</span>
+                </div>
+                <div class="hud-stat">
+                    <span class="hud-stat-label">Entities</span>
+                    <span class="hud-stat-value" id="hud-entities">0</span>
+                </div>
+                <div class="hud-stat">
+                    <span class="hud-stat-label">World Time</span>
+                    <span class="hud-stat-value" id="hud-time">0.0s</span>
+                </div>
+            </div>
+
+            <div class="zone-legend">
+                <div class="hud-title">Zones</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#6c5ce7"></span> Core Nexus</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#00cec9"></span> Knowledge Realm</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#d63031"></span> Adversary Lab</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#fdcb6e"></span> Quarantine</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#e17055"></span> Honeypot Grid</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#0984e3"></span> Gateway Perimeter</div>
+                <div class="zone-item"><span class="zone-dot" style="background:#2d3436"></span> Shadow Layer</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD: Bottom Right — Controls -->
+    <div class="hud hud-bottom-right">
+        <div class="hud-panel controls-panel">
+            <div class="hud-title">Controls</div>
+            <button class="sim-btn threat" onclick="injectThreat()">⚠ Inject Threat</button>
+            <button class="sim-btn signal" onclick="injectSignal()">◈ Inject Signal</button>
+            <button class="sim-btn" onclick="requestFullState()">↻ Refresh State</button>
+            <div class="instructions">
+                Orbit: Left Click + Drag<br>
+                Pan: Right Click + Drag<br>
+                Zoom: Scroll Wheel
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/static/js/simulation-3d.js"></script>
+</body>
+</html>
