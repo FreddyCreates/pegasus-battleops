@@ -41,6 +41,33 @@ from .platform import (
     get_bot,
     list_bots,
     invoke_bot,
+    # Buses
+    BusTopic,
+    EventPriority,
+    publish_event,
+    subscribe_to_bus,
+    unsubscribe_from_bus,
+    get_bus_history,
+    get_bus_metrics,
+    get_bus_dead_letters,
+    list_bus_subscriptions,
+    # Taxis
+    TaxiPriority,
+    dispatch_taxi,
+    dispatch_taxi_async,
+    cancel_taxi,
+    get_taxi_routes,
+    get_taxi_route,
+    get_taxi_metrics,
+    get_taxi_history,
+    get_taxis_in_flight,
+    # Layers
+    LayerLevel,
+    get_layer,
+    get_all_layers,
+    route_layer_request,
+    get_layer_metrics,
+    get_layer_topology,
 )
 from .scaffolds.base import CapabilityType
 
@@ -355,3 +382,315 @@ async def invoke_bot_endpoint(bot_id: str, req: InvokeBotRequest):
     if not result.success:
         raise HTTPException(status_code=400, detail=result.error)
     return result.model_dump()
+
+
+# ---------------------------------------------------------------------------
+# Event Buses  🚌
+# ---------------------------------------------------------------------------
+
+class PublishEventRequest(BaseModel):
+    topic: str
+    source: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+    priority: str = "normal"
+    correlation_id: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    ttl_seconds: int | None = None
+
+
+class SubscribeRequest(BaseModel):
+    subscriber: str
+    topic_pattern: str
+    min_priority: str = "low"
+    source_filter: str | None = None
+
+
+class UnsubscribeRequest(BaseModel):
+    subscription_id: str
+
+
+@platform_router.post("/buses/publish", tags=["platform"])
+async def bus_publish(req: PublishEventRequest):
+    """
+    🚌 Publish an event to the internal event bus.
+    """
+    try:
+        priority = EventPriority(req.priority)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid priority. Valid: {[p.value for p in EventPriority]}",
+        )
+
+    delivered = await publish_event(
+        topic=req.topic,
+        source=req.source,
+        payload=req.payload,
+        priority=priority,
+        correlation_id=req.correlation_id,
+        tags=req.tags,
+        ttl_seconds=req.ttl_seconds,
+    )
+    return {"published": True, "topic": req.topic, "delivered_to": delivered}
+
+
+@platform_router.get("/buses/history", tags=["platform"])
+async def bus_history(topic: str | None = None, source: str | None = None, limit: int = 50):
+    """
+    🚌 Get recent event bus history.
+    """
+    events = get_bus_history(topic=topic, source=source, limit=limit)
+    return {
+        "events": [e.model_dump() for e in events],
+        "total": len(events),
+    }
+
+
+@platform_router.get("/buses/metrics", tags=["platform"])
+async def bus_metrics():
+    """
+    🚌 Get event bus metrics.
+    """
+    return get_bus_metrics().model_dump()
+
+
+@platform_router.get("/buses/subscriptions", tags=["platform"])
+async def bus_subscriptions(subscriber: str | None = None):
+    """
+    🚌 List active bus subscriptions.
+    """
+    subs = list_bus_subscriptions(subscriber=subscriber)
+    return {
+        "subscriptions": [s.model_dump() for s in subs],
+        "total": len(subs),
+    }
+
+
+@platform_router.get("/buses/dead-letters", tags=["platform"])
+async def bus_dead_letters(limit: int = 50):
+    """
+    🚌 Get dead letter queue (failed deliveries).
+    """
+    letters = get_bus_dead_letters(limit=limit)
+    return {"dead_letters": letters, "total": len(letters)}
+
+
+@platform_router.get("/buses/topics", tags=["platform"])
+async def bus_topics():
+    """
+    🚌 List all pre-defined bus topics.
+    """
+    return {
+        "topics": [{"name": t.name, "value": t.value} for t in BusTopic],
+        "total": len(BusTopic),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Taxis  🚕
+# ---------------------------------------------------------------------------
+
+class DispatchTaxiRequest(BaseModel):
+    sender: str
+    receiver: str
+    route: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+    priority: str = "standard"
+    timeout_seconds: float = 30.0
+    correlation_id: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    fire_and_forget: bool = False
+
+
+class CancelTaxiRequest(BaseModel):
+    taxi_id: str
+
+
+@platform_router.post("/taxis/dispatch", tags=["platform"])
+async def taxi_dispatch(req: DispatchTaxiRequest):
+    """
+    🚕 Dispatch a point-to-point taxi request.
+    """
+    try:
+        priority = TaxiPriority(req.priority)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid priority. Valid: {[p.value for p in TaxiPriority]}",
+        )
+
+    if req.fire_and_forget:
+        taxi_id = await dispatch_taxi_async(
+            sender=req.sender,
+            receiver=req.receiver,
+            route=req.route,
+            payload=req.payload,
+            priority=priority,
+            timeout_seconds=req.timeout_seconds,
+            correlation_id=req.correlation_id,
+            tags=req.tags,
+        )
+        return {"dispatched": True, "taxi_id": taxi_id, "mode": "fire_and_forget"}
+
+    response = await dispatch_taxi(
+        sender=req.sender,
+        receiver=req.receiver,
+        route=req.route,
+        payload=req.payload,
+        priority=priority,
+        timeout_seconds=req.timeout_seconds,
+        correlation_id=req.correlation_id,
+        tags=req.tags,
+    )
+    return response.model_dump()
+
+
+@platform_router.post("/taxis/cancel", tags=["platform"])
+async def taxi_cancel(req: CancelTaxiRequest):
+    """
+    🚕 Cancel an in-flight taxi request.
+    """
+    cancelled = cancel_taxi(req.taxi_id)
+    if not cancelled:
+        raise HTTPException(status_code=404, detail=f"Taxi '{req.taxi_id}' not found or already completed")
+    return {"cancelled": True, "taxi_id": req.taxi_id}
+
+
+@platform_router.get("/taxis/routes", tags=["platform"])
+async def taxi_routes():
+    """
+    🚕 List all registered taxi routes.
+    """
+    routes = get_taxi_routes()
+    return {
+        "routes": [r.model_dump() for r in routes],
+        "total": len(routes),
+    }
+
+
+@platform_router.get("/taxis/routes/{route_name}", tags=["platform"])
+async def taxi_route_detail(route_name: str):
+    """
+    🚕 Get details of a specific taxi route.
+    """
+    route = get_taxi_route(route_name)
+    if not route:
+        raise HTTPException(status_code=404, detail=f"Route '{route_name}' not found")
+    return route.model_dump()
+
+
+@platform_router.get("/taxis/metrics", tags=["platform"])
+async def taxi_metrics():
+    """
+    🚕 Get taxi transport metrics.
+    """
+    return get_taxi_metrics().model_dump()
+
+
+@platform_router.get("/taxis/history", tags=["platform"])
+async def taxi_history(route: str | None = None, limit: int = 50):
+    """
+    🚕 Get recent taxi delivery history.
+    """
+    history = get_taxi_history(route=route, limit=limit)
+    return {
+        "deliveries": [r.model_dump() for r in history],
+        "total": len(history),
+    }
+
+
+@platform_router.get("/taxis/in-flight", tags=["platform"])
+async def taxi_in_flight():
+    """
+    🚕 Get currently in-flight taxi requests.
+    """
+    in_flight = get_taxis_in_flight()
+    return {
+        "in_flight": [r.model_dump() for r in in_flight],
+        "total": len(in_flight),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Layers  📐
+# ---------------------------------------------------------------------------
+
+class LayerRequestPayload(BaseModel):
+    source_layer: int = Field(ge=0, le=4)
+    target_layer: int = Field(ge=0, le=4)
+    source_component: str
+    target_component: str
+    operation: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+    correlation_id: str | None = None
+
+
+@platform_router.get("/layers", tags=["platform"])
+async def list_layers():
+    """
+    📐 List all platform layers and their components.
+    """
+    layers = get_all_layers()
+    return {
+        "layers": [l.model_dump() for l in layers],
+        "total": len(layers),
+    }
+
+
+@platform_router.get("/layers/topology", tags=["platform"])
+async def layer_topology():
+    """
+    📐 Get the layer topology for visualization.
+    """
+    return get_layer_topology()
+
+
+@platform_router.get("/layers/metrics", tags=["platform"])
+async def layer_metrics():
+    """
+    📐 Get layer system metrics.
+    """
+    return get_layer_metrics().model_dump()
+
+
+@platform_router.get("/layers/{level}", tags=["platform"])
+async def layer_detail(level: int):
+    """
+    📐 Get details of a specific layer by level (0-4).
+    """
+    try:
+        layer_level = LayerLevel(level)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid layer level. Valid: 0 (Foundation) to 4 (Interface)",
+        )
+    layer = get_layer(layer_level)
+    return layer.model_dump()
+
+
+@platform_router.post("/layers/route", tags=["platform"])
+async def layer_route(req: LayerRequestPayload):
+    """
+    📐 Route a request through the layer system.
+    """
+    try:
+        source = LayerLevel(req.source_layer)
+        target = LayerLevel(req.target_layer)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid layer level. Valid: 0 (Foundation) to 4 (Interface)",
+        )
+
+    response = await route_layer_request(
+        source_layer=source,
+        target_layer=target,
+        source_component=req.source_component,
+        target_component=req.target_component,
+        operation=req.operation,
+        payload=req.payload,
+        correlation_id=req.correlation_id,
+    )
+    return response.model_dump()
+
