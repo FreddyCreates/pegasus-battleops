@@ -562,7 +562,16 @@ class BenchmarkSuite:
 
 @dataclass
 class MeasurementStep:
-    """A single step in the runtime measurement loop."""
+    """A single step in the runtime measurement loop.
+
+    Attributes:
+        step_number: Position in the 11-step sequence (1–11).
+        name: Machine-readable step identifier (e.g. 'classify_task').
+        description: Human-readable explanation of the step's purpose.
+        completed: Whether this step has been executed.
+        result: Output/artifact produced by executing this step.
+        timestamp: Unix time (seconds since epoch) when step was completed.
+    """
     step_number: int
     name: str
     description: str
