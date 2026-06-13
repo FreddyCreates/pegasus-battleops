@@ -1,0 +1,46 @@
+{
+    "title": "Spatium Computationis v3: Mini-Verse Engines, Riemannian Geometry, and Autonomous Intelligence Battleground Architecture",
+    "upload_type": "publication",
+    "publication_type": "workingpaper",
+    "description": "Production-grade autonomous intelligence system operating within a physically-grounded simulation substrate. Introduces Physics Engine (Velocity Verlet, N-body, relativistic corrections), Geometry Engine (Riemannian manifolds, geodesics, curvature tensors), and Mini-Verse system (configurable universes with Friedmann cosmological evolution). All implementations use real SI units and validated conservation laws.",
+    "creators": [
+        {
+            "name": "FreddyCreates",
+            "affiliation": "Pegasus BattleOps Research Division"
+        }
+    ],
+    "keywords": [
+        "autonomous agents",
+        "physics simulation",
+        "Riemannian geometry",
+        "general relativity",
+        "N-body dynamics",
+        "mini-verse",
+        "cosmological simulation",
+        "artificial intelligence",
+        "multi-agent systems",
+        "differential geometry",
+        "Velocity Verlet integration",
+        "geodesics",
+        "curvature tensors",
+        "Friedmann equations"
+    ],
+    "license": "cc-by-4.0",
+    "version": "3.0.0",
+    "language": "eng",
+    "access_right": "open",
+    "related_identifiers": [
+        {
+            "relation": "isSupplementTo",
+            "identifier": "https://github.com/FreddyCreates/pegasus-battleops",
+            "resource_type": "software",
+            "scheme": "url"
+        }
+    ],
+    "subjects": [
+        {"term": "General Relativity", "scheme": "url", "identifier": "http://id.loc.gov/authorities/subjects/sh85053969"},
+        {"term": "Artificial Intelligence", "scheme": "url", "identifier": "http://id.loc.gov/authorities/subjects/sh85008180"},
+        {"term": "Computational Physics", "scheme": "url", "identifier": "http://id.loc.gov/authorities/subjects/sh89003285"}
+    ],
+    "notes": "Version 3.0 — Major update adding mini-verse engines, differential geometry computation, and cosmological evolution to the Spatium Computationis autonomous intelligence system."
+}
