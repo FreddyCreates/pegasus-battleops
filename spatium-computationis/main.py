@@ -40,6 +40,13 @@ from .simulation.routes import simulation_router
 # Import frontend components
 from .frontend.routes import frontend_router
 
+# Import ALPHA MEDINA skill routers
+from .medina_operating_system_router import medina_operating_system_router
+from .anti_drift_reviewer_router import anti_drift_reviewer_router
+from .doctrine_synthesizer_router import doctrine_synthesizer_router
+from .mission_roadmap_router import mission_roadmap_router
+from .resource_hub_organizer_router import resource_hub_organizer_router
+
 app = FastAPI(
     title="Spatium Computationis ⌬",
     description=(
@@ -53,11 +60,14 @@ app = FastAPI(
         "SEO optimization, social media, and analytics.\n\n"
         "**Agent Platform (⎈)**\n"
         "Task queue, agent discovery, inter-agent delegation, and task bots (Nuntii).\n\n"
+        "**ALPHA MEDINA Skills (🧠)**\n"
+        "Master operating system with cognitive framework, drift auditing, doctrine synthesis, "
+        "roadmap orchestration, and resource organization.\n\n"
         "**Interactive App (🖥️)**\n"
         "Customer-facing dashboard, real-time console, SSE streaming, "
         "and WebSocket-powered interactive application."
     ),
-    version="0.5.0",
+    version="0.6.0",
 )
 
 # ---------------------------------------------------------------------------
@@ -75,6 +85,16 @@ app.include_router(marketing_router)
 app.include_router(platform_router, prefix="/api")
 app.include_router(simulation_router, prefix="/api")
 app.include_router(frontend_router)
+
+# ---------------------------------------------------------------------------
+# Include ALPHA MEDINA Skill Routers
+# ---------------------------------------------------------------------------
+
+app.include_router(medina_operating_system_router)
+app.include_router(anti_drift_reviewer_router)
+app.include_router(doctrine_synthesizer_router)
+app.include_router(mission_roadmap_router)
+app.include_router(resource_hub_organizer_router)
 
 
 # ---------------------------------------------------------------------------
