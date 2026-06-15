@@ -378,10 +378,13 @@ def _propagate_to_cognitive_layer(outcome: OutcomeRecord) -> None:
     This is the critical missing piece: make minds actually adapt based on outcomes.
     """
     try:
-        # Only import if archon-cogfusion is available
-        from ..archon-cogfusion.cognitive_learning_router import get_cognitive_learning_router
+        # Use importlib to handle the hyphenated module name
+        import importlib
         
-        router = get_cognitive_learning_router()
+        cogfusion = importlib.import_module(
+            "spatium_computationis.agents.archon-cogfusion.cognitive_learning_router"
+        )
+        router = cogfusion.get_cognitive_learning_router()
         
         # Route the outcome through the cognitive learning system
         router.route_outcome(

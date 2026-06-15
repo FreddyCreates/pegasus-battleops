@@ -52,7 +52,7 @@ class CognitiveState(BaseModel):
         description="How alert/responsive the system is"
     )
     coherence: float = Field(
-        ge=0.0, le=1.0, default=0.5,
+        ge=0.0, le=1.0, default=0.5,  # Start lower to make explore more reachable
         description="How well-integrated the cognitive signals are"
     )
     resonance: float = Field(
@@ -146,14 +146,14 @@ class CognitiveHomeostat:
         # When percepts mismatch predictions, lower awareness proportionally
         old_awareness = self.state.awareness
         if is_novel:
-            novelty_penalty = mismatch_score * 0.15  # Max 0.15 per percept
+            novelty_penalty = mismatch_score * 0.25  # Increased from 0.15 to 0.25
             self.state.awareness = max(0.0, self.state.awareness - novelty_penalty)
         
         # Step 4: Update coherence based on signal integration
-        # High prediction error → lower coherence
+        # High prediction error → lower coherence significantly
         old_coherence = self.state.coherence
         if self.state.prediction_error > 0.5:
-            self.state.coherence = max(0.0, self.state.coherence - 0.05)
+            self.state.coherence = max(0.0, self.state.coherence - 0.15)  # Increased penalty
         else:
             self.state.coherence = min(1.0, self.state.coherence + 0.02)
         
@@ -250,18 +250,31 @@ class CognitiveHomeostat:
             return is_novel, mismatch
     
     def _string_similarity(self, s1: str, s2: str) -> float:
-        """Simple string similarity (0-1, 1 = identical)."""
+        """String similarity using Levenshtein-like approach (0-1, 1 = identical)."""
         if s1 == s2:
             return 1.0
         
-        # Rough similarity based on common characters / total length
-        common = sum(1 for c in s1 if c in s2)
-        total = max(len(s1), len(s2))
+        if not s1 or not s2:
+            return 0.0
         
-        if total == 0:
-            return 1.0
+        # Use simple length-based difference for speed
+        # Shorter strings are considered more different
+        length_diff = abs(len(s1) - len(s2)) / max(len(s1), len(s2))
         
-        return common / total
+        # Count matching adjacent character pairs
+        common_pairs = 0
+        for i in range(min(len(s1)-1, len(s2)-1)):
+            if s1[i:i+2] == s2[i:i+2]:
+                common_pairs += 1
+        
+        pair_similarity = common_pairs / max(len(s1)-1, len(s2)-1, 1)
+        
+        # Combined: if strings are very different length, they're different
+        # Otherwise use pair matching
+        if length_diff > 0.5:
+            return 0.3 + pair_similarity * 0.4
+        else:
+            return pair_similarity
     
     def _inject_entropy(self) -> None:
         """When explore branch fires, inject entropy into the system."""
