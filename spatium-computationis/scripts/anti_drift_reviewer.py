@@ -41,7 +41,6 @@ def main() -> None:
     )
     parser.add_argument("--baseline", help="Baseline content (for comparative audit)")
     parser.add_argument("--doctrine-context", help="Doctrine context for alignment check")
-    parser.add_argument("--json", action="store_true", help="Output as formatted JSON")
 
     args = parser.parse_args()
 
@@ -59,11 +58,8 @@ def main() -> None:
         _execute_command(args.command, args.content, args.content_type, args.baseline, args.doctrine_context)
     )
 
-    # Output
-    if args.json:
-        print(json.dumps(result, indent=2))
-    else:
-        print(json.dumps(result, indent=2))
+    # Output as JSON (standard for CLI)
+    print(json.dumps(result, indent=2))
 
 
 async def _execute_command(

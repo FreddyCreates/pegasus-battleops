@@ -39,7 +39,6 @@ def main() -> None:
         default="mixed",
         help="Type of material: ideas|documents|doctrine|projects|mixed",
     )
-    parser.add_argument("--json", action="store_true", help="Output as formatted JSON")
 
     args = parser.parse_args()
 
@@ -55,11 +54,8 @@ def main() -> None:
     # Run async function
     result = asyncio.run(_execute_command(args.command, args.material, args.material_type))
 
-    # Output
-    if args.json:
-        print(json.dumps(result, indent=2))
-    else:
-        print(json.dumps(result, indent=2))
+    # Output as JSON (standard for CLI)
+    print(json.dumps(result, indent=2))
 
 
 async def _execute_command(command: str, material: str, material_type: str) -> dict:

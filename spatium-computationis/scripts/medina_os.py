@@ -49,7 +49,6 @@ def main() -> None:
         default="full",
         help="Processing mode (for process command): full|perception|synthesis|doctrine",
     )
-    parser.add_argument("--json", action="store_true", help="Output as formatted JSON")
 
     args = parser.parse_args()
 
@@ -65,11 +64,8 @@ def main() -> None:
     # Run async function
     result = asyncio.run(_execute_command(args.command, args.input_text, args.mode))
 
-    # Output
-    if args.json:
-        print(json.dumps(result, indent=2))
-    else:
-        print(json.dumps(result, indent=2))
+    # Output as JSON (standard for CLI)
+    print(json.dumps(result, indent=2))
 
 
 async def _execute_command(command: str, input_text: str, mode: str) -> dict:
