@@ -6,12 +6,14 @@ The Feedback Protocol implements closed-loop learning:
 1. Captures outcomes from actions (success/failure/partial)
 2. Correlates outcomes with decisions made
 3. Adjusts confidence scores and routing weights
-4. Enables agents to learn from experience
+4. Propagates learning signals to the cognitive layer (embedding brain)
+5. Enables agents AND minds to learn from experience
 
 Glyphs:
   ⟲ Feedback  — outcome returns to improve future decisions
   ⇡ Amplify   — successful patterns get reinforced
   ⇣ Dampen    — failed patterns get reduced weight
+  🧠⚡ Cognitive Loop — outcomes shape mind embeddings in real-time
 """
 
 from __future__ import annotations
@@ -313,7 +315,7 @@ def record_outcome(
 
 
 def _propagate_learning(outcome: OutcomeRecord) -> None:
-    """Propagate learning signal to routing weights."""
+    """Propagate learning signal to routing weights AND cognitive layer."""
     if outcome.learning_signal == LearningSignal.NEUTRAL:
         return
     
@@ -364,6 +366,39 @@ def _propagate_learning(outcome: OutcomeRecord) -> None:
         )
         
         conn.commit()
+    
+    # 🧠⚡ NEW: Propagate learning to cognitive layer (embedding brain)
+    _propagate_to_cognitive_layer(outcome)
+
+
+def _propagate_to_cognitive_layer(outcome: OutcomeRecord) -> None:
+    """
+    🧠⚡ Bridge feedback outcomes to the embedding brain.
+    
+    This is the critical missing piece: make minds actually adapt based on outcomes.
+    """
+    try:
+        # Use importlib to handle the hyphenated module name
+        import importlib
+        
+        cogfusion = importlib.import_module(
+            "spatium_computationis.agents.archon-cogfusion.cognitive_learning_router"
+        )
+        router = cogfusion.get_cognitive_learning_router()
+        
+        # Route the outcome through the cognitive learning system
+        router.route_outcome(
+            outcome_agent=outcome.agent,
+            outcome_type=outcome.outcome_type,
+            quality_score=outcome.quality_score,
+            learning_signal=outcome.learning_signal,
+            decision_features=outcome.decision_features,
+            input_features=outcome.input_features,
+        )
+    except (ImportError, AttributeError):
+        # Archon-cogfusion not available or router not accessible
+        # This is OK—system continues to work, just without cognitive adaptation
+        pass
 
 
 # ---------------------------------------------------------------------------
