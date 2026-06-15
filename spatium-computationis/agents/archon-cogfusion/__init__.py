@@ -96,6 +96,30 @@ from .embedding_brain import (
     get_embedding_diagnostic,
 )
 
+from .cognitive_learning_router import (
+    MindRelevance,
+    CognitiveSignal,
+    generate_cognitive_signals,
+    CognitiveLearningRouter,
+    get_cognitive_learning_router,
+)
+
+from .cognitive_homeostat import (
+    PerceptionEvent,
+    CognitiveState,
+    CognitiveHomeostat,
+    get_cognitive_homeostat,
+    PHI_INVERSE,
+    NOVELTY_THRESHOLD,
+)
+
+from .adaptive_state_registry import (
+    MindActivationSnapshot,
+    AdaptiveStateRecord,
+    AdaptiveStateRegistry,
+    get_adaptive_state_registry,
+)
+
 from .agent import (
     ArchonHost,
     ArchonEngine,
@@ -151,6 +175,24 @@ __all__ = [
     "embedding_enhanced_weights",
     "update_mind_embedding",
     "get_embedding_diagnostic",
+    # Cognitive Learning Router (Feedback → Embedding Bridge)
+    "MindRelevance",
+    "CognitiveSignal",
+    "generate_cognitive_signals",
+    "CognitiveLearningRouter",
+    "get_cognitive_learning_router",
+    # Cognitive Homeostat (Explore/Exploit Regulator)
+    "PerceptionEvent",
+    "CognitiveState",
+    "CognitiveHomeostat",
+    "get_cognitive_homeostat",
+    "PHI_INVERSE",
+    "NOVELTY_THRESHOLD",
+    # Adaptive State Registry (Observable Learning Ledger)
+    "MindActivationSnapshot",
+    "AdaptiveStateRecord",
+    "AdaptiveStateRegistry",
+    "get_adaptive_state_registry",
     # Cortex
     "CortexState",
     "SituationalAwareness",
